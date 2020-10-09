@@ -36,14 +36,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   var pages = <Widget>[
     MainFeed(),
+    // TODO eventually add other pages here
+    // Make sure if you add another page here that there is enough icons in navItems
+    // you'll get an error otherwise
     Text("I'm not a page yet"),
-    Text("I'm not a page yet but I am number 3 page")
+    Text("I'm not a page yet but I am the third page")
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: pages[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
+          // set our state onTap, in this case our current page index,
           onTap: (int index) {
             setState(() {
               _selectedIndex = index;

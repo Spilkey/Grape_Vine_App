@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// TODO add some class variables that get passed into FeedCard so we know what to display
+// Is a card that will appear in a feed
 class FeedCard extends StatefulWidget {
   @override
   _FeedCardState createState() => _FeedCardState();
