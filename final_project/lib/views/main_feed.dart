@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 /// Is the main feed/ Home of the app
 ///
 ///
+
 class MainFeed extends StatefulWidget {
   @override
   _MainFeedState createState() => _MainFeedState();
@@ -73,4 +74,5 @@ class _MainFeedState extends State<MainFeed> {
       ),
     );
   }
+
 }

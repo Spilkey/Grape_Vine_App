@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'views/main_feed.dart';
+import 'views/discover_feed.dart';
 
 /**
  * Top level widget under the 'MyApp' widget
@@ -25,6 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
     BottomNavigationBarItem(
       icon: Icon(Icons.search),
       title: Text('Discover'),
+      
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.person_add),
@@ -36,10 +38,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   var pages = <Widget>[
     MainFeed(),
+    DiscoverFeedPage(),
     // TODO eventually add other pages here
     // Make sure if you add another page here that there is enough icons in navItems
     // you'll get an error otherwise
-    Text("I'm not a page yet"),
     Text("I'm not a page yet but I am the third page")
   ];
   @override
