@@ -74,5 +74,4 @@ class _MainFeedState extends State<MainFeed> {
       ),
     );
   }
-
 }
