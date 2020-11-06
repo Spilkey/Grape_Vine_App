@@ -18,19 +18,3 @@ class DB {
     return firestore;
   }
 }
-
-// final products = Firestore.instance.collection('products');
-// return StreamBuilder<QuerySnapshot>(
-//   stream: products.snapshots(),
-//   builder: (context, snapshot) {
-//     if (!snapshot.hasData)
-//       return LinearProgressIndicator();
-
-//     return ListView(
-//   	   children: snapshot.data.documents.map((document) {
-// 			final product = Product.fromMap(document.data);
-//          return Text(product.name);
-//       }).toList(),
-//     );
-//   },
-// );
