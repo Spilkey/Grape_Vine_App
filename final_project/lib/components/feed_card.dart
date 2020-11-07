@@ -54,7 +54,7 @@ class _FeedCardState extends State<FeedCard> {
                 backgroundImage: MemoryImage(_bytesOwnerImage),
               ),
               // Post Title
-              title: Text(widget.postContent),
+              title: Text(widget.postTitle),
               subtitle: Text(
                 //
                 widget.ownerName,
