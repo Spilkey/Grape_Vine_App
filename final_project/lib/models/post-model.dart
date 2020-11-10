@@ -5,16 +5,8 @@ class PostModel {
   Stream<QuerySnapshot> getAllPosts() {
     FirebaseFirestore db = DB().database;
     Stream<QuerySnapshot> results = db.collection('posts').snapshots();
-    results.forEach((element) {
-      element.docs.asMap().forEach((key, value) {
-        print(element.docs[key]["content"]);
-        print(key);
-        print(element.docs[key]["topic_id"]);
-      });
-    });
     return results;
   }
-
   // return results
   
   // should go into topic model also should use topic collection
@@ -24,15 +16,6 @@ class PostModel {
       .collection('posts')
       .where('topic_id', isEqualTo: topic_id)
       .snapshots();
-
-      results.forEach((element) {
-      element.docs.asMap().forEach((key, value) {
-        print(element.docs[key]["topic_id"]);
-        print(key);
-        print(element.docs[key]["content"]);
-      });
-    });
-
     return results;
   }
 
