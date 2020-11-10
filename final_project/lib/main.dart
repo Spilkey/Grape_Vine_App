@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 
 import 'bottom_nav.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp().then((value) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -18,11 +21,6 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.purple,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: FutureBuilder<FirebaseApp>(
-          future: Firebase.initializeApp(),
-          builder: (BuildContext context, AsyncSnapshot<FirebaseApp> snapshot) {
-            return MyHomePage(title: 'Flutter Demo Home Page');
-          },
-        ));
+        home: MyHomePage(title: 'Flutter Demo Home Page'));
   }
 }
