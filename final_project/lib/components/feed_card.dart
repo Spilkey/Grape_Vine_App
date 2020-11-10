@@ -53,12 +53,11 @@ class _FeedCardState extends State<FeedCard> {
               leading: CircleAvatar(
                 backgroundImage: MemoryImage(_bytesOwnerImage),
               ),
-              // Post Title
-              title: Text(widget.postTitle),
-              subtitle: Text(
-                //
-                widget.ownerName,
-                style: TextStyle(color: Colors.black.withOpacity(0.6)),
+              title: Text(widget.ownerName),
+            ),
+            Container(
+              child: Text(
+                widget.postTitle
               ),
             ),
             Padding(
