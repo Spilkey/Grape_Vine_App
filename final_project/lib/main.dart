@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
         home: FutureBuilder<FirebaseApp>(
           future: Firebase.initializeApp(),
           builder: (BuildContext context, AsyncSnapshot<FirebaseApp> snapshot) {
-            PostModel().getAllPosts();
             return MyHomePage(title: 'Flutter Demo Home Page');
           },
         ));
