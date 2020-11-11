@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../models/topic-model.dart';
+import '../models/post-model.dart';
 
 import 'feed_discover_cards.dart';
 
@@ -9,23 +13,38 @@ class FeedDiscover extends StatefulWidget {
 
 class _FeedState extends State<FeedDiscover> {
 
+  var data;
+  // instance of topic model
+  final _model = new TopicModel();
   // placeholder categories
   var categories = ['Sports', 'asdf', 'Travel', 'Music', 'Food', 'Technology', 'Celebrities', 'Art', 'Movies', 'Music', 'Politics'];
 
   // this creates 2 listviews. One horizontal, one vertical
   // in the first iteration of the ListView builder it calls the _horizontalListView() method to build the category slider
   // the rest of the iterations builds the discover feed cards
+  // TODO populate the smaller cards with other info
+  // TODO make horizontal scroll bar interactable
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        padding: const EdgeInsets.all(20.0),
-        itemCount: 12,
-        itemBuilder: (BuildContext context, index){
-          if (index == 0){
-            return _horizontalListView();
+      body: StreamBuilder<QuerySnapshot>(
+        // temporary placeholder for topic. Currently grabs posts under this topic id
+        stream: _model.getPostsFromTopic('Xiah3Ml0x5nqCOTRCs1e'),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              padding: const EdgeInsets.all(20.0),
+              itemCount: snapshot.data.docs.length + 1,
+              itemBuilder: (BuildContext context, index){
+            if (index == 0){
+              return _horizontalListView();
           }else{ 
-            return _discoverContainer();
+              var data = snapshot.data.docs[index-1];
+              return _discoverContainer(data);
+            }
+          });
+          } else {
+             return Center(child: CircularProgressIndicator());
           }
         }
       )
@@ -39,7 +58,7 @@ class _FeedState extends State<FeedDiscover> {
       child: ListView.builder(
         padding: EdgeInsets.fromLTRB(0, 7.5, 0, 7.5),
           scrollDirection: Axis.horizontal,
-          itemCount: 10,
+          itemCount: categories.length,
           itemBuilder: (BuildContext context, i) => 
           Container(
             width: 100,
@@ -60,6 +79,6 @@ class _FeedState extends State<FeedDiscover> {
   }
   
   // this widget calls from the class feed_discover_cards.dart
-  Widget _discoverContainer() => DiscoverFeedCards();
-  
+  // passes current instance of data
+  Widget _discoverContainer(data) => DiscoverFeedCards(data: data,);
 }
