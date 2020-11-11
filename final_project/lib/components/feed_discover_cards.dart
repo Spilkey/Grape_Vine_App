@@ -1,47 +1,69 @@
 import 'package:flutter/material.dart';
-import 'feed_card.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'feed_card.dart';
 // variation of the feed cards for the main feed. This alternates between the
 // big sized cards and two small-sized cards
 
 class DiscoverFeedCards extends StatefulWidget {
+  QueryDocumentSnapshot data;
+
+  DiscoverFeedCards({Key key, @required this.data}): super(key: key);
+
   @override
-  _DiscoverFeedCardsState createState() => _DiscoverFeedCardsState();
+  _DiscoverFeedCardsState createState() => new _DiscoverFeedCardsState(data);
 }
 
 class _DiscoverFeedCardsState extends State<DiscoverFeedCards> {
+
+  QueryDocumentSnapshot data;
+  // constructor
+  _DiscoverFeedCardsState (this.data);
+
   @override
   Widget build(BuildContext context) {
     // sample feed card
     // TODO get data from db and populate many of these
     // TODO add ability to subscribe to topic
     // TODO add ability to navigate to owner of post's profile
+
+    Widget mainCard = FeedCard(
+      ownerProfileImageData: data.get('image_data'),        
+      ownerName: data.get('owner_name'),
+      imageData:  data.get('post_image_data'),
+      postTitle: data.get('post_title'),
+      postContent: data.get('content'),
+    );
+
     Widget temp = FeedCard(
       ownerProfileImageData:
-          "iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAADTED8xAAADMElEQVR4nOzVwQnAIBQFQYXff81RUkQCOyDj1YOPnbXWPmeTRef+/3O/OyBjzh3CD95BfqICMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMO0TAAD//2Anhf4QtqobAAAAAElFTkSuQmCC",
+        "iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAADTED8xAAADMElEQVR4nOzVwQnAIBQFQYXff81RUkQCOyDj1YOPnbXWPmeTRef+/3O/OyBjzh3CD95BfqICMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMO0TAAD//2Anhf4QtqobAAAAAElFTkSuQmCC",
+        
       ownerName: "foo",
       imageData:
           "iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAADTED8xAAADMElEQVR4nOzVwQnAIBQFQYXff81RUkQCOyDj1YOPnbXWPmeTRef+/3O/OyBjzh3CD95BfqICMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMO0TAAD//2Anhf4QtqobAAAAAElFTkSuQmCC",
+     
       postTitle: "bar",
       postContent: "faz baz",
     );
     return Row(
-      // return Column(
       children: <Widget>[
         Column(children: <Widget>[
           Row(children: <Widget>[
             Container(
                 padding: EdgeInsets.all(10),
-                // height: 50,
                 width: 350,
-                child: temp)
+                child: mainCard
+              )
           ]),
           Row(children: <Widget>[
             Column(children: <Widget>[
               Container(padding: EdgeInsets.all(10), width: 175, child: temp)
+              // Container(padding: EdgeInsets.all(10), width: 175)
             ]),
             Column(children: <Widget>[
               Container(padding: EdgeInsets.all(10), width: 175, child: temp)
+              // Container(padding: EdgeInsets.all(10), width: 175)
             ])
           ])
         ])
@@ -49,64 +71,3 @@ class _DiscoverFeedCardsState extends State<DiscoverFeedCards> {
     );
   }
 }
-
-/* TEMP
-
-class _DiscoverFeedCardsState extends State<DiscoverFeedCards> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      // children: <Widget>[
-      //   Row(
-      //     children: <Widget>[
-      //       Container(
-      //           padding: EdgeInsets.all(10),
-      //           height: 50,
-      //           child: FeedCard()
-      //       )
-      //     ]
-      //   ),
-        Column(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-            Row(
-              children: <Widget> [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  width: 350,
-                  child: FeedCard()
-                )
-              ]
-            ),
-            Row(
-              children: <Widget> [
-                Column(
-                    children: <Widget> [
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        width: 175,
-                        child: FeedCard()
-                      )
-                    ]
-                ),
-              Column(
-                children: <Widget> [
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      width: 175,
-                      child: FeedCard()
-                    )
-                  ]
-              )
-            ]
-          )
-        ]
-          )
-        ],
-      ),
-      ],
-    );
-  }
-}
-*/
