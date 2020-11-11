@@ -13,6 +13,10 @@ class MainFeed extends StatefulWidget {
 
 class _MainFeedState extends State<MainFeed> {
   // Overrides parent State class's build function with our own
+  final snackBar = SnackBar(
+    content: Text('Your post has been shared successfully'),
+  );
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -63,14 +67,20 @@ class _MainFeedState extends State<MainFeed> {
         floatingActionButton: FloatingActionButton.extended(
           icon: Icon(Icons.menu),
           label: Text("Create"),
-          onPressed: () {
+          onPressed: () async {
             // Navigate here to create post form handle any returned info here
             // with the promise returned from Navigate
             // Once the form is completed we can return to this function and
             // have a setState() call to refresh UI along with any other user prompts to
             // notify them that they sucessfully create a post
-            Navigator.push(
+            var result = await Navigator.push(
                 context, MaterialPageRoute(builder: (context) => CreatePost()));
+            if (result != null) {
+              // TODO: add condition/snackbar for network error and post was unsuccessful
+              if (result['posted'] == true) {
+                Scaffold.of(context).showSnackBar(snackBar);
+              }
+            }
           },
         ),
       ),
