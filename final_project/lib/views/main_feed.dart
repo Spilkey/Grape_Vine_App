@@ -1,5 +1,6 @@
 import 'package:final_project/components/feed.dart';
 import 'package:flutter/material.dart';
+import './create_post.dart';
 
 /// Is the main feed/ Home of the app
 ///
@@ -63,12 +64,13 @@ class _MainFeedState extends State<MainFeed> {
           icon: Icon(Icons.menu),
           label: Text("Create"),
           onPressed: () {
-            // Add your onPressed code here!
             // Navigate here to create post form handle any returned info here
             // with the promise returned from Navigate
             // Once the form is completed we can return to this function and
             // have a setState() call to refresh UI along with any other user prompts to
             // notify them that they sucessfully create a post
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => CreatePost()));
           },
         ),
       ),
