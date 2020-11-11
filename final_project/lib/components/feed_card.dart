@@ -56,9 +56,7 @@ class _FeedCardState extends State<FeedCard> {
               title: Text(widget.ownerName),
             ),
             Container(
-              child: Text(
-                widget.postTitle
-              ),
+              child: Text(widget.postTitle),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),

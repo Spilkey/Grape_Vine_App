@@ -17,7 +17,6 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
-
   // instance of post model
   final _model = new PostModel();
 
@@ -28,34 +27,32 @@ class _FeedState extends State<Feed> {
     // We use an item builder - we can use a promise here to obtain data from our data base
     // We should store our data retrieved from our db in the state here
     return Scaffold(
-      // streambuilder populates the listview from the firebase database
-      body: StreamBuilder<QuerySnapshot> (
-        stream: _model.getAllPosts(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
-           return ListView.separated(
-            itemCount: snapshot.data.docs.length,
-            padding: const EdgeInsets.all(20.0),
-            // when we get actual data use an item builder
-            itemBuilder: (BuildContext context, int index) {
-              // Here we would pass in some parameters to our indiviual cards
-              // Example ----------------------
-              var data = snapshot.data.docs[index];
-              return FeedCard(
-                ownerProfileImageData:
-                    data.get('image_data'),
-                ownerName: data.get('owner_name'),
-                imageData:
-                    data.get('post_image_data'),
-                postTitle: data.get('post_title'),
-                postContent: data.get('content')
-              );
-            },
-          separatorBuilder: (BuildContext context, int index) {
-            return const Divider();
-          });
-        }
-      )
-    );
-   
+        // streambuilder populates the listview from the firebase database
+        body: StreamBuilder<QuerySnapshot>(
+            stream: _model.getAllPosts(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasData) {
+                return ListView.separated(
+                    itemCount: snapshot.data.docs.length,
+                    padding: const EdgeInsets.all(20.0),
+                    // when we get actual data use an item builder
+                    itemBuilder: (BuildContext context, int index) {
+                      // Here we would pass in some parameters to our indiviual cards
+                      // Example ----------------------
+                      var data = snapshot.data.docs[index];
+                      return FeedCard(
+                          ownerProfileImageData: data.get('image_data'),
+                          ownerName: data.get('owner_name'),
+                          imageData: data.get('post_image_data'),
+                          postTitle: data.get('post_title'),
+                          postContent: data.get('content'));
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const Divider();
+                    });
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            }));
   }
 }
