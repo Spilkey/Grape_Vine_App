@@ -18,7 +18,8 @@ class LocalDB {
     print("creating table");
     return await openDatabase(pathDb, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
-      await db.execute("CREATE TABLE 'TBD TABLE' ");
-    });
+      await db.execute(
+          "CREATE TABLE UserData (setting TEXT PRIMARY KEY, val TEXT)");
+      });
   }
 }
