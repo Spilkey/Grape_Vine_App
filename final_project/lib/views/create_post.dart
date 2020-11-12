@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'dart:io';
 
 class CreatePost extends StatefulWidget {
   @override
@@ -6,7 +9,23 @@ class CreatePost extends StatefulWidget {
 }
 
 class _CreatePostState extends State<CreatePost> {
+  // TODO: Save image to database - is that efficient?
+  File _image;
+  final picker = ImagePicker();
   final textController = TextEditingController();
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected');
+      }
+    });
+  }
+
   _returnToMainFeed() {
     // TODO: replace with named with named routes
     int count = 0;
@@ -55,15 +74,26 @@ class _CreatePostState extends State<CreatePost> {
               child: Text('Cancel'),
             )),
             // TODO: add state where the post button is unpressable if there's no content
-            MaterialButton(
-              onPressed: () {
-                Navigator.pop(context, {'posted': true});
-              },
-              child: Text('Post', style: TextStyle(color: Colors.white)),
-              color: Colors.purple,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0)),
-            )
+            Row(children: [
+              IconButton(
+                onPressed: () async {
+                  await getImage();
+                },
+                icon: Icon(
+                  Icons.camera_alt,
+                  color: Colors.purple,
+                ),
+              ),
+              MaterialButton(
+                onPressed: () {
+                  Navigator.pop(context, {'posted': true});
+                },
+                child: Text('Post', style: TextStyle(color: Colors.white)),
+                color: Colors.purple,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0)),
+              )
+            ]),
           ],
         ),
       ),
