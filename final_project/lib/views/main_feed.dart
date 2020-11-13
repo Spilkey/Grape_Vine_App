@@ -40,6 +40,8 @@ class _MainFeedState extends State<MainFeed> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => Settings(title: 'Settings')));
+                  Scaffold.of(context).showSnackBar(
+                      SnackBar(content: const Text('Saved user settings!')));
                 }),
           ],
           leading: Builder(

@@ -3,6 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
 
 class LocalDB {
+  LocalDB() {}
   static Database _database;
 
   static Future<Database> get database async {
@@ -20,6 +21,7 @@ class LocalDB {
         onCreate: (Database db, int version) async {
       await db.execute(
           "CREATE TABLE UserData (setting TEXT PRIMARY KEY, val TEXT)");
+          
     });
   }
 }

@@ -43,18 +43,15 @@ class UserSettings {
   }
 
   // converts settings map to text objects
-  static Map<String, String> toMap() {
-    Map<String, dynamic> map;
-
-    _settings.forEach((key, value) {
-      if (value is String) {
-        map[key] = value;
-      } else {
-        map[key] = value.toString();
-      }
-    });
-
-    return map;
+  static Map<String, String> toStringMap() {
+    return {
+      'mix_feeds': _settings['mix_feeds'] ? 'true' : 'false',
+      'automatic_topics': _settings['automatic_topics'] ? 'true' : 'false',
+      'allow_location': _settings['allow_location'] ? 'true' : 'false',
+      'username': _settings['username'],
+      'private_key': _settings['private_key'],
+      'public_key': _settings['public_key'],
+    };
   }
 
   // translates <str,str> map from db into user settings
