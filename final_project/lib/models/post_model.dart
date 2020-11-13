@@ -4,10 +4,16 @@ import 'package:final_project/models/db.dart';
 import 'post_entity.dart';
 
 class PostModel {
-  Stream<QuerySnapshot> getAllPosts() {
+  getAllPosts() async {
     FirebaseFirestore db = DB().database;
     Stream<QuerySnapshot> results = db.collection('posts').snapshots();
-    return results;
+    results.forEach((element) {
+      element.docs.asMap().forEach((key, value) {
+        print(element.docs[key]["content"]);
+        print(key);
+        print(element.docs[key]["topic_id"]);
+      });
+    });
   }
 
   // should go into topic model also should use topic collection
@@ -17,14 +23,12 @@ class PostModel {
         .collection('posts')
         .where('topic_id', isEqualTo: topic_id)
         .snapshots();
-    return results;
   }
 
   getAllPostsFromUser(user_id) async {
     FirebaseFirestore db = DB().database;
     Stream<QuerySnapshot> results =
         db.collection('posts').where('user_id', isEqualTo: user_id).snapshots();
-    return results;
   }
 
   getAllPostsFromUserPublic(user_id) async {
@@ -34,7 +38,6 @@ class PostModel {
         .where('user_id', isEqualTo: user_id)
         .where('is_private', isEqualTo: 'false')
         .snapshots();
-    return results;
   }
 
   // insert post data to the database

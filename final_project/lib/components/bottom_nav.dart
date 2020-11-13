@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'views/main_feed.dart';
-import 'views/discover_feed.dart';
-import 'views/notifications.dart';
+import '../views/main_feed.dart';
+import '../views/discover_feed.dart';
+import '../views/notifications.dart';
 
 /**
  * Top level widget under the 'MyApp' widget

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:typed_data';
 
-import 'package:final_project/models/post-model.dart';
+import 'package:final_project/models/post_model.dart';
 import 'package:final_project/models/post_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
