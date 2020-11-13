@@ -2,6 +2,9 @@ import 'package:final_project/components/feed.dart';
 import 'package:final_project/models/notifications.dart';
 import 'package:flutter/material.dart';
 import './create_post.dart';
+import 'package:flutter/material.dart';
+import 'package:final_project/components/feed.dart';
+import 'package:final_project/views/settings.dart';
 
 /// Is the main feed/ Home of the app
 ///
@@ -30,7 +33,14 @@ class _MainFeedState extends State<MainFeed> {
           title: Center(child: Text("Main Feed")),
           centerTitle: true,
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.apps), onPressed: () {}),
+            IconButton(
+                icon: Icon(Icons.apps),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Settings(title: 'Settings')));
+                }),
           ],
           leading: Builder(
             // sending correct context to Icon button so I can open drawer with it

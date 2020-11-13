@@ -30,19 +30,19 @@ class User {
     return password;
   }
 
-  void createPost(bool isPrivate, bool hasImg, String data, Image img) {
-    PostWidgetBuilder builder =
-        new PostWidgetBuilder(isPrivate: isPrivate, hasImg: hasImg);
-    var post;
+  // void createPost(bool isPrivate, bool hasImg, String data, Image img) {
+  //   PostWidgetBuilder builder =
+  //       new PostWidgetBuilder(isPrivate: isPrivate, hasImg: hasImg);
+  //   var post;
 
-    if (hasImg) {
-      post = builder.buildPostWithImg(data, img);
-    } else {
-      post = builder.buildPostWithString(data);
-    }
+  //   if (hasImg) {
+  //     post = builder.buildPostWithImg(data, img);
+  //   } else {
+  //     post = builder.buildPostWithString(data);
+  //   }
 
-    userPosts.add(post);
-  }
+  //   userPosts.add(post);
+  // }
 
   void updateMainFeed() {}
 }

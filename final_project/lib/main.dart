@@ -1,8 +1,8 @@
-import 'package:final_project/models/post-model.dart';
+import 'package:final_project/models/post_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'bottom_nav.dart';
+import 'components/bottom_nav.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

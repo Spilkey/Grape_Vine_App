@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../models/post-model.dart';
-
+import 'package:final_project/models/post_model.dart';
 import 'feed_card.dart';
 
 /// This will be where we use our models and populate a feed
