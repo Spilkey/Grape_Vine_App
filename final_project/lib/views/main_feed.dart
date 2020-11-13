@@ -1,4 +1,5 @@
 import 'package:final_project/components/feed.dart';
+import 'package:final_project/models/notifications.dart';
 import 'package:flutter/material.dart';
 import './create_post.dart';
 
@@ -17,8 +18,11 @@ class _MainFeedState extends State<MainFeed> {
     content: Text('Your post has been shared successfully'),
   );
 
+  final _notifications = Notifications();
+
   @override
   Widget build(BuildContext context) {
+    _notifications.init();
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -79,6 +83,8 @@ class _MainFeedState extends State<MainFeed> {
               // TODO: add condition/snackbar for network error and post was unsuccessful
               if (result['posted'] == true) {
                 Scaffold.of(context).showSnackBar(snackBar);
+                _notifications.sendNotificationNow(
+                    "New Post", "You have created a new post", "");
               }
             }
           },

@@ -40,19 +40,34 @@ class _FeedCardState extends State<FeedCard> {
   @override
   Widget build(BuildContext context) {
     // Get the data from the db
+    CircleAvatar profileImage;
+    Widget postImage;
 
-    Uint8List _bytesPostImage = Base64Codec().decode(widget.imageData);
-    Uint8List _bytesOwnerImage =
-        Base64Codec().decode(widget.ownerProfileImageData);
+    if (!widget.ownerProfileImageData.isEmpty) {
+      Uint8List _bytesOwnerImage =
+          Base64Codec().decode(widget.ownerProfileImageData);
+      profileImage = CircleAvatar(
+        backgroundImage: MemoryImage(_bytesOwnerImage),
+      );
+    } else {
+      profileImage = CircleAvatar(child: Icon(Icons.person));
+    }
+    if (!widget.imageData.isEmpty) {
+      Uint8List _bytesPostImage = Base64Codec().decode(widget.imageData);
+      postImage = Container(
+        child: Image.memory(_bytesPostImage),
+      );
+    } else {
+      postImage = Container();
+    }
+
     return Container(
       padding: EdgeInsets.all(10),
       child: Card(
         child: Column(
           children: [
             ListTile(
-              leading: CircleAvatar(
-                backgroundImage: MemoryImage(_bytesOwnerImage),
-              ),
+              leading: profileImage,
               title: Text(widget.ownerName),
             ),
             Container(
@@ -65,9 +80,7 @@ class _FeedCardState extends State<FeedCard> {
                 style: TextStyle(color: Colors.black.withOpacity(0.6)),
               ),
             ),
-            Container(
-              child: Image.memory(_bytesPostImage),
-            )
+            postImage
           ],
         ),
       ),

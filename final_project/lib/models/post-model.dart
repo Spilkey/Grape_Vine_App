@@ -40,10 +40,7 @@ class PostModel {
   // insert post data to the database
   insertPost(PostEntity post) async {
     FirebaseFirestore db = DB().database;
-    var res =
-    db.collection('posts')
-    .doc()
-    .set(post.toMap());
+    var res = db.collection('posts').doc().set(post.toMap());
     return res;
   }
 }
