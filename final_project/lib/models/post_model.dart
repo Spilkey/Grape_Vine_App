@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/models/db.dart';
 
+import 'post_entity.dart';
+
 class PostModel {
   getAllPosts() async {
     FirebaseFirestore db = DB().database;
@@ -36,5 +38,12 @@ class PostModel {
         .where('user_id', isEqualTo: user_id)
         .where('is_private', isEqualTo: 'false')
         .snapshots();
+  }
+
+  // insert post data to the database
+  insertPost(PostEntity post) async {
+    FirebaseFirestore db = DB().database;
+    var res = db.collection('posts').doc().set(post.toMap());
+    return res;
   }
 }

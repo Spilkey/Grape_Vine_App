@@ -1,5 +1,7 @@
 import 'package:final_project/components/feed.dart';
+import 'package:final_project/models/notifications.dart';
 import 'package:flutter/material.dart';
+import './create_post.dart';
 
 /// Is the main feed/ Home of the app
 ///
@@ -12,8 +14,15 @@ class MainFeed extends StatefulWidget {
 
 class _MainFeedState extends State<MainFeed> {
   // Overrides parent State class's build function with our own
+  final snackBar = SnackBar(
+    content: Text('Your post has been shared successfully'),
+  );
+
+  final _notifications = Notifications();
+
   @override
   Widget build(BuildContext context) {
+    _notifications.init();
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -62,13 +71,22 @@ class _MainFeedState extends State<MainFeed> {
         floatingActionButton: FloatingActionButton.extended(
           icon: Icon(Icons.menu),
           label: Text("Create"),
-          onPressed: () {
-            // Add your onPressed code here!
+          onPressed: () async {
             // Navigate here to create post form handle any returned info here
             // with the promise returned from Navigate
             // Once the form is completed we can return to this function and
             // have a setState() call to refresh UI along with any other user prompts to
             // notify them that they sucessfully create a post
+            var result = await Navigator.push(
+                context, MaterialPageRoute(builder: (context) => CreatePost()));
+            if (result != null) {
+              // TODO: add condition/snackbar for network error and post was unsuccessful
+              if (result['posted'] == true) {
+                Scaffold.of(context).showSnackBar(snackBar);
+                _notifications.sendNotificationNow(
+                    "New Post", "You have created a new post", "");
+              }
+            }
           },
         ),
       ),

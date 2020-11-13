@@ -7,6 +7,11 @@ Group members (3-5) (no Student IDs, only names):
 3. Matthew Chan (kermattC)
 4. Samuel Pilkey (Spilkey)
 
+## How to run
+- ensure you are using an Android emulator (Preferably Google Pixel 3)
+- in your console, cd into the file named "final_project"
+- in your console, enter "flutter run" 
+
 ## Overview
 This group project is designed for you to demonstrate the skills that you have learned in this course.  The final project that you submit in the last week of classes will be a completed mobile application.  Non-functional requirements, especially those associated with production-readiness, will be considered extremely important when marking this project.  You are expected to work in a group of three to five students when completing this project.  Students are not permitted to work alone on the project, as this eliminates one of the learning objectives of this assessment.  
 
