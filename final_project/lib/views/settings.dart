@@ -46,7 +46,7 @@ class _SettingsState extends State<Settings> {
                           backgroundColor: Colors.green,
                           child: Text(
                               UserSettings.getValAsString('username').isNotEmpty
-                                  ? UserSettings.settings['username']
+                                  ? UserSettings().settings['username']
                                   : '?'),
                         ),
                         Spacer(),
@@ -77,7 +77,7 @@ class _SettingsState extends State<Settings> {
                       : null;
                 },
               ),
-              SwitchListTile(value: null, onChanged: null)
+              // SwitchListTile(value: null, onChanged: null)
             ],
           ),
         ),

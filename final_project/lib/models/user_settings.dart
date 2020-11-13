@@ -1,10 +1,11 @@
 // a class for some user settings
 
 class UserSettings {
+  UserSettings() {}
   //  map of all settings
   static Map<String, dynamic> _settings;
 
-  static Map<String, dynamic> get settings {
+  Map<String, dynamic> get settings {
     if (_settings == null) {
       _settings = {
         // option to select if the main feed would be mixed or seperate
@@ -27,8 +28,9 @@ class UserSettings {
   }
 
   static String getValAsString(String key) {
-    if (_settings.keys.contains(key)) {
-      return _settings[key].toString();
+    if (UserSettings().settings.keys.contains(key)) {
+      var returnData = UserSettings().settings[key].toString();
+      return returnData;
     }
   }
 
