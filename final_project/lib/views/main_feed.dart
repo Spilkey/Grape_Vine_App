@@ -1,4 +1,5 @@
 import 'package:final_project/components/feed.dart';
+import 'package:final_project/components/sidebar.dart';
 import 'package:final_project/models/notifications.dart';
 import 'package:flutter/material.dart';
 import './create_post.dart';
@@ -71,11 +72,7 @@ class _MainFeedState extends State<MainFeed> {
         ),
         // TODO populate our drawer here with content specific to profile
         // aka settings, profile, prefference etc...
-        drawer: Drawer(
-          child: Container(
-            child: Text("I am a drawer child"),
-          ),
-        ),
+        drawer: Drawer(child: SideBarFriends()),
         // Our floating action button for creating a post
         // We will need this button
         // to navigate to our create post form IE Navigation.push(... our post form here)
