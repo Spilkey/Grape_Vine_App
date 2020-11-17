@@ -18,7 +18,7 @@ class User {
 
   // List of documentId's for friends
   List<String> friends;
-  List subscriptions;
+  List<String> subscriptions;
   List notifications;
 
   String id;
