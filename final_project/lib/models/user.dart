@@ -1,18 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'post.dart';
 import 'package:flutter/material.dart';
 
 class User {
+  User() {}
+
   // User keys that are generated on registration
   final String publicKey = '';
   final String privateKey = '';
   // Unique user data
   String username = '';
   String password = '';
-  List<Post> userPosts;
-  List<Post> _mainFeed;
 
-  List<User> friends;
+  String bio;
+  String profilePic;
+
+  // List of documentId's for friends
+  List<String> friends;
   List subscriptions;
+  List notifications;
+
+  String id;
 
   set userName(String name) {
     username = name;
@@ -30,19 +39,28 @@ class User {
     return password;
   }
 
-  // void createPost(bool isPrivate, bool hasImg, String data, Image img) {
-  //   PostWidgetBuilder builder =
-  //       new PostWidgetBuilder(isPrivate: isPrivate, hasImg: hasImg);
-  //   var post;
+  Map<String, dynamic> toMap() {
+    return {
+      'username': username,
+      'password': password,
+      'friends': friends,
+      'subscriptions': subscriptions,
+      'profile_pic': profilePic,
+      'bio': bio
+    };
+  }
 
-  //   if (hasImg) {
-  //     post = builder.buildPostWithImg(data, img);
-  //   } else {
-  //     post = builder.buildPostWithString(data);
-  //   }
-
-  //   userPosts.add(post);
-  // }
-
-  void updateMainFeed() {}
+  factory User.fromDB(Stream<DocumentSnapshot> ref) {
+    User returnUser = new User();
+    ref.forEach((element) {
+      returnUser.id = element.id;
+      returnUser.username = element.get('username');
+      returnUser.password = element.get('password');
+      returnUser.friends = element.get('friends');
+      returnUser.subscriptions = element.get('subscriptions');
+      returnUser.profilePic = element.get('profile_pic');
+      returnUser.bio = element.get('bio');
+    });
+    return returnUser;
+  }
 }
