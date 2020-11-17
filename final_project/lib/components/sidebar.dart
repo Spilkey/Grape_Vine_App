@@ -1,3 +1,4 @@
+import 'package:final_project/components/sidebar_userdata.dart';
 import 'package:final_project/models/user.dart';
 import 'package:final_project/models/user_model.dart';
 import 'package:final_project/models/user_settings.dart';
@@ -62,8 +63,25 @@ class _SideBarFriendsState extends State<SideBarFriends> {
             style: TextStyle(
                 fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
           ),
-        )
+        ),
+        createFriendsListWidget()
       ],
     );
+  }
+
+  createFriendsListWidget() {
+    return Expanded(
+        child: ListView.separated(
+            itemCount: 12,
+            padding: const EdgeInsets.all(20.0),
+            // when we get actual data use an item builder
+            itemBuilder: (BuildContext context, int index) {
+              // Here we would pass in some parameters to our indiviual cards
+              // Example ----------------------
+              return SideBarUserRow("", "Bobby");
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return const Divider();
+            }));
   }
 }

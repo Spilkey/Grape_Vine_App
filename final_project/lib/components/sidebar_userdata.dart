@@ -23,8 +23,12 @@ class SideBarUserRow extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [profileImage, Text("@" + this.username)],
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          profileImage,
+          Container(
+              padding: EdgeInsets.all(10), child: Text("@" + this.username))
+        ],
       ),
     );
   }
