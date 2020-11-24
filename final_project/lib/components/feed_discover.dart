@@ -17,21 +17,7 @@ class _FeedState extends State<FeedDiscover> {
   // instance of topic model
   final _model = new TopicModel();
   // placeholder categories
-  var topics = [
-    'All',
-    'Gaming',
-    'Sports',
-    'Travel',
-    'Music',
-    'Food',
-    'Technology',
-    'Celebrities',
-    'Art',
-    'Movies',
-    'Politics'
-  ];
 
-  var _selectedTopic = "1ihGwRddvqLDCaIbiFBg";
   // this creates 2 listviews. One horizontal, one vertical
   // in the first iteration of the ListView builder it calls the _horizontalListView() method to build the category slider
   // the rest of the iterations builds the discover feed cards
@@ -39,101 +25,74 @@ class _FeedState extends State<FeedDiscover> {
   // TODO make horizontal scroll bar interactable
   // List<PostEntity> _posts = [];
 
-  Future<List<PostEntity>> _posts;
-  
   @override
   void initState() {
     super.initState();
-    // setState(() {
-    _posts = _model.getPostsFromTopic(_selectedTopic);
-    // });
   }
- 
+
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
-      body: FutureBuilder<List<PostEntity>>(
-        // future: _model.getPostsFromTopic(_selectedTopic),
-        future: _posts,
-        builder: (context, AsyncSnapshot <List<PostEntity>> snapshot){
-          // builder: (BuildContext context, snapshot){
-          print("DEBUG snapshot: ${snapshot.toString()}");
-          if (snapshot.hasData){
-            print("DEBUG snapshot: $snapshot");
-            return ListView.builder(
-              itemCount: snapshot.data.length + 1,
-              itemBuilder: (BuildContext context, index) {
-                if (index == 0) {
-                  return _horizontalListView();
-                } else {
-                // var data = snapshot.data.docs[index - 1];
-                var data = snapshot.data[index - 1];
-                return _discoverContainer(data);
-              }
-            }
+    return _horizontalListView();
+  }
+
+  Widget buildPosts(topicId) {
+    Widget content = StreamBuilder<QuerySnapshot>(
+      stream: new TopicModel().getPostsFromTopic(topicId),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: snapshot.data.docs.length,
+            itemBuilder: (BuildContext context, index) {
+              var data = snapshot.data.docs[index];
+              return _discoverContainer(PostEntity.fromDB(data));
+            },
           );
         } else {
-          return Center(
-            child: CircularProgressIndicator()
-          );
+          return Center(child: CircularProgressIndicator());
         }
-      }
-    )
-  );
-}
+      },
+    );
+    return content;
+  }
 
-Widget _horizontalListView(){
-  return StreamBuilder<QuerySnapshot>(
-    stream: _model.getAllTopics(),
-    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
-      if (snapshot.hasData){
-          return Row(
-            children:[
-              Container(
-              child: Expanded(
-                child: SizedBox(
-                  height: 50.0,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: snapshot.data.docs.length,
-                  itemBuilder: (BuildContext context, index){
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedTopic = snapshot.data.docs[index].id;
-                        // _posts = [];
-                        _posts = _model.getPostsFromTopic(_selectedTopic);
-                      });
-                    },
-                    child: Container(
-                      width: 100,
-                      margin: new EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Center(
-                        child: Text(snapshot.data.docs[index].get('topic_name')),
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        border: Border.all(
-                          color: _selectedTopic == snapshot.data.docs[index].id ? Colors.purple : Colors.green
-                        )
-                          ),
-                        )
-                      );
-                    }    
-                  )
-                )
-              )
-            )
-          ]
-        );
-      } else {
-        return Center(child: CircularProgressIndicator());
-      }
-    },
-  );
-}
+  Widget _horizontalListView() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _model.getAllTopics(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasData) {
+          List<Tab> tabs = [];
+          List<Widget> tabPanes = [];
+
+          for (QueryDocumentSnapshot doc in snapshot.data.docs) {
+            tabs.add(Tab(child: Text(doc.get('topic_name'))));
+
+            tabPanes.add(buildPosts(doc.id));
+          }
+          return DefaultTabController(
+            length: snapshot.data.docs.length,
+            child: Scaffold(
+              appBar: AppBar(
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(30.0),
+                  child: TabBar(
+                      isScrollable: true,
+                      unselectedLabelColor: Colors.green,
+                      indicatorColor: Colors.green,
+                      tabs: tabs),
+                ),
+              ),
+              body: TabBarView(
+                children: tabPanes,
+              ),
+            ),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+  }
 
   // this widget calls from the class feed_discover_cards.dart
   // passes current instance of data
