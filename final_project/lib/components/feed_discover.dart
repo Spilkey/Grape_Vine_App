@@ -1,3 +1,4 @@
+import 'package:final_project/models/post_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -16,9 +17,10 @@ class _FeedState extends State<FeedDiscover> {
   // instance of topic model
   final _model = new TopicModel();
   // placeholder categories
-  var categories = [
+  var topics = [
+    'All',
+    'Gaming',
     'Sports',
-    'asdf',
     'Travel',
     'Music',
     'Food',
@@ -26,64 +28,112 @@ class _FeedState extends State<FeedDiscover> {
     'Celebrities',
     'Art',
     'Movies',
-    'Music',
     'Politics'
   ];
 
+  var _selectedTopic = "1ihGwRddvqLDCaIbiFBg";
   // this creates 2 listviews. One horizontal, one vertical
   // in the first iteration of the ListView builder it calls the _horizontalListView() method to build the category slider
   // the rest of the iterations builds the discover feed cards
   // TODO populate the smaller cards with other info
   // TODO make horizontal scroll bar interactable
+  // List<PostEntity> _posts = [];
+
+  Future<List<PostEntity>> _posts;
+  
+  @override
+  void initState() {
+    super.initState();
+    // setState(() {
+    _posts = _model.getPostsFromTopic(_selectedTopic);
+    // });
+  }
+ 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: StreamBuilder<QuerySnapshot>(
-            // temporary placeholder for topic. Currently grabs posts under this topic id
-            stream: _model.getPostsFromTopic('Xiah3Ml0x5nqCOTRCs1e'),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                    padding: const EdgeInsets.all(20.0),
-                    itemCount: snapshot.data.docs.length + 1,
-                    itemBuilder: (BuildContext context, index) {
-                      if (index == 0) {
-                        return _horizontalListView();
-                      } else {
-                        var data = snapshot.data.docs[index - 1];
-                        return _discoverContainer(data);
-                      }
-                    });
-              } else {
-                return Center(child: CircularProgressIndicator());
+      return Scaffold(
+      body: FutureBuilder<List<PostEntity>>(
+        // future: _model.getPostsFromTopic(_selectedTopic),
+        future: _posts,
+        builder: (context, AsyncSnapshot <List<PostEntity>> snapshot){
+          // builder: (BuildContext context, snapshot){
+          print("DEBUG snapshot: ${snapshot.toString()}");
+          if (snapshot.hasData){
+            print("DEBUG snapshot: $snapshot");
+            return ListView.builder(
+              itemCount: snapshot.data.length + 1,
+              itemBuilder: (BuildContext context, index) {
+                if (index == 0) {
+                  return _horizontalListView();
+                } else {
+                // var data = snapshot.data.docs[index - 1];
+                var data = snapshot.data[index - 1];
+                return _discoverContainer(data);
               }
-            }));
-  }
+            }
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator()
+          );
+        }
+      }
+    )
+  );
+}
 
-// this widget contains elements in the "categories" list
-  Widget _horizontalListView() {
-    return Container(
-        height: 75,
-        child: ListView.builder(
-            padding: EdgeInsets.fromLTRB(0, 7.5, 0, 7.5),
-            scrollDirection: Axis.horizontal,
-            itemCount: categories.length,
-            itemBuilder: (BuildContext context, i) => Container(
-                width: 100,
-                margin: new EdgeInsets.symmetric(horizontal: 10.0),
-                child: Center(
-                  child: Text(categories[i], textAlign: TextAlign.center),
-                ),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey[400],
-                          spreadRadius: 3,
-                          blurRadius: 10)
-                    ]))));
-  }
+Widget _horizontalListView(){
+  return StreamBuilder<QuerySnapshot>(
+    stream: _model.getAllTopics(),
+    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
+      if (snapshot.hasData){
+          return Row(
+            children:[
+              Container(
+              child: Expanded(
+                child: SizedBox(
+                  height: 50.0,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (BuildContext context, index){
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedTopic = snapshot.data.docs[index].id;
+                        // _posts = [];
+                        _posts = _model.getPostsFromTopic(_selectedTopic);
+                      });
+                    },
+                    child: Container(
+                      width: 100,
+                      margin: new EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Center(
+                        child: Text(snapshot.data.docs[index].get('topic_name')),
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        border: Border.all(
+                          color: _selectedTopic == snapshot.data.docs[index].id ? Colors.purple : Colors.green
+                        )
+                          ),
+                        )
+                      );
+                    }    
+                  )
+                )
+              )
+            )
+          ]
+        );
+      } else {
+        return Center(child: CircularProgressIndicator());
+      }
+    },
+  );
+}
 
   // this widget calls from the class feed_discover_cards.dart
   // passes current instance of data
