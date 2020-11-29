@@ -29,7 +29,7 @@ class _CreatePostState extends State<CreatePost> {
   Uint8List _imgBytes = Uint8List(10);
 
   String _streetName = "";
-
+  Widget locationWidget;
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -75,6 +75,11 @@ class _CreatePostState extends State<CreatePost> {
 
   @override
   Widget build(BuildContext context) {
+    if (_streetName != ""){
+      locationWidget = Text("Location:  $_streetName");
+    } else {
+      locationWidget = Text("");
+    }
     final confirmPost = AlertDialog(
       title: Text('Confirm Post'),
       actions: [
@@ -223,7 +228,8 @@ class _CreatePostState extends State<CreatePost> {
         Container(
           margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           alignment: (Alignment.centerLeft),
-          child: Text('Location : $_streetName')
+          // child: Text('Location : $_streetName')
+          child: locationWidget,
           ),
         ]
       )
