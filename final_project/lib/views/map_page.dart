@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geocoder/geocoder.dart';
 
 import '../models/place.dart';
 
@@ -15,11 +16,11 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
 
   // geolocator for finding user location
-  var _geolocator = Geolocator();
   LatLng _userLocation;
-  String _street;
   // for setting new location
   Place newLocation;
+  // for getting new address
+  String _address = "";
   
   // map controller
   MapController _mapController;
@@ -98,17 +99,20 @@ class _MapPageState extends State<MapPage> {
               heroTag: 'btn1',
               child: Icon(Icons.add_location),
               onPressed: () {
-                setState(() {
+                setState(() {              
                   var newCenter = _mapController.center;
+                    // reverse geocode to find new address
+                    _reverseGeocode(newCenter.latitude, newCenter.longitude);
+                    // place new marker and also removes previous one
                     _userLocation = LatLng(newCenter.latitude, newCenter.longitude);
                     Place newLocation = Place(latlng: _userLocation);
                     _buildMarker(newLocation);
                     setState((){});
-                    });
                   }
-                )
-              ),
-    
+                );
+              }
+            )
+          ),
           Container(
             margin: const EdgeInsets.all(10.0),
             child: new FloatingActionButton(
@@ -116,7 +120,8 @@ class _MapPageState extends State<MapPage> {
               child: Icon(Icons.check),
               onPressed: () {
                 setState(() {
-                  Navigator.pop(context, {_street});
+                  // send new address back
+                  Navigator.pop(context, {_address});
                 });
               }
             )
@@ -140,18 +145,21 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
+  void _reverseGeocode(double lat, double lng) async {
+    var coordinates = new Coordinates(lat, lng);
+    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    _address = addresses.first.addressLine.toString();
+  }
+
   void _updateLocationStream(Position userLocation) {
-    if (mounted){
-      setState(() {
-            placemarkFromCoordinates(
-            userLocation.latitude, userLocation.longitude)
-          .then((List<Placemark> places) {
-            _street = places[0].street;
-            _userLocation = LatLng(userLocation.latitude, userLocation.longitude);  
-            _center = _userLocation;
-        });
+    setState(() {
+        placemarkFromCoordinates(
+        userLocation.latitude, userLocation.longitude)
+        .then((List<Placemark> places) {
+          _userLocation = LatLng(userLocation.latitude, userLocation.longitude);
+          _center = _userLocation;
       });
-    }
+    });
   }
 
   void zoomIn() {
