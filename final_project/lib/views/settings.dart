@@ -14,14 +14,17 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final _formkey = GlobalKey<FormState>();
+  String _newUsername = UserSettings().settings['username'];
+  var db = UserSettingsModel();
 
-  String _newUsername = '';
+  @override
+  void initState() {
+    super.initState();
+    db.getUserSettings();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // get user settings from database
-    var db = UserSettingsModel();
-    //db.getUserSettings(); <-- local databse
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -34,8 +37,7 @@ class _SettingsState extends State<Settings> {
         key: _formkey,
         child: Container(
           padding: EdgeInsets.all(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+          child: ListView(
             children: <Widget>[
               // TODO: make a user display widget
               // showing user display name, profile picture, and  public key
@@ -52,24 +54,22 @@ class _SettingsState extends State<Settings> {
                             CircleAvatar(
                               backgroundColor: Colors.green,
                               child: Text(
-                                  UserSettings.getValAsString('username')
-                                          .isNotEmpty
+                                  UserSettings().settings['username'].isNotEmpty
                                       ? UserSettings().settings['username'][0]
                                       : '?'),
                             ),
                             Spacer(),
                             Flexible(
                               flex: 5,
-                              child:
-                                  Text(UserSettings.getValAsString('username')),
+                              child: Text(UserSettings().settings['username']),
                             ),
                           ],
                         ),
-                        Text('@' + UserSettings.getValAsString('public_key'),
+                        Text('@' + UserSettings().settings['public_key'],
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 15)),
                         Text(
-                          '@' + UserSettings.getValAsString('private_key'),
+                          '@' + UserSettings().settings['private_key'],
                           style: TextStyle(fontWeight: FontWeight.w100),
                         ),
                       ])),
@@ -78,9 +78,12 @@ class _SettingsState extends State<Settings> {
                   icon: Icon(Icons.person),
                   labelText: 'Change display name',
                 ),
-                onSaved: (String val) {
+                onChanged: (String val) {
                   setState(() {
-                    _newUsername = val;
+                    if (val.isNotEmpty) {
+                      _newUsername = val;
+                    }
+                    UserSettings().settings['username'] = _newUsername;
                   });
                 },
               ),
@@ -117,9 +120,7 @@ class _SettingsState extends State<Settings> {
         label: Text("Save user settings"),
         onPressed: () async {
           if (_formkey.currentState.validate()) {
-            _formkey.currentState.save();
-            UserSettings.setOption('username', _newUsername);
-            // await db.updateAllSettings();  <-- local database
+            await db.updateAllSettings();
             Navigator.pop(context);
           } else {
             Scaffold.of(context).showSnackBar(

@@ -1,15 +1,13 @@
-import 'package:final_project/models/post_model.dart';
 import 'package:final_project/models/user_settings.dart';
 import 'package:final_project/models/user_settings_model.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:final_project/models/local_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'components/bottom_nav.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //UserSettingsModel.initUserSettings(); <-- local databse
+  UserSettingsModel.initUserSettings();
   Firebase.initializeApp().then((value) {
     runApp(MyApp());
   });

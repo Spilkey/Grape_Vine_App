@@ -1,17 +1,26 @@
-import 'package:flutter/material.dart';
 import 'package:final_project/models/local_storage.dart';
 import 'package:final_project/models/user_settings.dart';
 import 'package:sqflite/sqflite.dart';
 
 class UserSettingsModel {
   static Future<void> initUserSettings() async {
+    UserSettings.init();
     var db = await LocalDB.database;
     Batch batch = db.batch();
     var map = UserSettings.toStringMap();
+
     map.forEach((key, value) {
-      batch.insert('UserData', {key: value as dynamic});
+      batch.rawInsert(
+          'INSERT INTO UserData (setting, value)'
+          'VALUES(?, ?)',
+          [key, value]);
     });
-    await batch.commit(noResult: true);
+    try {
+      var res = await batch.commit();
+      print('UserData insert result:\n$res');
+    } on DatabaseException {
+      print('settings have already been inserted');
+    }
     print('database initialized');
   }
 
@@ -19,9 +28,10 @@ class UserSettingsModel {
   Future<void> getUserSettings() async {
     var db = await LocalDB.database;
     var val = await db.query('UserData');
-    print(val);
+    print('query for UserData returned:\n$val');
     for (Map<String, dynamic> item in val) {
-      UserSettings.fromMap(item);
+      Map<String, dynamic> setting = {item['setting']: item['value']};
+      UserSettings.fromMap(setting);
     }
   }
 
@@ -38,10 +48,11 @@ class UserSettingsModel {
     Batch batch = db.batch();
     var map = UserSettings.toStringMap();
     map.forEach((key, value) {
-      batch.update('UserData', {key: value as dynamic},
-          where: 'setting = ?', whereArgs: [key]);
+      batch.rawUpdate(
+          'UPDATE UserData SET value = ? WHERE setting = ?', [value, key]);
     });
-    await batch.commit(noResult: true);
+    var res = await batch.commit();
+    print('UserData update result:\n$res');
   }
 
   // add all user settings to the database

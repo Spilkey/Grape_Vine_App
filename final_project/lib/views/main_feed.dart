@@ -1,6 +1,7 @@
 import 'package:final_project/components/feed.dart';
 import 'package:final_project/components/sidebar.dart';
 import 'package:final_project/models/notifications.dart';
+import 'package:final_project/models/user_settings_model.dart';
 import 'package:flutter/material.dart';
 import './create_post.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +24,12 @@ class _MainFeedState extends State<MainFeed> {
   );
 
   final _notifications = Notifications();
-
+  var _local_db = UserSettingsModel();
   @override
   Widget build(BuildContext context) {
     _notifications.init();
+    _local_db.getUserSettings();
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -41,8 +44,6 @@ class _MainFeedState extends State<MainFeed> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => Settings(title: 'Settings')));
-                  Scaffold.of(context).showSnackBar(
-                      SnackBar(content: const Text('Saved user settings!')));
                 }),
           ],
           leading: Builder(
