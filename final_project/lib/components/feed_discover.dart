@@ -1,3 +1,4 @@
+import 'package:final_project/models/post_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -16,73 +17,81 @@ class _FeedState extends State<FeedDiscover> {
   // instance of topic model
   final _model = new TopicModel();
   // placeholder categories
-  var categories = [
-    'Sports',
-    'asdf',
-    'Travel',
-    'Music',
-    'Food',
-    'Technology',
-    'Celebrities',
-    'Art',
-    'Movies',
-    'Music',
-    'Politics'
-  ];
 
   // this creates 2 listviews. One horizontal, one vertical
   // in the first iteration of the ListView builder it calls the _horizontalListView() method to build the category slider
   // the rest of the iterations builds the discover feed cards
   // TODO populate the smaller cards with other info
   // TODO make horizontal scroll bar interactable
+  // List<PostEntity> _posts = [];
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: StreamBuilder<QuerySnapshot>(
-            // temporary placeholder for topic. Currently grabs posts under this topic id
-            stream: _model.getPostsFromTopic('Xiah3Ml0x5nqCOTRCs1e'),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                    padding: const EdgeInsets.all(20.0),
-                    itemCount: snapshot.data.docs.length + 1,
-                    itemBuilder: (BuildContext context, index) {
-                      if (index == 0) {
-                        return _horizontalListView();
-                      } else {
-                        var data = snapshot.data.docs[index - 1];
-                        return _discoverContainer(data);
-                      }
-                    });
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            }));
+  void initState() {
+    super.initState();
   }
 
-// this widget contains elements in the "categories" list
+  @override
+  Widget build(BuildContext context) {
+    return _horizontalListView();
+  }
+
+  Widget buildPosts(topicId) {
+    Widget content = StreamBuilder<QuerySnapshot>(
+      stream: new TopicModel().getPostsFromTopic(topicId),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: snapshot.data.docs.length,
+            itemBuilder: (BuildContext context, index) {
+              var data = snapshot.data.docs[index];
+              return _discoverContainer(PostEntity.fromDB(data));
+            },
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+    return content;
+  }
+
   Widget _horizontalListView() {
-    return Container(
-        height: 75,
-        child: ListView.builder(
-            padding: EdgeInsets.fromLTRB(0, 7.5, 0, 7.5),
-            scrollDirection: Axis.horizontal,
-            itemCount: categories.length,
-            itemBuilder: (BuildContext context, i) => Container(
-                width: 100,
-                margin: new EdgeInsets.symmetric(horizontal: 10.0),
-                child: Center(
-                  child: Text(categories[i], textAlign: TextAlign.center),
+    return StreamBuilder<QuerySnapshot>(
+      stream: _model.getAllTopics(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasData) {
+          List<Tab> tabs = [];
+          List<Widget> tabPanes = [];
+
+          for (QueryDocumentSnapshot doc in snapshot.data.docs) {
+            tabs.add(Tab(child: Text(doc.get('topic_name'))));
+
+            tabPanes.add(buildPosts(doc.id));
+          }
+          return DefaultTabController(
+            length: snapshot.data.docs.length,
+            child: Scaffold(
+              appBar: AppBar(
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(30.0),
+                  child: TabBar(
+                      isScrollable: true,
+                      unselectedLabelColor: Colors.green,
+                      indicatorColor: Colors.green,
+                      tabs: tabs),
                 ),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey[400],
-                          spreadRadius: 3,
-                          blurRadius: 10)
-                    ]))));
+              ),
+              body: TabBarView(
+                children: tabPanes,
+              ),
+            ),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 
   // this widget calls from the class feed_discover_cards.dart
