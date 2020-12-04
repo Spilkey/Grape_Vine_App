@@ -1,8 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import '../components/profile_feed_card.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:final_project/models/db.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({
@@ -57,6 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       MediaQuery.of(context).size.height * profileContainerSize,
                   child: Column(
                     children: [
+                      // ACTION BUTTONS
                       Container(
                           margin: EdgeInsets.only(top: 10),
                           child: Row(
@@ -79,6 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   onPressed: () {})
                             ],
                           )),
+                      // USER AVATAR
                       Center(
                           child: widget.userImage == null
                               ? CircleAvatar(
@@ -102,6 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           )),
                       // TODO: add overflow condition?
+                      // USER BIO
                       Container(
                         margin:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -109,6 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Text(
                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra et quam eget tempus.')),
                       ),
+                      // USER FRIEND COUNT
                       Container(
                           margin: EdgeInsets.only(top: 10),
                           child: Center(
@@ -129,6 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   )),
               color: Colors.white),
+          // POSTS
           // TODO: replace this with ListView Builder when integrating DB
           Container(
             child: Expanded(
