@@ -1,15 +1,20 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import '../components/profile_feed_card.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/models/db.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({
+    @required this.userName,
+    this.userImage,
     Key key,
   }) : super(key: key);
 
   // TODO: uncomment once profile page is linked to actual accounts
-  // final String userName;
+  final String userName;
   // final String bio;
-  // final String pathToProfilePic;
+  final Uint8List userImage;
   // final bool personAdded;
   // final List<?> userPosts;
 
@@ -62,7 +67,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Icons.arrow_back,
                                     color: Colors.deepPurpleAccent,
                                   ),
-                                  onPressed: () {}),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  }),
                               // TODO: change the appearance once added
                               IconButton(
                                   icon: Icon(
@@ -73,16 +80,21 @@ class _ProfilePageState extends State<ProfilePage> {
                             ],
                           )),
                       Center(
-                          child: CircleAvatar(
-                        backgroundColor: Colors.deepPurple,
-                        radius: avatarRadius,
-                        child: Text('P'),
-                      )),
+                          child: widget.userImage == null
+                              ? CircleAvatar(
+                                  backgroundColor: Colors.deepPurple,
+                                  radius: avatarRadius,
+                                  child: Icon(Icons.person))
+                              : CircleAvatar(
+                                  radius: avatarRadius,
+                                  backgroundImage:
+                                      MemoryImage(widget.userImage),
+                                )),
                       Container(
                           margin: EdgeInsets.only(top: 10),
                           child: Center(
                             child: Text(
-                              'UserName123',
+                              widget.userName,
                               style: TextStyle(
                                   color: Colors.deepPurpleAccent,
                                   fontWeight: FontWeight.bold,

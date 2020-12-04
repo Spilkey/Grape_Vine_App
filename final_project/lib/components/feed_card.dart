@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import '../views/profile_page.dart';
 
 // Is a card that will appear in a feed
 
@@ -42,14 +43,17 @@ class _FeedCardState extends State<FeedCard> {
     // Get the data from the db
     CircleAvatar profileImage;
     Widget postImage;
+    bool useDefaultImage;
 
     if (!widget.ownerProfileImageData.isEmpty) {
+      useDefaultImage = false;
       Uint8List _bytesOwnerImage =
           Base64Codec().decode(widget.ownerProfileImageData);
       profileImage = CircleAvatar(
         backgroundImage: MemoryImage(_bytesOwnerImage),
       );
     } else {
+      useDefaultImage = true;
       profileImage = CircleAvatar(child: Icon(Icons.person));
     }
     if (!widget.imageData.isEmpty) {
@@ -67,9 +71,22 @@ class _FeedCardState extends State<FeedCard> {
         child: Column(
           children: [
             ListTile(
-              leading: profileImage,
-              title: Text(widget.ownerName),
-            ),
+                leading: profileImage,
+                title: GestureDetector(
+                  child: Text(widget.ownerName),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      Uint8List userImage = useDefaultImage
+                          ? null
+                          : Base64Codec().decode(widget.ownerProfileImageData);
+                      return ProfilePage(
+                        userName: widget.ownerName,
+                        userImage: userImage,
+                      );
+                    }));
+                  },
+                )),
             Container(
               child: Text(widget.postTitle),
             ),
