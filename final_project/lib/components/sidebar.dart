@@ -4,36 +4,20 @@ import 'package:final_project/models/user_model.dart';
 import 'package:final_project/models/user_settings.dart';
 import 'package:flutter/material.dart';
 
+/**
+ * Side bar widget for showing User's friends
+ */
 class SideBarFriends extends StatefulWidget {
   @override
   _SideBarFriendsState createState() => _SideBarFriendsState();
 }
 
 class _SideBarFriendsState extends State<SideBarFriends> {
-  // TODO get all user's friends
-  // Get UID from local storage
-  // Query DB for User's Friends
   UserModel _uModel = new UserModel();
 
   User currentUser;
 
   List<User> friendsList = [];
-
-  // getUserFriends() {
-  //   List<User> friends = [];
-  //   currentUser.friends.forEach((idString) {
-  //     friends.add(_uModel.getUser(idString));
-  //   });
-  //   this.setState(() {
-  //     friendsList = friends;
-  //   });
-  // }
-
-  @override
-  void initState() {
-    super.initState();
-    // currentUser = _uModel.getUser(_uid);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +49,12 @@ class _SideBarFriendsState extends State<SideBarFriends> {
     );
   }
 
+  /**
+   * Grabs the current User's Id, then grab its friends and grabs detail about each friend
+   */
   Future<List<User>> getFriends() async {
-    // get current user's friends
+    // Get current user's friends
+
     // String currentUuid = UserSettings().settings['user_id'];
     String currentUuid = "x3NbwdluXTcUQIqpSCho";
     User currentUser = await _uModel.getUser(currentUuid);
