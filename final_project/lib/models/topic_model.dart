@@ -2,11 +2,16 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/models/db.dart';
-import 'package:final_project/models/post.dart';
-import 'package:final_project/models/post_entity.dart';
 
+/**
+ * The TopicModel class gathers data from the database such as posts and the topics
+ * These methods are called from the feed_discover.dart
+ */
 class TopicModel {
-  // grabs data from firebase under collection 'posts' and the given id
+  /**
+   * method is used to get posts from the database under a specific topic id
+   * @param topic_id The topic id is a key used to identify the posts under the specific topic
+  */
   Stream<QuerySnapshot> getPostsFromTopic(topic_id) {
     FirebaseFirestore db = DB().database;
     Stream<QuerySnapshot> results = db
@@ -16,16 +21,19 @@ class TopicModel {
 
     return results;
   }
-  // print("got here");
-  // return posts;
 
+  /**
+   * method is used to get all posts from the database. Used to initialize the discover feed
+   */
   Stream<QuerySnapshot> getAllPosts() {
     FirebaseFirestore db = DB().database;
     Stream<QuerySnapshot> results = db.collection('posts').snapshots();
     return results;
   }
 
-  // grabs all topics from database
+  /**
+   * method is used to get all topics from the
+   */
   Stream<QuerySnapshot> getAllTopics() {
     FirebaseFirestore db = DB().database;
     Stream<QuerySnapshot> results = db.collection('topics').snapshots();

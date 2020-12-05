@@ -1,6 +1,10 @@
 import 'package:final_project/components/feed_discover.dart';
 import 'package:flutter/material.dart';
 
+/**
+ * Discover feed page to display posts when the usedr selects the discover tab
+ * has a floating action button the user can tap to subscribe to a topic
+ */
 class DiscoverFeedPage extends StatefulWidget {
   final String title;
 
@@ -22,9 +26,16 @@ class _DiscoverFeedPageState extends State<DiscoverFeedPage> {
             ),
             body: Column(children: [
               Expanded(
-                  // calls the feed_discover.dart class to populate the horizontal
-                  // and vertical list views
-                  child: FeedDiscover())
-            ])));
+                child: FeedDiscover())
+          ]
+        ),
+      floatingActionButton: FloatingActionButton.extended(
+          label: Text("Subscribe"), 
+          onPressed: () {
+            print("subscribe to topic");
+          },
+        ) 
+      )
+    );
   }
 }
