@@ -13,6 +13,7 @@ class PostEntity {
   String postTitle;
   String topicId;
   String postId;
+  String streetName;
 
   PostEntity(
       {this.content,
@@ -23,7 +24,9 @@ class PostEntity {
       this.postImageData,
       this.postTitle,
       this.topicId,
-      this.postId});
+      this.postId,
+      this.streetName,
+      });
 
   // map values. Also checks that the values are not null. If they are, set them to blank or false (depending if it's a string or boolean)
   Map<String, dynamic> toMap() {
@@ -35,7 +38,8 @@ class PostEntity {
       'owner_name': ownerName != null ? ownerName : "",
       'post_image_data': postImageData != null ? postImageData : "",
       'post_title': postTitle != null ? postTitle : "",
-      'topic_id': topicId != null ? topicId : ""
+      'topic_id': topicId != null ? topicId : "",
+      'street_name': streetName != null? streetName : "",
     };
   }
 
@@ -50,6 +54,7 @@ class PostEntity {
     returnPost.postImageData = ref.get('post_image_data');
     returnPost.postTitle = ref.get('post_title');
     returnPost.topicId = ref.get('topic_id');
+    returnPost.streetName =  ref.data().keys.contains('street_name') ? ref.get('street_name') : "";
     return returnPost;
   }
 

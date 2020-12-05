@@ -4,6 +4,7 @@ import 'package:final_project/models/user_settings_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:final_project/models/local_storage.dart';
 import 'package:flutter/material.dart';
+import 'views/map_page.dart';
 
 import 'components/bottom_nav.dart';
 
@@ -25,6 +26,11 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.purple,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: MyHomePage(title: 'Flutter Demo Home Page'));
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
+        routes: <String, WidgetBuilder>{
+          '/mapPage': (BuildContext context) =>
+          MapPage()
+        }
+    );
   }
 }

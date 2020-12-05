@@ -28,6 +28,9 @@ class _CreatePostState extends State<CreatePost> {
   // for UInt8 type
   Uint8List _imgBytes = Uint8List(10);
 
+  String _streetName = "";
+  Widget locationWidget;
+
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -72,6 +75,11 @@ class _CreatePostState extends State<CreatePost> {
 
   @override
   Widget build(BuildContext context) {
+    if (_streetName != ""){
+      locationWidget = Text("Location:  $_streetName");
+    } else {
+      locationWidget = Text("");
+    }
     final confirmPost = AlertDialog(
       title: Text('Confirm Post'),
       actions: [
@@ -93,7 +101,8 @@ class _CreatePostState extends State<CreatePost> {
                   ownerName: "temp_new_post_owner_name",
                   postImageData: _image64,
                   postTitle: _titleContent,
-                  topicId: "vepbope8IcIIdOZFZgOR");
+                  topicId: "vepbope8IcIIdOZFZgOR",
+                  streetName: _streetName);
               PostModel _model = new PostModel();
               _model.insertPost(postEntity).then((result) {
                 // popping out of dialgue
@@ -137,6 +146,13 @@ class _CreatePostState extends State<CreatePost> {
                   color: Colors.purple,
                 ),
               ),
+              IconButton(
+                onPressed: _addLocation,
+                icon: Icon(
+                  Icons.add_location_alt,
+                  color: Colors.purple,
+                ),
+              ),
               MaterialButton(
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
@@ -154,57 +170,84 @@ class _CreatePostState extends State<CreatePost> {
           ],
         ),
       ),
-      body: Container(
-        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Form(
-            key: _formKey,
-            child: Column(children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  hintText: 'Write a title',
+      body: Column(
+        children: <Widget> [
+          Container(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          child: Form(
+              key: _formKey,
+              child: Column(children: <Widget>[
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    hintText: 'Write a title',
+                  ),
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return 'Please enter a title';
+                    } else {
+                      return null;
+                    }
+                  },
+                  onSaved: (String value) {
+                    _titleContent = value;
+                  },
+                  maxLines: null,
                 ),
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return 'Please enter a title';
-                  } else {
-                    return null;
-                  }
-                },
-                onSaved: (String value) {
-                  _titleContent = value;
-                },
-                maxLines: null,
-              ),
-              TextFormField(
-                controller: textController,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  hintText: 'Write Something',
+                TextFormField(
+                  controller: textController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    hintText: 'Write Something',
+                  ),
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some stuff';
+                    } else {
+                      return null;
+                    }
+                  },
+                  onSaved: (String value) {
+                    _postContent = value;
+                  },
+                  maxLines: null,
                 ),
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some stuff';
-                  } else {
-                    return null;
-                  }
-                },
-                onSaved: (String value) {
-                  _postContent = value;
-                },
-                maxLines: null,
-              ),
-              Image.memory(_imgBytes)
-            ])),
-      ),
+                Image.memory(_imgBytes)
+              ]
+            )
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          alignment: (Alignment.centerLeft),
+          // child: Text('Location : $_streetName')
+          child: locationWidget,
+          ),
+        ]
+      )
     );
+  }
+  
+  Future<void> _addLocation() async {
+    var location = await Navigator.pushNamed(
+      context, 
+      '/mapPage');
+    
+    var temp = location.toString();
+
+    _streetName = "";
+
+    for (int i = 1; i < temp.length-1; i++){
+      _streetName += temp[i];
+    }
+    setState((){});
   }
 }
