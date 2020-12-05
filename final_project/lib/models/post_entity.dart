@@ -54,7 +54,7 @@ class PostEntity {
     returnPost.postImageData = ref.get('post_image_data');
     returnPost.postTitle = ref.get('post_title');
     returnPost.topicId = ref.get('topic_id');
-    returnPost.streetName = ref.get('street_name');
+    returnPost.streetName =  ref.data().keys.contains('street_name') ? ref.get('street_name') : "";
     return returnPost;
   }
 
