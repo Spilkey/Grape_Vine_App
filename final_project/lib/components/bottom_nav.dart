@@ -4,6 +4,8 @@ import '../views/main_feed.dart';
 import '../views/discover_feed.dart';
 import '../views/notifications.dart';
 
+import '../app_localizations.dart';
+
 /**
  * Top level widget under the 'MyApp' widget
  * This widget is incharge of our bottom naviagtion and any top level state we might need
@@ -19,17 +21,20 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   // Manually making bottom nav items as using the map function
   // would require use to manually hold icon and text data in array anyway
-  final navItems = <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home),
-      label: 'Home',
-    ),
-    BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Discover'),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.notifications),
-      label: 'Notifications',
-    )
-  ];
+  // TEMPORARY: moved this to the widget builder in order for internationalization to work
+  //  error was that the context could not be used in an initializer
+
+  // final navItems = <BottomNavigationBarItem>[
+  //   BottomNavigationBarItem(
+  //     icon: Icon(Icons.home),
+  //     label: 'Home',
+  //   ),
+  //   BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Discover'),
+  //   BottomNavigationBarItem(
+  //     icon: Icon(Icons.notifications),
+  //     label: 'Notifications',
+  //   )
+  // ];
 
   int _selectedIndex = 0;
 
@@ -52,7 +57,21 @@ class _MyHomePageState extends State<MyHomePage> {
               _selectedIndex = index;
             });
           },
-          items: navItems,
+          // items: navItems,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: AppLocalizations.of(context).translate('btm_nav_home_label'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: AppLocalizations.of(context).translate('btm_nav_search_label'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications),
+              label: AppLocalizations.of(context).translate('btm_nav_notif_label'),
+            ),
+          ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.purple[600],
         ));
