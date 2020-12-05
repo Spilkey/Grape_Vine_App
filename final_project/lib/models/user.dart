@@ -17,8 +17,8 @@ class User {
   String profilePic;
 
   // List of documentId's for friends
-  List<String> friends;
-  List<String> subscriptions;
+  List friends;
+  List subscriptions;
   List notifications;
 
   String id;
@@ -50,17 +50,18 @@ class User {
     };
   }
 
-  factory User.fromDB(Stream<DocumentSnapshot> ref) {
+  factory User.fromDB(DocumentSnapshot ref) {
     User returnUser = new User();
-    ref.forEach((element) {
-      returnUser.id = element.id;
-      returnUser.username = element.get('username');
-      returnUser.password = element.get('password');
-      returnUser.friends = element.get('friends');
-      returnUser.subscriptions = element.get('subscriptions');
-      returnUser.profilePic = element.get('profile_pic');
-      returnUser.bio = element.get('bio');
-    });
+    print(ref.id);
+    returnUser.id = ref.id;
+    returnUser.username = ref.get('username');
+    returnUser.password = ref.get('password');
+    returnUser.friends = ref.get('friends');
+    returnUser.subscriptions = ref.get('subscriptions');
+    returnUser.profilePic = ref.get('profile_pic');
+    returnUser.bio = ref.get('bio');
+    print(returnUser);
+
     return returnUser;
   }
 }
