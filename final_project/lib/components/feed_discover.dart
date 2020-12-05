@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:final_project/models/topic_model.dart';
-import 'package:final_project/models/post_model.dart';
 
 import 'feed_discover_cards.dart';
 
@@ -12,18 +11,15 @@ class FeedDiscover extends StatefulWidget {
   _FeedState createState() => _FeedState();
 }
 
+/**
+ * this widget creates 2 listviews - one horizontal, one vertical
+ * in the first iteration of the listview builder, it calls the _horizontalListView() method to build the category slider
+ * the horizontal list view is interactable. selecting one topic will filter the discover feed to topics specific to the selected one
+ * ie: selecting sports will filter posts to have only posts under the sports category
+ */
 class _FeedState extends State<FeedDiscover> {
   var data;
-  // instance of topic model
   final _model = new TopicModel();
-  // placeholder categories
-
-  // this creates 2 listviews. One horizontal, one vertical
-  // in the first iteration of the ListView builder it calls the _horizontalListView() method to build the category slider
-  // the rest of the iterations builds the discover feed cards
-  // TODO populate the smaller cards with other info
-  // TODO make horizontal scroll bar interactable
-  // List<PostEntity> _posts = [];
 
   @override
   void initState() {
@@ -65,7 +61,11 @@ class _FeedState extends State<FeedDiscover> {
           List<Widget> tabPanes = [];
 
           for (QueryDocumentSnapshot doc in snapshot.data.docs) {
-            tabs.add(Tab(child: Text(doc.get('topic_name'))));
+            tabs.add(Tab(child: 
+              Text(doc.get('topic_name'),
+              style: TextStyle(color: Colors.white),
+              
+              )));
 
             tabPanes.add(buildPosts(doc.id));
           }
@@ -74,7 +74,7 @@ class _FeedState extends State<FeedDiscover> {
             child: Scaffold(
               appBar: AppBar(
                 bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(30.0),
+                  preferredSize: Size.fromHeight(5.0),
                   child: TabBar(
                       isScrollable: true,
                       unselectedLabelColor: Colors.green,
@@ -94,8 +94,10 @@ class _FeedState extends State<FeedDiscover> {
     );
   }
 
-  // this widget calls from the class feed_discover_cards.dart
-  // passes current instance of data
+  /**
+   * This widget passes data to the feed_discover_cards class. 
+   * @param data This contains data within the posts such as title, owner, content, etc
+   */
   Widget _discoverContainer(data) => DiscoverFeedCards(
         data: data,
       );
