@@ -7,6 +7,8 @@ import 'package:geocoder/geocoder.dart';
 
 import '../models/place.dart';
 
+import '../app_localizations.dart';
+
 class MapPage extends StatefulWidget {
 
   @override
@@ -57,7 +59,8 @@ class _MapPageState extends State<MapPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Choose a location'),
+        // title: Text('Choose a location'),
+        title: Text(AppLocalizations.of(context).translate('map_page_title')),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.zoom_in),
