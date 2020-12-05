@@ -7,6 +7,7 @@ import 'package:final_project/models/post_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import '../app_localizations.dart';
 
 import 'dart:io';
 
@@ -60,13 +61,16 @@ class _CreatePostState extends State<CreatePost> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Keep as draft?'),
+          // title: Text('Keep as draft?'),
+          title: Text(AppLocalizations.of(context).translate('keep_draft_alert')),
           actions: [
             FlatButton(
-                onPressed: () => _returnToMainFeed(),
-                child: Text('Keep as draft')),
+              onPressed: () => _returnToMainFeed(),
+              child: Text(AppLocalizations.of(context).translate('keep_draft_option')),
+            ),
             FlatButton(
-                onPressed: () => _returnToMainFeed(), child: Text('Delete')),
+              onPressed: () => _returnToMainFeed(), child: Text(AppLocalizations.of(context).translate('delete_option')),
+            ),
           ],
         );
       },
@@ -81,13 +85,13 @@ class _CreatePostState extends State<CreatePost> {
       locationWidget = Text("");
     }
     final confirmPost = AlertDialog(
-      title: Text('Confirm Post'),
+      title: Text(AppLocalizations.of(context).translate('confirm_post_label')),
       actions: [
         FlatButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('Go Back')),
+            child: Text(AppLocalizations.of(context).translate('go_back_label'))),
         FlatButton(
             onPressed: () {
               // TODO make variables dynamic:
@@ -111,7 +115,8 @@ class _CreatePostState extends State<CreatePost> {
                 Navigator.pop(context, {'posted': true});
               });
             },
-            child: Text('Confirm')),
+            child: Text(AppLocalizations.of(context).translate('confirm_label'))),
+
       ],
     );
 
@@ -133,7 +138,7 @@ class _CreatePostState extends State<CreatePost> {
                   await _showMyDialog();
                 }
               },
-              child: Text('Cancel'),
+              child: Text(AppLocalizations.of(context).translate('cancel_label')),
             )),
             // TODO: add state where the post button is unpressable if there's no content
             Row(children: [
@@ -161,7 +166,7 @@ class _CreatePostState extends State<CreatePost> {
                         context: context, builder: (context) => confirmPost);
                   }
                 },
-                child: Text('Post', style: TextStyle(color: Colors.white)),
+                child: Text(AppLocalizations.of(context).translate('post_label'), style: TextStyle(color: Colors.white)),
                 color: Colors.purple,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0)),
@@ -184,11 +189,11 @@ class _CreatePostState extends State<CreatePost> {
                     enabledBorder: InputBorder.none,
                     errorBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
-                    hintText: 'Write a title',
+                    hintText: AppLocalizations.of(context).translate('title_prompt'),
                   ),
                   validator: (String value) {
                     if (value.isEmpty) {
-                      return 'Please enter a title';
+                      return AppLocalizations.of(context).translate('title_validator');
                     } else {
                       return null;
                     }
@@ -206,11 +211,11 @@ class _CreatePostState extends State<CreatePost> {
                     enabledBorder: InputBorder.none,
                     errorBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
-                    hintText: 'Write Something',
+                    hintText: AppLocalizations.of(context).translate('content_prompt'),
                   ),
                   validator: (String value) {
                     if (value.isEmpty) {
-                      return 'Please enter some stuff';
+                      return AppLocalizations.of(context).translate('content_validator');
                     } else {
                       return null;
                     }
@@ -228,7 +233,6 @@ class _CreatePostState extends State<CreatePost> {
         Container(
           margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           alignment: (Alignment.centerLeft),
-          // child: Text('Location : $_streetName')
           child: locationWidget,
           ),
         ]
