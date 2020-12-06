@@ -16,11 +16,11 @@ class LocalDB {
 
   static initDB() async {
     String pathDb = path.join(await getDatabasesPath(), "data.db");
-    print("initalizing table");
     return await openDatabase(pathDb, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
+      print("initializing UserData table");
       await db.execute(
-          "CREATE TABLE IF NOT EXISTS UserData (setting TEXT PRIMARY KEY, value TEXT)");
+          "CREATE TABLE IF NOT EXISTS UserData (userdata TEXT PRIMARY KEY, value TEXT)");
     });
   }
 }

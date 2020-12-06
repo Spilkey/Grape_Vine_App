@@ -1,7 +1,6 @@
+import 'package:final_project/models/local_storage_model.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project/models/local_storage.dart';
-import 'package:final_project/models/user_settings.dart';
-import 'package:final_project/models/user_settings_model.dart';
+import 'package:final_project/models/user_data.dart';
 
 class Settings extends StatefulWidget {
   Settings({this.title});
@@ -14,13 +13,13 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final _formkey = GlobalKey<FormState>();
-  String _newUsername = UserSettings().settings['username'];
-  var db = UserSettingsModel();
+  String _newUsername = UserData().userData['username'];
+  var db = LocalStorageModel();
 
   @override
   void initState() {
     super.initState();
-    db.getUserSettings();
+    db.getUserData();
   }
 
   @override
@@ -54,22 +53,22 @@ class _SettingsState extends State<Settings> {
                             CircleAvatar(
                               backgroundColor: Colors.green,
                               child: Text(
-                                  UserSettings().settings['username'].isNotEmpty
-                                      ? UserSettings().settings['username'][0]
+                                  UserData().userData['username'].isNotEmpty
+                                      ? UserData().userData['username'][0]
                                       : '?'),
                             ),
                             Spacer(),
                             Flexible(
                               flex: 5,
-                              child: Text(UserSettings().settings['username']),
+                              child: Text(UserData().userData['username']),
                             ),
                           ],
                         ),
-                        Text('@' + UserSettings().settings['public_key'],
+                        Text('@' + UserData().userData['public_key'],
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 15)),
                         Text(
-                          '@' + UserSettings().settings['private_key'],
+                          '@' + UserData().userData['private_key'],
                           style: TextStyle(fontWeight: FontWeight.w100),
                         ),
                       ])),
@@ -83,32 +82,32 @@ class _SettingsState extends State<Settings> {
                     if (val.isNotEmpty) {
                       _newUsername = val;
                     }
-                    UserSettings().settings['username'] = _newUsername;
+                    UserData().userData['username'] = _newUsername;
                   });
                 },
               ),
               SwitchListTile(
                   title: const Text('Use mixed feeds'),
-                  value: UserSettings().settings['mix_feeds'],
+                  value: UserData().userData['mix_feeds'],
                   onChanged: (bool val) {
                     setState(() {
-                      UserSettings().settings['mix_feeds'] = val;
+                      UserData().userData['mix_feeds'] = val;
                     });
                   }),
               SwitchListTile(
                   title: const Text('Update favourite topics automatically'),
-                  value: UserSettings().settings['automatic_topics'],
+                  value: UserData().userData['automatic_topics'],
                   onChanged: (bool val) {
                     setState(() {
-                      UserSettings().settings['automatic_topics'] = val;
+                      UserData().userData['automatic_topics'] = val;
                     });
                   }),
               SwitchListTile(
                   title: const Text('Allow location'),
-                  value: UserSettings().settings['allow_location'],
+                  value: UserData().userData['allow_location'],
                   onChanged: (bool val) {
                     setState(() {
-                      UserSettings().settings['allow_location'] = val;
+                      UserData().userData['allow_location'] = val;
                     });
                   }),
             ],
@@ -120,7 +119,7 @@ class _SettingsState extends State<Settings> {
         label: Text("Save user settings"),
         onPressed: () async {
           if (_formkey.currentState.validate()) {
-            await db.updateAllSettings();
+            await db.updateTable();
             Navigator.pop(context);
           } else {
             Scaffold.of(context).showSnackBar(
