@@ -23,6 +23,53 @@ LinearGradient backgroundGradient() {
       ]);
 }
 
+class NavBar extends StatefulWidget {
+  NavBar({@required this.userName, Key key}) : super(key: key);
+
+  final String userName;
+
+  @override
+  _NavBarState createState() => _NavBarState();
+}
+
+class _NavBarState extends State<NavBar> {
+  Icon friendStatus = Icon(
+    Icons.person_add_alt,
+    color: Colors.deepPurpleAccent,
+  );
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.only(top: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.deepPurpleAccent,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+            IconButton(
+                icon: friendStatus,
+                onPressed: () {
+                  final addFriendMessage =
+                      SnackBar(content: Text('Added ${widget.userName}'));
+                  setState(() {
+                    friendStatus = Icon(
+                      Icons.person,
+                      color: Colors.deepPurpleAccent,
+                    );
+                  });
+                  Scaffold.of(context).showSnackBar(addFriendMessage);
+                })
+          ],
+        ));
+  }
+}
+
 class ProfilePage extends StatefulWidget {
   ProfilePage({
     @required this.userName,
@@ -49,9 +96,10 @@ class _ProfilePageState extends State<ProfilePage> {
         FirebaseFirestore.instance.collection('posts');
 
     var getUserData =
-        await userProfile.where('user_id', isEqualTo: 'temp_new_post_id').get();
+        await userProfile.where('username', isEqualTo: widget.userName).get();
+
     var getPosts =
-        await userPosts.where('owner_id', isEqualTo: 'temp_new_post_id').get();
+        await userPosts.where('owner_name', isEqualTo: widget.userName).get();
 
     return {'userDataSnapshot': getUserData, 'postDataSnapshot': getPosts};
   }
@@ -62,7 +110,6 @@ class _ProfilePageState extends State<ProfilePage> {
         body: Container(
             decoration: BoxDecoration(gradient: backgroundGradient()),
             child: FutureBuilder(
-                // TODO: to replace with widget.username
                 future: profileData(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
@@ -77,31 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Column(
                                   children: [
                                     // ACTION BUTTONS
-                                    Container(
-                                        margin: EdgeInsets.only(top: 10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            IconButton(
-                                                icon: Icon(
-                                                  Icons.arrow_back,
-                                                  color:
-                                                      Colors.deepPurpleAccent,
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                }),
-                                            // TODO: change the appearance once added
-                                            IconButton(
-                                                icon: Icon(
-                                                  Icons.person_add_alt,
-                                                  color:
-                                                      Colors.deepPurpleAccent,
-                                                ),
-                                                onPressed: () {})
-                                          ],
-                                        )),
+                                    NavBar(userName: widget.userName),
                                     // USER AVATAR
                                     Center(
                                         child: widget.userImage == null
@@ -168,7 +191,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 .data['postDataSnapshot'].docs[index]
                                 .data();
                             return FeedCard(
-                              ownerName: 'temp_new_post_id',
+                              ownerName: widget.userName,
                               imageData: postData['post_image_data'],
                               ownerProfileImageData: postData['image_data'],
                               postTitle: postData['post_title'],
@@ -186,53 +209,22 @@ class _ProfilePageState extends State<ProfilePage> {
                               height: MediaQuery.of(context).size.height *
                                   profileContainerSize,
                               child: Column(children: [
-                                // ACTION BUTTONS
-                                Container(
-                                    margin: EdgeInsets.only(top: 10),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        IconButton(
-                                            icon: Icon(
-                                              Icons.arrow_back,
-                                              color: Colors.deepPurpleAccent,
-                                            ),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            }),
-                                        // TODO: change the appearance once added
-                                        IconButton(
-                                            icon: Icon(
-                                              Icons.person_add_alt,
-                                              color: Colors.deepPurpleAccent,
-                                            ),
-                                            onPressed: () {})
-                                      ],
-                                    )),
                                 // USER AVATAR
-                                Center(
-                                    child: widget.userImage == null
-                                        ? CircleAvatar(
-                                            backgroundColor: Colors.deepPurple,
-                                            radius: avatarRadius,
-                                            child: Icon(Icons.person))
-                                        : CircleAvatar(
-                                            radius: avatarRadius,
-                                            backgroundImage:
-                                                MemoryImage(widget.userImage),
-                                          )),
                                 Container(
-                                    margin: EdgeInsets.only(top: 10),
-                                    child: Center(
-                                      child: Text(
-                                        widget.userName,
-                                        style: TextStyle(
-                                            color: Colors.deepPurpleAccent,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18),
-                                      ),
-                                    )),
+                                  margin: EdgeInsets.only(top: 50),
+                                  child: Center(
+                                      child: widget.userImage == null
+                                          ? CircleAvatar(
+                                              backgroundColor:
+                                                  Colors.deepPurple,
+                                              radius: avatarRadius,
+                                              child: Icon(Icons.person))
+                                          : CircleAvatar(
+                                              radius: avatarRadius,
+                                              backgroundImage:
+                                                  MemoryImage(widget.userImage),
+                                            )),
+                                ),
                                 Container(
                                   margin: EdgeInsets.only(top: 10),
                                   child: CircularProgressIndicator(
