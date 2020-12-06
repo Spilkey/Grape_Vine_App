@@ -1,16 +1,16 @@
-import 'package:final_project/models/user_settings.dart';
-import 'package:final_project/models/user_settings_model.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'views/map_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'app_localizations.dart';
-
-import 'components/bottom_nav.dart';
+import 'package:flutter/material.dart';
+import 'package:final_project/components/navigator_bar.dart';
+import 'package:final_project/models/user_data.dart';
+import 'package:final_project/models/local_storage_model.dart';
+import 'package:final_project/views/map_page.dart';
+import 'package:final_project/views/splash_screen.dart';
+import 'package:final_project/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  UserSettingsModel.initUserSettings();
+  LocalStorageModel.initUserData();
   Firebase.initializeApp().then((value) {
     runApp(MyApp());
   });
@@ -18,6 +18,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,25 +32,24 @@ class MyApp extends StatelessWidget {
           Locale('fr', 'FR'),
           Locale('ja', 'JA')
         ],
-
         localizationsDelegates: [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate 
+          GlobalWidgetsLocalizations.delegate
         ],
         localeResolutionCallback: (locale, supportedLocales) {
           for (var supportedLocale in supportedLocales) {
             if (supportedLocale.languageCode == locale.languageCode &&
-            supportedLocale.countryCode == locale.countryCode) {
+                supportedLocale.countryCode == locale.countryCode) {
               return supportedLocale;
             }
           }
         },
-        home: MyHomePage(title: 'Flutter Demo Home Page'),
+        home: SplashScreen(title: 'GrapeVine'),
         routes: <String, WidgetBuilder>{
-          '/mapPage': (BuildContext context) =>
-          MapPage()
-        }
-    );
+          '/mapPage': (BuildContext context) => MapPage(),
+          // '/createUsername': (BuildContext context) => UsernamePage(),
+          // '/createUserPicture': (BuildContext context) => UserPicPage()
+        });
   }
 }

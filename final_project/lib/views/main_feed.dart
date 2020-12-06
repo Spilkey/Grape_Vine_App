@@ -46,7 +46,6 @@ class _MainFeedState extends State<MainFeed> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          //builder: (context) => Settings(title: 'Settings')));
                           builder: (context) => Settings(
                               title: AppLocalizations.of(context)
                                   .translate('settings_label'))));
