@@ -6,6 +6,7 @@ import './create_post.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/components/feed.dart';
 import 'package:final_project/views/settings.dart';
+import '../app_localizations.dart';
 
 /// Is the main feed/ Home of the app
 ///
@@ -31,18 +32,18 @@ class _MainFeedState extends State<MainFeed> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Center(child: Text("Main Feed")),
+          title: Center(child: Text(AppLocalizations.of(context).translate('main_feed_title'))),
           centerTitle: true,
           actions: <Widget>[
-            IconButton(
+            IconButton( 
                 icon: Icon(Icons.apps),
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Settings(title: 'Settings')));
+                          builder: (context) => Settings(title: AppLocalizations.of(context).translate('settings_label'))));
                   Scaffold.of(context).showSnackBar(
-                      SnackBar(content: const Text('Saved user settings!')));
+                      SnackBar(content: Text(AppLocalizations.of(context).translate('settings_confirm'))));
                 }),
           ],
           leading: Builder(
@@ -57,8 +58,9 @@ class _MainFeedState extends State<MainFeed> {
           children: [
             TabBar(
               tabs: [
-                Tab(icon: Icon(Icons.public), text: "Public"),
-                Tab(icon: Icon(Icons.lock), text: "Private"),
+                Tab(icon: Icon(Icons.public), text: AppLocalizations.of(context).translate('public_label')),
+                Tab(icon: Icon(Icons.public), text: AppLocalizations.of(context).translate('private_label')),
+
               ],
               labelColor: Colors.purple,
               indicatorColor: Colors.purple,
@@ -79,7 +81,8 @@ class _MainFeedState extends State<MainFeed> {
         // the form will either go into views or components
         floatingActionButton: FloatingActionButton.extended(
           icon: Icon(Icons.menu),
-          label: Text("Create"),
+          // label: Text("Create"),
+          label: Text(AppLocalizations.of(context).translate('create_label')),
           onPressed: () async {
             // Navigate here to create post form handle any returned info here
             // with the promise returned from Navigate

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:final_project/models/local_storage.dart';
 import 'package:final_project/models/user_settings.dart';
 import 'package:final_project/models/user_settings_model.dart';
+import '../app_localizations.dart';
 
 class Settings extends StatefulWidget {
   Settings({this.title});
@@ -74,9 +75,9 @@ class _SettingsState extends State<Settings> {
                         ),
                       ])),
               TextFormField(
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   icon: Icon(Icons.person),
-                  labelText: 'Change display name',
+                  labelText: AppLocalizations.of(context).translate('change_display_name_prompt'),
                 ),
                 onSaved: (String val) {
                   setState(() {
@@ -85,7 +86,7 @@ class _SettingsState extends State<Settings> {
                 },
               ),
               SwitchListTile(
-                  title: const Text('Use mixed feeds'),
+                  title: Text(AppLocalizations.of(context).translate('mixed_feed_option')),
                   value: UserSettings().settings['mix_feeds'],
                   onChanged: (bool val) {
                     setState(() {
@@ -93,7 +94,7 @@ class _SettingsState extends State<Settings> {
                     });
                   }),
               SwitchListTile(
-                  title: const Text('Update favourite topics automatically'),
+                  title: Text(AppLocalizations.of(context).translate('update_fav_topics_option')),
                   value: UserSettings().settings['automatic_topics'],
                   onChanged: (bool val) {
                     setState(() {
@@ -101,7 +102,7 @@ class _SettingsState extends State<Settings> {
                     });
                   }),
               SwitchListTile(
-                  title: const Text('Allow location'),
+                  title: Text(AppLocalizations.of(context).translate('allow_location_option')),
                   value: UserSettings().settings['allow_location'],
                   onChanged: (bool val) {
                     setState(() {
@@ -114,7 +115,8 @@ class _SettingsState extends State<Settings> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.save),
-        label: Text("Save user settings"),
+        // label: Text("Save user settings"),
+        label:  Text(AppLocalizations.of(context).translate('save_settings_label')),
         onPressed: () async {
           if (_formkey.currentState.validate()) {
             _formkey.currentState.save();
@@ -123,7 +125,8 @@ class _SettingsState extends State<Settings> {
             Navigator.pop(context);
           } else {
             Scaffold.of(context).showSnackBar(
-                SnackBar(content: const Text('Unable to save user settings')));
+              // SnackBar(content: const Text('Unable to save user settings')));
+              SnackBar(content: Text(AppLocalizations.of(context).translate('save_failed'))));
           }
         },
       ),

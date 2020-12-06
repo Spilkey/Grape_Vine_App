@@ -1,0 +1,41 @@
+{
+    "main_feed_title": "Alimentation Principale",
+    "settings_label": "Paramètres", 
+    "settings_confirm": "Paramètres utilisateur enregistrés",
+    "create_label": "Créer",
+    "public_label": "Publique",
+    "private_label": "Privée",
+
+    "btm_nav_home_label": "Accueil",
+    "btm_nav_search_label": "Découvrir",
+    "btm_nav_notif_label": "Notifications",
+
+    "discover_feed_title": "Découvrir le Flux",
+    "subscribe_label": "Souscrire",
+
+    "notifications_title": "Notifications",
+
+    "change_display_name_prompt": "Changer le nom d'affichage",
+    "mixed_feed_option": "Utiliser des aliments mélangés",
+    "update_fav_topics_option": "Mettre à jour automatiquement les sujets favoris",
+    "allow_location_option": "Autoriser la localisation",
+    "save_settings_label": "Enregistrer les paramètres utilisateur",
+    "save_failed": "Impossible d'enregistrer les paramètres utilisateur",
+
+    "keep_draft_alert": "Conserver comme brouillon?",
+    "keep_draft_option": "Conserver comme brouillon",
+    "delete_option": "Effacer",
+    "confirm_post_label": "Confirmer la publication",
+    "go_back_label": "Retourner",
+    "confirm_label": "Confirmer",
+    "cancel_label": "Annuler",
+    "post_label": "Publier",
+    "title_prompt": "Ecrire un titre",
+    "title_validator": "Veuillez saisir un titre",
+    "content_prompt": "Écris quelque chose",
+    "content_validator": "Veuillez saisir des informations",
+
+    "map_page_title": "Choisissez un emplacement",
+
+    "friends_bar_title": "Mes amies"
+}
