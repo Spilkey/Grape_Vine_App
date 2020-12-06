@@ -65,13 +65,6 @@ class _SettingsState extends State<Settings> {
                             ),
                           ],
                         ),
-                        Text('@' + UserData().userData['public_key'],
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15)),
-                        Text(
-                          '@' + UserData().userData['private_key'],
-                          style: TextStyle(fontWeight: FontWeight.w100),
-                        ),
                       ])),
               TextFormField(
                 decoration: InputDecoration(
