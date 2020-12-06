@@ -25,6 +25,7 @@ class _FeedState extends State<Feed> {
     // generates an itemCount length List of Widgets
     // We use an item builder - we can use a promise here to obtain data from our data base
     // We should store our data retrieved from our db in the state here
+
     return Scaffold(
         // streambuilder populates the listview from the firebase database
         body: StreamBuilder<QuerySnapshot>(
@@ -39,12 +40,20 @@ class _FeedState extends State<Feed> {
                       // Here we would pass in some parameters to our indiviual cards
                       // Example ----------------------
                       var data = snapshot.data.docs[index];
+                      var streetName;
+                      if (!data.data().keys.contains('street_name')){
+                      // if (snapshot.data.docs[index].containsKey('street_name')== null){
+                        streetName = null;
+                      } else {
+                        streetName = data.get('street_name');
+                      }
                       return FeedCard(
                           ownerProfileImageData: data.get('image_data'),
                           ownerName: data.get('owner_name'),
                           imageData: data.get('post_image_data'),
                           postTitle: data.get('post_title'),
-                          postContent: data.get('content'));
+                          postContent: data.get('content'),
+                          streetName: streetName);
                     },
                     separatorBuilder: (BuildContext context, int index) {
                       return const Divider();

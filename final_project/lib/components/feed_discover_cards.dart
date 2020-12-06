@@ -1,71 +1,50 @@
+import 'package:final_project/models/post_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'feed_card.dart';
-// variation of the feed cards for the main feed. This alternates between the
-// big sized cards and two small-sized cards
 
+/**
+ *  The DiscoverFeedCards program utilizes the feed_card to display information from the database onto the discover page
+ */
 class DiscoverFeedCards extends StatefulWidget {
-  QueryDocumentSnapshot data;
 
-  DiscoverFeedCards({Key key, @required this.data}): super(key: key);
+  PostEntity data;
 
+  DiscoverFeedCards({Key key, @required this.data}) : super(key: key);
+
+  /**
+   * method creates a mutable state for this widget
+   */
   @override
   _DiscoverFeedCardsState createState() => new _DiscoverFeedCardsState(data);
 }
 
 class _DiscoverFeedCardsState extends State<DiscoverFeedCards> {
-
-  QueryDocumentSnapshot data;
+  /**
+   * After the constructor receives data, the widget gets data from feed_discover class and populates the feed cards accordingly
+   */
+  PostEntity data;
   // constructor
-  _DiscoverFeedCardsState (this.data);
+  _DiscoverFeedCardsState(this.data);
 
   @override
   Widget build(BuildContext context) {
+    
     // sample feed card
-    // TODO get data from db and populate many of these
-    // TODO add ability to subscribe to topic
-    // TODO add ability to navigate to owner of post's profile
-
     Widget mainCard = FeedCard(
-      ownerProfileImageData: data.get('image_data'),        
-      ownerName: data.get('owner_name'),
-      imageData:  data.get('post_image_data'),
-      postTitle: data.get('post_title'),
-      postContent: data.get('content'),
+      ownerProfileImageData: data.imageData,
+      ownerName: data.ownerName,
+      imageData: data.postImageData,
+      postTitle: data.postTitle,
+      postContent: data.content,
     );
-
-    Widget temp = FeedCard(
-      ownerProfileImageData:
-        "iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAADTED8xAAADMElEQVR4nOzVwQnAIBQFQYXff81RUkQCOyDj1YOPnbXWPmeTRef+/3O/OyBjzh3CD95BfqICMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMO0TAAD//2Anhf4QtqobAAAAAElFTkSuQmCC",
-        
-      ownerName: "foo",
-      imageData:
-          "iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAADTED8xAAADMElEQVR4nOzVwQnAIBQFQYXff81RUkQCOyDj1YOPnbXWPmeTRef+/3O/OyBjzh3CD95BfqICMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMO0TAAD//2Anhf4QtqobAAAAAElFTkSuQmCC",
-     
-      postTitle: "bar",
-      postContent: "faz baz",
-    );
+    
     return Row(
       children: <Widget>[
         Column(children: <Widget>[
           Row(children: <Widget>[
-            Container(
-                padding: EdgeInsets.all(10),
-                width: 350,
-                child: mainCard
-              )
+            Container(padding: EdgeInsets.fromLTRB(40.0, 16.0, 0, 16.0), width: 350, child: mainCard)
           ]),
-          Row(children: <Widget>[
-            Column(children: <Widget>[
-              Container(padding: EdgeInsets.all(10), width: 175, child: temp)
-              // Container(padding: EdgeInsets.all(10), width: 175)
-            ]),
-            Column(children: <Widget>[
-              Container(padding: EdgeInsets.all(10), width: 175, child: temp)
-              // Container(padding: EdgeInsets.all(10), width: 175)
-            ])
-          ])
         ])
       ],
     );

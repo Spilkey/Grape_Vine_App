@@ -1,0 +1,41 @@
+{
+    "main_feed_title": "Main Feed",
+    "settings_label": "Settings",
+    "settings_confirm": "Saved user settings!",
+    "create_label": "Create",
+    "public_label": "Public",
+    "private_label": "Private",
+
+    "btm_nav_home_label": "Home",
+    "btm_nav_search_label": "Discover",
+    "btm_nav_notif_label": "Notifications",
+
+    "discover_feed_title": "Discover Feed",
+    "subscribe_label": "Subscribe",
+    
+    "notifications_title": "Notifications",
+
+    "change_display_name_prompt": "Change display name",
+    "mixed_feed_option": "Use mixed feeds",
+    "update_fav_topics_option": "Update favourite topics automatically",
+    "allow_location_option": "Allow location",
+    "save_settings_label": "Save user settings",
+    "save_failed": "Unable to save user settings",
+
+    "keep_draft_alert": "Keep as draft?",
+    "keep_draft_option": "Keep as draft",
+    "delete_option": "Delete",
+    "confirm_post_label": "Confirm Post",
+    "go_back_label": "Go back",
+    "confirm_label": "Confirm",
+    "cancel_label": "Cancel",
+    "post_label": "Post",
+    "title_prompt": "Write a title",
+    "title_validator": "Please enter a title",
+    "content_prompt": "Write something",
+    "content_validator": "Please enter some stuff",
+
+    "map_page_title": "Choose a location",
+
+    "friends_bar_title": "My Friends"
+}
