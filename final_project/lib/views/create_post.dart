@@ -7,6 +7,7 @@ import 'package:final_project/models/post_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import '../app_localizations.dart';
 
 import 'dart:io';
 
@@ -27,6 +28,9 @@ class _CreatePostState extends State<CreatePost> {
   String _titleContent = "";
   // for UInt8 type
   Uint8List _imgBytes = Uint8List(10);
+
+  String _streetName = "";
+  Widget locationWidget;
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -57,13 +61,16 @@ class _CreatePostState extends State<CreatePost> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Keep as draft?'),
+          // title: Text('Keep as draft?'),
+          title: Text(AppLocalizations.of(context).translate('keep_draft_alert')),
           actions: [
             FlatButton(
-                onPressed: () => _returnToMainFeed(),
-                child: Text('Keep as draft')),
+              onPressed: () => _returnToMainFeed(),
+              child: Text(AppLocalizations.of(context).translate('keep_draft_option')),
+            ),
             FlatButton(
-                onPressed: () => _returnToMainFeed(), child: Text('Delete')),
+              onPressed: () => _returnToMainFeed(), child: Text(AppLocalizations.of(context).translate('delete_option')),
+            ),
           ],
         );
       },
@@ -72,14 +79,19 @@ class _CreatePostState extends State<CreatePost> {
 
   @override
   Widget build(BuildContext context) {
+    if (_streetName != ""){
+      locationWidget = Text("Location:  $_streetName");
+    } else {
+      locationWidget = Text("");
+    }
     final confirmPost = AlertDialog(
-      title: Text('Confirm Post'),
+      title: Text(AppLocalizations.of(context).translate('confirm_post_label')),
       actions: [
         FlatButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('Go Back')),
+            child: Text(AppLocalizations.of(context).translate('go_back_label'))),
         FlatButton(
             onPressed: () {
               // TODO make variables dynamic:
@@ -93,7 +105,8 @@ class _CreatePostState extends State<CreatePost> {
                   ownerName: "temp_new_post_owner_name",
                   postImageData: _image64,
                   postTitle: _titleContent,
-                  topicId: "vepbope8IcIIdOZFZgOR");
+                  topicId: "vepbope8IcIIdOZFZgOR",
+                  streetName: _streetName);
               PostModel _model = new PostModel();
               _model.insertPost(postEntity).then((result) {
                 // popping out of dialgue
@@ -102,7 +115,8 @@ class _CreatePostState extends State<CreatePost> {
                 Navigator.pop(context, {'posted': true});
               });
             },
-            child: Text('Confirm')),
+            child: Text(AppLocalizations.of(context).translate('confirm_label'))),
+
       ],
     );
 
@@ -124,7 +138,7 @@ class _CreatePostState extends State<CreatePost> {
                   await _showMyDialog();
                 }
               },
-              child: Text('Cancel'),
+              child: Text(AppLocalizations.of(context).translate('cancel_label')),
             )),
             // TODO: add state where the post button is unpressable if there's no content
             Row(children: [
@@ -137,6 +151,13 @@ class _CreatePostState extends State<CreatePost> {
                   color: Colors.purple,
                 ),
               ),
+              IconButton(
+                onPressed: _addLocation,
+                icon: Icon(
+                  Icons.add_location_alt,
+                  color: Colors.purple,
+                ),
+              ),
               MaterialButton(
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
@@ -145,7 +166,7 @@ class _CreatePostState extends State<CreatePost> {
                         context: context, builder: (context) => confirmPost);
                   }
                 },
-                child: Text('Post', style: TextStyle(color: Colors.white)),
+                child: Text(AppLocalizations.of(context).translate('post_label'), style: TextStyle(color: Colors.white)),
                 color: Colors.purple,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0)),
@@ -154,57 +175,83 @@ class _CreatePostState extends State<CreatePost> {
           ],
         ),
       ),
-      body: Container(
-        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Form(
-            key: _formKey,
-            child: Column(children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  hintText: 'Write a title',
+      body: Column(
+        children: <Widget> [
+          Container(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          child: Form(
+              key: _formKey,
+              child: Column(children: <Widget>[
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    hintText: AppLocalizations.of(context).translate('title_prompt'),
+                  ),
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return AppLocalizations.of(context).translate('title_validator');
+                    } else {
+                      return null;
+                    }
+                  },
+                  onSaved: (String value) {
+                    _titleContent = value;
+                  },
+                  maxLines: null,
                 ),
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return 'Please enter a title';
-                  } else {
-                    return null;
-                  }
-                },
-                onSaved: (String value) {
-                  _titleContent = value;
-                },
-                maxLines: null,
-              ),
-              TextFormField(
-                controller: textController,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  hintText: 'Write Something',
+                TextFormField(
+                  controller: textController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    hintText: AppLocalizations.of(context).translate('content_prompt'),
+                  ),
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return AppLocalizations.of(context).translate('content_validator');
+                    } else {
+                      return null;
+                    }
+                  },
+                  onSaved: (String value) {
+                    _postContent = value;
+                  },
+                  maxLines: null,
                 ),
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some stuff';
-                  } else {
-                    return null;
-                  }
-                },
-                onSaved: (String value) {
-                  _postContent = value;
-                },
-                maxLines: null,
-              ),
-              Image.memory(_imgBytes)
-            ])),
-      ),
+                Image.memory(_imgBytes)
+              ]
+            )
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          alignment: (Alignment.centerLeft),
+          child: locationWidget,
+          ),
+        ]
+      )
     );
+  }
+  
+  Future<void> _addLocation() async {
+    var location = await Navigator.pushNamed(
+      context, 
+      '/mapPage');
+    
+    var temp = location.toString();
+
+    _streetName = "";
+
+    for (int i = 1; i < temp.length-1; i++){
+      _streetName += temp[i];
+    }
+    setState((){});
   }
 }

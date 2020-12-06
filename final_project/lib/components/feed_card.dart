@@ -1,7 +1,5 @@
 import 'dart:typed_data';
-import 'dart:async';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import '../views/profile_page.dart';
 
@@ -25,13 +23,15 @@ class FeedCard extends StatefulWidget {
   final String imageData;
   final String postTitle;
   final String postContent;
+  final String streetName;
 
   FeedCard(
       {this.imageData,
       this.ownerProfileImageData,
       this.ownerName,
       this.postTitle,
-      this.postContent});
+      this.postContent,
+      this.streetName});
 
   @override
   _FeedCardState createState() => _FeedCardState();
@@ -44,6 +44,7 @@ class _FeedCardState extends State<FeedCard> {
     CircleAvatar profileImage;
     Widget postImage;
     bool useDefaultImage;
+    Widget location;
 
     if (!widget.ownerProfileImageData.isEmpty) {
       useDefaultImage = false;
@@ -63,6 +64,22 @@ class _FeedCardState extends State<FeedCard> {
       );
     } else {
       postImage = Container();
+    }
+    if (widget.streetName != null) {
+      location = Row(children: <Widget>[
+        Icon(
+          Icons.location_on,
+        ),
+        Container(
+          child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Text(
+                widget.streetName,
+              )),
+        ),
+      ]);
+    } else {
+      location = Row();
     }
 
     return Container(
@@ -90,6 +107,7 @@ class _FeedCardState extends State<FeedCard> {
             Container(
               child: Text(widget.postTitle),
             ),
+            location,
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(

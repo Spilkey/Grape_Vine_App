@@ -1,0 +1,41 @@
+{
+    "main_feed_title": "メインフィード",
+    "settings_label": "設定",
+    "settings_confirm": "保存されたユーザー設定！",
+    "create_label": "作成する",
+    "public_label": "公衆",
+    "private_label": "民間",
+
+    "btm_nav_home_label": "ホーム",
+    "btm_nav_search_label": "発見する",
+    "btm_nav_notif_label": "通知",
+
+    "discover_feed_title": "フィードを見つける",
+    "subscribe_label": "申し込む",
+    
+    "notifications_title": "通知",
+
+    "change_display_name_prompt": "表示名を変更する",
+    "mixed_feed_option": "使用済み混合飼料",
+    "update_fav_topics_option": "お気に入りのトピックを自動的に更新する",
+    "allow_location_option": "場所を許可する",
+    "save_settings_label": "ユーザー設定を保存する",
+    "save_failed": "ユーザー設定を保存できません",
+
+    "keep_draft_alert": "ドラフトとして保持しますか？",
+    "keep_draft_option": "ドラフトとして保持",
+    "delete_option": "削除",
+    "confirm_post_label": "投稿を確認",
+    "go_back_label": "戻る",
+    "confirm_label": "確認",
+    "cancel_label": "キャンセル",
+    "post_label": "役職",
+    "title_prompt": "タイトルを書く",
+    "title_validator": "タイトルを入力してください",
+    "content_prompt": "何かを書く",
+    "content_validator": "いくつか入力してください",
+
+    "map_page_title": "場所を選択してください",
+
+    "friends_bar_title": "私の友人"
+}

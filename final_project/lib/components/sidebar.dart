@@ -4,6 +4,8 @@ import 'package:final_project/models/user_model.dart';
 import 'package:final_project/models/user_settings.dart';
 import 'package:flutter/material.dart';
 
+import '../app_localizations.dart';
+
 class SideBarFriends extends StatefulWidget {
   @override
   _SideBarFriendsState createState() => _SideBarFriendsState();
@@ -59,7 +61,7 @@ class _SideBarFriendsState extends State<SideBarFriends> {
             ],
           )),
           child: Text(
-            "My Friends",
+            AppLocalizations.of(context).translate('friends_bar_title'),
             style: TextStyle(
                 fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
           ),

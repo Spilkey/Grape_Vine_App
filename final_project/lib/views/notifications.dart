@@ -1,6 +1,7 @@
 // placeholder for friends view if we use it
 import 'package:final_project/components/list_notifications.dart';
 import 'package:flutter/material.dart';
+import '../app_localizations.dart';
 
 class Notifications extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class _NotificationsState extends State<Notifications> {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Text("Notifications"),
+          child: Text(AppLocalizations.of(context).translate('main_feed_title')),
         ),
         centerTitle: true,
         actions: [IconButton(icon: Icon(Icons.apps), onPressed: () {})],
