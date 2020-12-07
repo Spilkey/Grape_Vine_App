@@ -4,15 +4,15 @@ import 'package:final_project/models/user.dart';
 
 class UserModel {
   // insert post data to the database
-  insertUser(User user) async {
+  Future<DocumentReference> insertUser(User user) async {
     FirebaseFirestore db = DB().database;
-    var res = db.collection('posts').doc().set(user.toMap());
+    Future<DocumentReference> res = db.collection('users').add(user.toMap());
     return res;
   }
 
   updateUser(User user) {
     FirebaseFirestore db = DB().database;
-    var res = db.collection('posts').doc(user.id).set(user.toMap());
+    var res = db.collection('users').doc(user.id).set(user.toMap());
     return res;
   }
 
@@ -20,5 +20,12 @@ class UserModel {
     FirebaseFirestore db = DB().database;
     DocumentSnapshot res = await db.collection('users').doc(id).get();
     return User.fromDB(res);
+  }
+
+  Future<QuerySnapshot> getUserByUsername(String username) async {
+    FirebaseFirestore db = DB().database;
+    Future<QuerySnapshot> res =
+        db.collection('users').where('username', isEqualTo: username).get();
+    return res;
   }
 }

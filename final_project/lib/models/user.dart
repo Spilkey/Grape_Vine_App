@@ -52,7 +52,6 @@ class User {
 
   factory User.fromDB(DocumentSnapshot ref) {
     User returnUser = new User();
-    print(ref.id);
     returnUser.id = ref.id;
     returnUser.username = ref.get('username');
     returnUser.password = ref.get('password');
@@ -60,7 +59,6 @@ class User {
     returnUser.subscriptions = ref.get('subscriptions');
     returnUser.profilePic = ref.get('profile_pic');
     returnUser.bio = ref.get('bio');
-    print(returnUser);
 
     return returnUser;
   }
