@@ -23,6 +23,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        // TODO: remove before merge
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.purple,
@@ -33,25 +35,22 @@ class MyApp extends StatelessWidget {
           Locale('fr', 'FR'),
           Locale('ja', 'JA')
         ],
-
         localizationsDelegates: [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate 
+          GlobalWidgetsLocalizations.delegate
         ],
         localeResolutionCallback: (locale, supportedLocales) {
           for (var supportedLocale in supportedLocales) {
             if (supportedLocale.languageCode == locale.languageCode &&
-            supportedLocale.countryCode == locale.countryCode) {
+                supportedLocale.countryCode == locale.countryCode) {
               return supportedLocale;
             }
           }
         },
         home: MyHomePage(title: 'Flutter Demo Home Page'),
         routes: <String, WidgetBuilder>{
-          '/mapPage': (BuildContext context) =>
-          MapPage()
-        }
-    );
+          '/mapPage': (BuildContext context) => MapPage()
+        });
   }
 }
