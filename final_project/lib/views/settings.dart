@@ -82,8 +82,6 @@ class _SettingsState extends State<Settings> {
                 },
               ),
               SwitchListTile(
-                  // title: const Text('Use mixed feeds'),
-                  // value: UserData().userData['mix_feeds'],
                   title: Text(AppLocalizations.of(context)
                       .translate('mixed_feed_option')),
                   value: UserData().userData['mix_feeds'],
@@ -93,8 +91,6 @@ class _SettingsState extends State<Settings> {
                     });
                   }),
               SwitchListTile(
-                  // title: const Text('Update favourite topics automatically'),
-                  // value: UserData().userData['automatic_topics'],
                   title: Text(AppLocalizations.of(context)
                       .translate('update_fav_topics_option')),
                   value: UserData().userData['automatic_topics'],
@@ -104,8 +100,6 @@ class _SettingsState extends State<Settings> {
                     });
                   }),
               SwitchListTile(
-                  // title: const Text('Allow location'),
-                  // value: UserData().userData['allow_location'],
                   title: Text(AppLocalizations.of(context)
                       .translate('allow_location_option')),
                   value: UserData().userData['allow_location'],
@@ -120,7 +114,6 @@ class _SettingsState extends State<Settings> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.save),
-        // label: Text("Save user settings"),
         label:
             Text(AppLocalizations.of(context).translate('save_settings_label')),
         onPressed: () async {
@@ -129,7 +122,6 @@ class _SettingsState extends State<Settings> {
             Navigator.pop(context);
           } else {
             Scaffold.of(context).showSnackBar(
-                // SnackBar(content: const Text('Unable to save user settings')));
                 SnackBar(
                     content: Text(AppLocalizations.of(context)
                         .translate('save_failed'))));
