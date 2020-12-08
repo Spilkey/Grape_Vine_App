@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:final_project/models/post_model.dart';
 import 'package:final_project/models/post_entity.dart';
+import 'package:final_project/models/user_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -62,14 +63,18 @@ class _CreatePostState extends State<CreatePost> {
       builder: (BuildContext context) {
         return AlertDialog(
           // title: Text('Keep as draft?'),
-          title: Text(AppLocalizations.of(context).translate('keep_draft_alert')),
+          title:
+              Text(AppLocalizations.of(context).translate('keep_draft_alert')),
           actions: [
             FlatButton(
               onPressed: () => _returnToMainFeed(),
-              child: Text(AppLocalizations.of(context).translate('keep_draft_option')),
+              child: Text(
+                  AppLocalizations.of(context).translate('keep_draft_option')),
             ),
             FlatButton(
-              onPressed: () => _returnToMainFeed(), child: Text(AppLocalizations.of(context).translate('delete_option')),
+              onPressed: () => _returnToMainFeed(),
+              child:
+                  Text(AppLocalizations.of(context).translate('delete_option')),
             ),
           ],
         );
@@ -79,7 +84,7 @@ class _CreatePostState extends State<CreatePost> {
 
   @override
   Widget build(BuildContext context) {
-    if (_streetName != ""){
+    if (_streetName != "") {
       locationWidget = Text("Location:  $_streetName");
     } else {
       locationWidget = Text("");
@@ -91,12 +96,15 @@ class _CreatePostState extends State<CreatePost> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text(AppLocalizations.of(context).translate('go_back_label'))),
+            child:
+                Text(AppLocalizations.of(context).translate('go_back_label'))),
         FlatButton(
             onPressed: () {
               // TODO make variables dynamic:
               // imageData (supposed to be profile picture, retrieved from local storage)
               // isPrivate, ownerID, ownerName, topicID
+              String currentUserId = UserSettings().settings['user_id'];
+              String currentUsername = UserSettings().settings['username'];
               PostEntity postEntity = new PostEntity(
                   content: _postContent,
                   imageData: _image64,
@@ -115,143 +123,144 @@ class _CreatePostState extends State<CreatePost> {
                 Navigator.pop(context, {'posted': true});
               });
             },
-            child: Text(AppLocalizations.of(context).translate('confirm_label'))),
-
+            child:
+                Text(AppLocalizations.of(context).translate('confirm_label'))),
       ],
     );
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        elevation: 0,
         backgroundColor: Colors.white,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-                child: TextButton(
-              onPressed: () async {
-                if (textController.text == '' || textController.text == null) {
-                  Navigator.pop(context);
-                } else {
-                  await _showMyDialog();
-                }
-              },
-              child: Text(AppLocalizations.of(context).translate('cancel_label')),
-            )),
-            // TODO: add state where the post button is unpressable if there's no content
-            Row(children: [
-              IconButton(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          backgroundColor: Colors.white,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                  child: TextButton(
                 onPressed: () async {
-                  await getImage();
-                },
-                icon: Icon(
-                  Icons.camera_alt,
-                  color: Colors.purple,
-                ),
-              ),
-              IconButton(
-                onPressed: _addLocation,
-                icon: Icon(
-                  Icons.add_location_alt,
-                  color: Colors.purple,
-                ),
-              ),
-              MaterialButton(
-                onPressed: () {
-                  if (_formKey.currentState.validate()) {
-                    _formKey.currentState.save();
-                    showDialog<void>(
-                        context: context, builder: (context) => confirmPost);
+                  if (textController.text == '' ||
+                      textController.text == null) {
+                    Navigator.pop(context);
+                  } else {
+                    await _showMyDialog();
                   }
                 },
-                child: Text(AppLocalizations.of(context).translate('post_label'), style: TextStyle(color: Colors.white)),
-                color: Colors.purple,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0)),
-              )
-            ]),
-          ],
+                child: Text(
+                    AppLocalizations.of(context).translate('cancel_label')),
+              )),
+              // TODO: add state where the post button is unpressable if there's no content
+              Row(children: [
+                IconButton(
+                  onPressed: () async {
+                    await getImage();
+                  },
+                  icon: Icon(
+                    Icons.camera_alt,
+                    color: Colors.purple,
+                  ),
+                ),
+                IconButton(
+                  onPressed: _addLocation,
+                  icon: Icon(
+                    Icons.add_location_alt,
+                    color: Colors.purple,
+                  ),
+                ),
+                MaterialButton(
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      _formKey.currentState.save();
+                      showDialog<void>(
+                          context: context, builder: (context) => confirmPost);
+                    }
+                  },
+                  child: Text(
+                      AppLocalizations.of(context).translate('post_label'),
+                      style: TextStyle(color: Colors.white)),
+                  color: Colors.purple,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0)),
+                )
+              ]),
+            ],
+          ),
         ),
-      ),
-      body: Column(
-        children: <Widget> [
+        body: Column(children: <Widget>[
           Container(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: Form(
-              key: _formKey,
-              child: Column(children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    hintText: AppLocalizations.of(context).translate('title_prompt'),
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Form(
+                key: _formKey,
+                child: Column(children: <Widget>[
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      hintText: AppLocalizations.of(context)
+                          .translate('title_prompt'),
+                    ),
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return AppLocalizations.of(context)
+                            .translate('title_validator');
+                      } else {
+                        return null;
+                      }
+                    },
+                    onSaved: (String value) {
+                      _titleContent = value;
+                    },
+                    maxLines: null,
                   ),
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return AppLocalizations.of(context).translate('title_validator');
-                    } else {
-                      return null;
-                    }
-                  },
-                  onSaved: (String value) {
-                    _titleContent = value;
-                  },
-                  maxLines: null,
-                ),
-                TextFormField(
-                  controller: textController,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    hintText: AppLocalizations.of(context).translate('content_prompt'),
+                  TextFormField(
+                    controller: textController,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      hintText: AppLocalizations.of(context)
+                          .translate('content_prompt'),
+                    ),
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return AppLocalizations.of(context)
+                            .translate('content_validator');
+                      } else {
+                        return null;
+                      }
+                    },
+                    onSaved: (String value) {
+                      _postContent = value;
+                    },
+                    maxLines: null,
                   ),
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return AppLocalizations.of(context).translate('content_validator');
-                    } else {
-                      return null;
-                    }
-                  },
-                  onSaved: (String value) {
-                    _postContent = value;
-                  },
-                  maxLines: null,
-                ),
-                Image.memory(_imgBytes)
-              ]
-            )
+                  Image.memory(_imgBytes)
+                ])),
           ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          alignment: (Alignment.centerLeft),
-          child: locationWidget,
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            alignment: (Alignment.centerLeft),
+            child: locationWidget,
           ),
-        ]
-      )
-    );
+        ]));
   }
-  
+
   Future<void> _addLocation() async {
-    var location = await Navigator.pushNamed(
-      context, 
-      '/mapPage');
-    
+    var location = await Navigator.pushNamed(context, '/mapPage');
+
     var temp = location.toString();
 
     _streetName = "";
 
-    for (int i = 1; i < temp.length-1; i++){
+    for (int i = 1; i < temp.length - 1; i++) {
       _streetName += temp[i];
     }
-    setState((){});
+    setState(() {});
   }
 }
