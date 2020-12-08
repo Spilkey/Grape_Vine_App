@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-
-class TrendingTopic {
-  TrendingTopic({@required this.numberOfPosts, @required this.topic});
-  int numberOfPosts;
-  String topic;
-}
+import '../models/topic_model.dart';
 
 class AnalyticsPage extends StatefulWidget {
   @override
@@ -13,15 +8,7 @@ class AnalyticsPage extends StatefulWidget {
 }
 
 class _AnalyticsPageState extends State<AnalyticsPage> {
-  //TODO: replace with db query
-  // Show the top 5 topic
-  List<TrendingTopic> topTopics = [
-    TrendingTopic(numberOfPosts: 100, topic: 'Food'),
-    TrendingTopic(numberOfPosts: 30, topic: 'Photography'),
-    TrendingTopic(numberOfPosts: 40, topic: 'Sports'),
-    TrendingTopic(numberOfPosts: 20, topic: 'Music'),
-    TrendingTopic(numberOfPosts: 10, topic: 'Movies'),
-  ];
+  final _topicModel = TopicModel();
 
   @override
   Widget build(BuildContext context) {
@@ -35,55 +22,71 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Column(
-        children: [
-          // Trending topic of the week - TODO: abstract as a widget
-          Container(
-            margin: EdgeInsets.only(top: 30),
-            child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Center(
-                  child: Column(
-                    // TODO: replace with the trending topic of the week - from db
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Food',
-                            style: TextStyle(
-                                fontSize: 40, fontWeight: FontWeight.bold),
-                          ),
-                          Icon(
-                            Icons.trending_up,
-                            color: Colors.red,
-                            size: 40.0,
-                          )
-                        ],
-                      ),
-                      Text('is the current top trending!')
-                    ],
+      body: FutureBuilder(
+        future: _topicModel.getTrendingTopics(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var topTopic = snapshot.data[0].topic;
+            return Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 30),
+                  child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  topTopic,
+                                  style: TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Icon(
+                                  Icons.trending_up,
+                                  color: Colors.red,
+                                  size: 40.0,
+                                )
+                              ],
+                            ),
+                            Text('is the current top trending!')
+                          ],
+                        ),
+                      )),
+                ),
+                // DATATABLE
+                Container(
+                  child: SizedBox(
+                    height: 500,
+                    child: charts.BarChart([
+                      charts.Series<TopicData, String>(
+                        colorFn: (_, __) => charts.ColorUtil.fromDartColor(
+                            Colors.deepPurpleAccent),
+                        id: 'Trending topics',
+                        domainFn: (TopicData topic, _) => '${topic.topic}',
+                        measureFn: (TopicData topic, _) => topic.numberOfPosts,
+                        data: snapshot.data,
+                      )
+                    ], vertical: true),
                   ),
-                )),
-          ),
-          // DATATABLE
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            child: SizedBox(
-              height: 500,
-              child: charts.BarChart([
-                charts.Series<TrendingTopic, String>(
-                  colorFn: (_, __) =>
-                      charts.ColorUtil.fromDartColor(Colors.deepPurpleAccent),
-                  id: 'Trending topics',
-                  domainFn: (TrendingTopic topic, _) => '${topic.topic}',
-                  measureFn: (TrendingTopic topic, _) => topic.numberOfPosts,
-                  data: topTopics,
                 )
-              ], vertical: true),
-            ),
-          )
-        ],
+              ],
+            );
+          } else {
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Center(
+                child: CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.deepPurpleAccent)),
+              ),
+            );
+          }
+        },
       ),
     );
   }
