@@ -33,8 +33,12 @@ class SideBarUserRow extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             profileImage,
-            Container(
-                padding: EdgeInsets.all(10), child: Text("@" + this.username))
+            Flexible(
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: Text("@" + this.username),
+              ),
+            ),
           ],
         ),
         // direct to profile page
