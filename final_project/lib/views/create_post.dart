@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:typed_data';
 
+import 'package:final_project/models/colors.dart';
 import 'package:final_project/models/post_model.dart';
 import 'package:final_project/models/post_entity.dart';
-import 'package:final_project/models/user_settings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import '../app_localizations.dart';
 
@@ -161,14 +159,14 @@ class _CreatePostState extends State<CreatePost> {
                   },
                   icon: Icon(
                     Icons.camera_alt,
-                    color: Colors.purple,
+                    color: LightColor,
                   ),
                 ),
                 IconButton(
                   onPressed: _addLocation,
                   icon: Icon(
                     Icons.add_location_alt,
-                    color: Colors.purple,
+                    color: LightColor,
                   ),
                 ),
                 MaterialButton(
@@ -182,7 +180,7 @@ class _CreatePostState extends State<CreatePost> {
                   child: Text(
                       AppLocalizations.of(context).translate('post_label'),
                       style: TextStyle(color: Colors.white)),
-                  color: Colors.purple,
+                  color: LightColor,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0)),
                 )
