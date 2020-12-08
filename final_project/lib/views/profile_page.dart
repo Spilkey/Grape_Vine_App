@@ -27,9 +27,10 @@ LinearGradient backgroundGradient() {
 }
 
 class NavBar extends StatefulWidget {
-  NavBar({@required this.userName, Key key}) : super(key: key);
+  NavBar({@required this.userName, this.isFriend, Key key}) : super(key: key);
 
   final String userName;
+  final bool isFriend;
 
   @override
   _NavBarState createState() => _NavBarState();
@@ -42,6 +43,26 @@ class _NavBarState extends State<NavBar> {
   );
   @override
   Widget build(BuildContext context) {
+    Widget addFriendButton;
+    if (!widget.isFriend) {
+      addFriendButton = IconButton(
+        icon: friendStatus,
+        onPressed: () {
+          final addFriendMessage =
+              SnackBar(content: Text('Added ${widget.userName}'));
+          setState(() {
+            friendStatus = Icon(
+              Icons.person,
+              color: Colors.deepPurpleAccent,
+            );
+          });
+          Scaffold.of(context).showSnackBar(addFriendMessage);
+        },
+      );
+    } else {
+      addFriendButton = Container();
+    }
+
     return Container(
         margin: EdgeInsets.only(top: 10),
         child: Row(
@@ -55,19 +76,7 @@ class _NavBarState extends State<NavBar> {
                 onPressed: () {
                   Navigator.pop(context);
                 }),
-            IconButton(
-                icon: friendStatus,
-                onPressed: () {
-                  final addFriendMessage =
-                      SnackBar(content: Text('Added ${widget.userName}'));
-                  setState(() {
-                    friendStatus = Icon(
-                      Icons.person,
-                      color: Colors.deepPurpleAccent,
-                    );
-                  });
-                  Scaffold.of(context).showSnackBar(addFriendMessage);
-                })
+            addFriendButton
           ],
         ));
   }
@@ -78,11 +87,13 @@ class ProfilePage extends StatefulWidget {
     @required this.userID,
     // @required this.userID,
     this.userImage,
+    this.isFriend = false,
     Key key,
   }) : super(key: key);
 
   final String userID;
   final Uint8List userImage;
+  final bool isFriend;
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -100,8 +111,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
     QuerySnapshot getPosts =
         await _postsModel.getAllPostsFromUser(widget.userID);
-
-    print(getPosts.docs);
 
     return {'userDataSnapshot': getUserData, 'postDataSnapshot': getPosts};
   }
@@ -125,7 +134,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Column(
                                   children: [
                                     // ACTION BUTTONS
-                                    NavBar(userName: userProfileData.username),
+                                    NavBar(
+                                      userName: userProfileData.username,
+                                      isFriend: widget.isFriend,
+                                    ),
                                     // USER AVATAR
                                     Center(
                                         child: widget.userImage == null
