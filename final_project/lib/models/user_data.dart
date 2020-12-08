@@ -17,6 +17,7 @@ class UserData {
       // name to display for user
       // temp until we get a login page
       'username': '',
+      'user_id': ''
     };
     print('UserData initialized');
   }

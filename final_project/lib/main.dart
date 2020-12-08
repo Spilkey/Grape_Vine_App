@@ -7,6 +7,7 @@ import 'package:final_project/models/local_storage_model.dart';
 import 'package:final_project/views/map_page.dart';
 import 'package:final_project/views/splash_screen.dart';
 import 'package:final_project/app_localizations.dart';
+import 'package:final_project/views/create_user_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,8 +49,7 @@ class MyApp extends StatelessWidget {
         home: SplashScreen(title: 'GrapeVine'),
         routes: <String, WidgetBuilder>{
           '/mapPage': (BuildContext context) => MapPage(),
-          // '/createUsername': (BuildContext context) => UsernamePage(),
-          // '/createUserPicture': (BuildContext context) => UserPicPage()
+          '/createUser': (BuildContext context) => CreateUserPage(),
         });
   }
 }
