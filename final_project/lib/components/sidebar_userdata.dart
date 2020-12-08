@@ -39,16 +39,21 @@ class SideBarUserRow extends StatelessWidget {
         ),
         // direct to profile page
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            Uint8List userImage = _bytesOwnerImage == null
-                ? null
-                : Base64Codec().decode(this.imageData);
-            return ProfilePage(
-              userID: this.userId,
-              userImage: userImage,
-              isFriend: true,
-            );
-          }));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                Uint8List userImage = _bytesOwnerImage == null
+                    ? null
+                    : Base64Codec().decode(this.imageData);
+                return ProfilePage(
+                  userID: this.userId,
+                  userImage: userImage,
+                  isFriend: true,
+                );
+              },
+            ),
+          );
         },
       ),
     );

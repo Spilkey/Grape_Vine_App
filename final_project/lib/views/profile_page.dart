@@ -118,141 +118,147 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            decoration: BoxDecoration(gradient: backgroundGradient()),
-            child: FutureBuilder(
-                future: profileData(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    var userProfileData = snapshot.data['userDataSnapshot'];
-                    return Column(
-                      children: [
-                        Container(
-                            child: SizedBox(
-                                height: MediaQuery.of(context).size.height *
-                                    profileContainerSize,
-                                child: Column(
-                                  children: [
-                                    // ACTION BUTTONS
-                                    NavBar(
-                                      userName: userProfileData.username,
-                                      isFriend: widget.isFriend,
-                                    ),
-                                    // USER AVATAR
-                                    Center(
-                                        child: widget.userImage == null
-                                            ? CircleAvatar(
-                                                backgroundColor:
-                                                    Colors.deepPurple,
-                                                radius: avatarRadius,
-                                                child: Icon(Icons.person))
-                                            : CircleAvatar(
-                                                radius: avatarRadius,
-                                                backgroundImage: MemoryImage(
-                                                    widget.userImage),
-                                              )),
-                                    Container(
-                                        margin: EdgeInsets.only(top: 10),
-                                        child: Center(
-                                          child: Text(
-                                            userProfileData.username,
-                                            style: TextStyle(
-                                                color: Colors.deepPurpleAccent,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18),
-                                          ),
-                                        )),
-                                    // USER BIO
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 10),
-                                      child: Expanded(
-                                          child: Text(userProfileData.bio)),
-                                    ),
-                                    // USER FRIEND COUNT
-                                    Container(
-                                        margin: EdgeInsets.only(top: 10),
-                                        child: Center(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                  '${userProfileData.friends.length} ',
-                                                  style: TextStyle(
-                                                      color: Colors
-                                                          .deepPurpleAccent,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              Text(
-                                                'Friends',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            ],
-                                          ),
-                                        )),
-                                  ],
-                                )),
-                            color: Colors.white),
-                        // POSTS
-                        Container(
-                          child: Expanded(
-                              child: ListView.builder(
-                                  itemCount: snapshot.data['postDataSnapshot']
-                                      .documents.length,
-                                  itemBuilder: (context, index) {
-                                    var postData = snapshot
-                                        .data['postDataSnapshot'].docs[index]
-                                        .data();
-                                    print(postData);
-                                    return FeedCard(
-                                      ownerName: userProfileData.username,
-                                      imageData: postData['post_image_data'],
-                                      ownerProfileImageData:
-                                          postData['image_data'],
-                                      postTitle: postData['post_title'],
-                                      postContent: postData['content'],
-                                    );
-                                  })),
-                        )
-                      ],
-                    );
-                  } else {
-                    return Container(
-                        child: Column(children: [
-                      Container(
-                          child: SizedBox(
-                              height: MediaQuery.of(context).size.height *
-                                  profileContainerSize,
-                              child: Column(children: [
-                                // USER AVATAR
-                                Container(
-                                  margin: EdgeInsets.only(top: 50),
-                                  child: Center(
-                                      child: widget.userImage == null
-                                          ? CircleAvatar(
-                                              backgroundColor:
-                                                  Colors.deepPurple,
-                                              radius: avatarRadius,
-                                              child: Icon(Icons.person))
-                                          : CircleAvatar(
-                                              radius: avatarRadius,
-                                              backgroundImage:
-                                                  MemoryImage(widget.userImage),
-                                            )),
+      body: Container(
+        decoration: BoxDecoration(gradient: backgroundGradient()),
+        child: FutureBuilder(
+          future: profileData(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var userProfileData = snapshot.data['userDataSnapshot'];
+              return Column(
+                children: [
+                  Container(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height *
+                            profileContainerSize,
+                        child: Column(
+                          children: [
+                            // ACTION BUTTONS
+                            NavBar(
+                              userName: userProfileData.username,
+                              isFriend: widget.isFriend,
+                            ),
+                            // USER AVATAR
+                            Center(
+                                child: widget.userImage == null
+                                    ? CircleAvatar(
+                                        backgroundColor: Colors.deepPurple,
+                                        radius: avatarRadius,
+                                        child: Icon(Icons.person))
+                                    : CircleAvatar(
+                                        radius: avatarRadius,
+                                        backgroundImage:
+                                            MemoryImage(widget.userImage),
+                                      )),
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              child: Center(
+                                child: Text(
+                                  userProfileData.username,
+                                  style: TextStyle(
+                                      color: Colors.deepPurpleAccent,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
                                 ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white),
-                                  ),
-                                )
-                              ])))
-                    ]));
-                  }
-                })));
+                              ),
+                            ),
+                            // USER BIO
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              child: Expanded(child: Text(userProfileData.bio)),
+                            ),
+                            // USER FRIEND COUNT
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('${userProfileData.friends.length} ',
+                                        style: TextStyle(
+                                            color: Colors.deepPurpleAccent,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(
+                                      'Friends',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      color: Colors.white),
+                  // POSTS
+                  Container(
+                    child: Expanded(
+                      child: ListView.builder(
+                        itemCount:
+                            snapshot.data['postDataSnapshot'].documents.length,
+                        itemBuilder: (context, index) {
+                          var postData = snapshot
+                              .data['postDataSnapshot'].docs[index]
+                              .data();
+                          print(postData);
+                          return FeedCard(
+                            ownerName: userProfileData.username,
+                            imageData: postData['post_image_data'],
+                            ownerProfileImageData: postData['image_data'],
+                            postTitle: postData['post_title'],
+                            postContent: postData['content'],
+                          );
+                        },
+                      ),
+                    ),
+                  )
+                ],
+              );
+            } else {
+              return Container(
+                child: Column(
+                  children: [
+                    Container(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height *
+                            profileContainerSize,
+                        child: Column(
+                          children: [
+                            // USER AVATAR
+                            Container(
+                              margin: EdgeInsets.only(top: 50),
+                              child: Center(
+                                  child: widget.userImage == null
+                                      ? CircleAvatar(
+                                          backgroundColor: Colors.deepPurple,
+                                          radius: avatarRadius,
+                                          child: Icon(Icons.person))
+                                      : CircleAvatar(
+                                          radius: avatarRadius,
+                                          backgroundImage:
+                                              MemoryImage(widget.userImage),
+                                        )),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              child: CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }
+          },
+        ),
+      ),
+    );
   }
 }

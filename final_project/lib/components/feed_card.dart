@@ -90,22 +90,28 @@ class _FeedCardState extends State<FeedCard> {
         child: Column(
           children: [
             ListTile(
-                leading: profileImage,
-                title: GestureDetector(
-                  child: Text(widget.ownerName),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      Uint8List userImage = useDefaultImage
-                          ? null
-                          : Base64Codec().decode(widget.ownerProfileImageData);
-                      return ProfilePage(
-                        userID: widget.userId,
-                        userImage: userImage,
-                      );
-                    }));
-                  },
-                )),
+              leading: profileImage,
+              title: GestureDetector(
+                child: Text(widget.ownerName),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        Uint8List userImage = useDefaultImage
+                            ? null
+                            : Base64Codec()
+                                .decode(widget.ownerProfileImageData);
+                        return ProfilePage(
+                          userID: widget.userId,
+                          userImage: userImage,
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
             Container(
               child: Text(widget.postTitle),
             ),
