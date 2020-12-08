@@ -3,6 +3,7 @@ import 'package:final_project/models/local_storage.dart';
 import 'package:final_project/models/user_settings.dart';
 import 'package:final_project/models/user_settings_model.dart';
 import '../app_localizations.dart';
+import './content_preferences.dart';
 
 class Settings extends StatefulWidget {
   Settings({this.title});
@@ -26,8 +27,9 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back),
           onPressed: () => {Navigator.pop(context)},
         ),
       ),
@@ -77,7 +79,8 @@ class _SettingsState extends State<Settings> {
               TextFormField(
                 decoration: InputDecoration(
                   icon: Icon(Icons.person),
-                  labelText: AppLocalizations.of(context).translate('change_display_name_prompt'),
+                  labelText: AppLocalizations.of(context)
+                      .translate('change_display_name_prompt'),
                 ),
                 onSaved: (String val) {
                   setState(() {
@@ -86,7 +89,8 @@ class _SettingsState extends State<Settings> {
                 },
               ),
               SwitchListTile(
-                  title: Text(AppLocalizations.of(context).translate('mixed_feed_option')),
+                  title: Text(AppLocalizations.of(context)
+                      .translate('mixed_feed_option')),
                   value: UserSettings().settings['mix_feeds'],
                   onChanged: (bool val) {
                     setState(() {
@@ -94,7 +98,8 @@ class _SettingsState extends State<Settings> {
                     });
                   }),
               SwitchListTile(
-                  title: Text(AppLocalizations.of(context).translate('update_fav_topics_option')),
+                  title: Text(AppLocalizations.of(context)
+                      .translate('update_fav_topics_option')),
                   value: UserSettings().settings['automatic_topics'],
                   onChanged: (bool val) {
                     setState(() {
@@ -102,13 +107,23 @@ class _SettingsState extends State<Settings> {
                     });
                   }),
               SwitchListTile(
-                  title: Text(AppLocalizations.of(context).translate('allow_location_option')),
+                  title: Text(AppLocalizations.of(context)
+                      .translate('allow_location_option')),
                   value: UserSettings().settings['allow_location'],
                   onChanged: (bool val) {
                     setState(() {
                       UserSettings().settings['allow_location'] = val;
                     });
                   }),
+              GestureDetector(
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ContentPreferences())),
+                  child: Align(
+                    child: Text('Content preferences'),
+                    alignment: Alignment.centerLeft,
+                  ))
             ],
           ),
         ),
@@ -116,7 +131,8 @@ class _SettingsState extends State<Settings> {
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.save),
         // label: Text("Save user settings"),
-        label:  Text(AppLocalizations.of(context).translate('save_settings_label')),
+        label:
+            Text(AppLocalizations.of(context).translate('save_settings_label')),
         onPressed: () async {
           if (_formkey.currentState.validate()) {
             _formkey.currentState.save();
@@ -125,8 +141,10 @@ class _SettingsState extends State<Settings> {
             Navigator.pop(context);
           } else {
             Scaffold.of(context).showSnackBar(
-              // SnackBar(content: const Text('Unable to save user settings')));
-              SnackBar(content: Text(AppLocalizations.of(context).translate('save_failed'))));
+                // SnackBar(content: const Text('Unable to save user settings')));
+                SnackBar(
+                    content: Text(AppLocalizations.of(context)
+                        .translate('save_failed'))));
           }
         },
       ),
