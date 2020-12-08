@@ -2,11 +2,15 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
+/** 
+ * Row element for each user in the friends sidebar
+ */
 class SideBarUserRow extends StatelessWidget {
   final String imageData;
   final String username;
+  final String user_id;
 
-  SideBarUserRow(this.imageData, this.username);
+  SideBarUserRow(this.imageData, this.username, this.user_id);
   @override
   Widget build(BuildContext context) {
     CircleAvatar profileImage;
@@ -22,13 +26,17 @@ class SideBarUserRow extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.all(10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          profileImage,
-          Container(
-              padding: EdgeInsets.all(10), child: Text("@" + this.username))
-        ],
+      child: GestureDetector(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            profileImage,
+            Container(
+                padding: EdgeInsets.all(10), child: Text("@" + this.username))
+          ],
+        ),
+        // direct to profile page
+        onTap: () {},
       ),
     );
   }
