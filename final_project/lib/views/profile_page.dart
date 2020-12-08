@@ -185,19 +185,23 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: Colors.white),
                         // POSTS
                         Container(
-                          child: Expanded(child:
-                              ListView.builder(itemBuilder: (context, index) {
-                            var postData = snapshot
-                                .data['postDataSnapshot'].docs[index]
-                                .data();
-                            return FeedCard(
-                              ownerName: widget.userName,
-                              imageData: postData['post_image_data'],
-                              ownerProfileImageData: postData['image_data'],
-                              postTitle: postData['post_title'],
-                              postContent: postData['content'],
-                            );
-                          })),
+                          child: Expanded(
+                              child: ListView.builder(
+                                  itemCount: snapshot.data['postDataSnapshot']
+                                      .documents.length,
+                                  itemBuilder: (context, index) {
+                                    var postData = snapshot
+                                        .data['postDataSnapshot'].docs[index]
+                                        .data();
+                                    return FeedCard(
+                                      ownerName: widget.userName,
+                                      imageData: postData['post_image_data'],
+                                      ownerProfileImageData:
+                                          postData['image_data'],
+                                      postTitle: postData['post_title'],
+                                      postContent: postData['content'],
+                                    );
+                                  })),
                         )
                       ],
                     );
