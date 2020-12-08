@@ -54,7 +54,8 @@ class User {
     User returnUser = new User();
     returnUser.id = ref.id;
     returnUser.username = ref.get('username');
-    returnUser.password = ref.get('password');
+    returnUser.password =
+        ref.data().containsKey('password') ? ref.get('password') : null;
     returnUser.friends = ref.get('friends');
     returnUser.subscriptions = ref.get('subscriptions');
     returnUser.profilePic = ref.get('profile_pic');

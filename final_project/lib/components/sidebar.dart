@@ -57,8 +57,8 @@ class _SideBarFriendsState extends State<SideBarFriends> {
   Future<List<User>> getFriends() async {
     // Get current user's friends
 
-    String currentUuid = UserSettings().settings['user_id'];
-    // String currentUuid = "x3NbwdluXTcUQIqpSCho";
+    // String currentUuid = UserSettings().settings['user_id'];
+    String currentUuid = "x3NbwdluXTcUQIqpSCho";
     User currentUser = await _uModel.getUser(currentUuid);
     List friends = currentUser.friends;
     List<Future<User>> futureFriendsObjects = [];

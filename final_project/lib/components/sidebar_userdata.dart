@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:final_project/views/profile_page.dart';
 import 'package:flutter/material.dart';
 
 /** 
@@ -8,15 +9,16 @@ import 'package:flutter/material.dart';
 class SideBarUserRow extends StatelessWidget {
   final String imageData;
   final String username;
-  final String user_id;
+  final String userId;
 
-  SideBarUserRow(this.imageData, this.username, this.user_id);
+  SideBarUserRow(this.imageData, this.username, this.userId);
   @override
   Widget build(BuildContext context) {
     CircleAvatar profileImage;
 
+    Uint8List _bytesOwnerImage;
     if (this.imageData.isNotEmpty) {
-      Uint8List _bytesOwnerImage = Base64Codec().decode(this.imageData);
+      _bytesOwnerImage = Base64Codec().decode(this.imageData);
       profileImage = CircleAvatar(
         backgroundImage: MemoryImage(_bytesOwnerImage),
       );
@@ -36,7 +38,18 @@ class SideBarUserRow extends StatelessWidget {
           ],
         ),
         // direct to profile page
-        onTap: () {},
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            Uint8List userImage = _bytesOwnerImage == null
+                ? null
+                : Base64Codec().decode(this.imageData);
+            return ProfilePage(
+              userID: this.userId,
+              userImage: userImage,
+              isFriend: true,
+            );
+          }));
+        },
       ),
     );
   }
