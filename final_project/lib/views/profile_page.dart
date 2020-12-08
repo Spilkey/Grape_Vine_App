@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/models/colors.dart';
 import 'package:final_project/models/post_model.dart';
 import 'package:final_project/models/user.dart';
 import 'package:final_project/models/user_model.dart';
@@ -7,23 +8,7 @@ import 'package:flutter/material.dart';
 import '../components/profile_feed_card.dart';
 
 LinearGradient backgroundGradient() {
-  return LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      stops: [
-        0.4,
-        0.4,
-        0.2,
-        0.7,
-        0.1
-      ],
-      colors: [
-        Color(0xFF6541A5),
-        Color(0xFF4D307F),
-        Color(0xFF472B75),
-        Color(0xFF3D2464),
-        Color(0xFF2C1745),
-      ]);
+  return GradientBackground;
 }
 
 class NavBar extends StatefulWidget {
@@ -39,7 +24,7 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   Icon friendStatus = Icon(
     Icons.person_add_alt,
-    color: Colors.deepPurpleAccent,
+    color: LightColor,
   );
   @override
   Widget build(BuildContext context) {
@@ -50,12 +35,14 @@ class _NavBarState extends State<NavBar> {
         onPressed: () {
           final addFriendMessage =
               SnackBar(content: Text('Added ${widget.userName}'));
-          setState(() {
-            friendStatus = Icon(
-              Icons.person,
-              color: Colors.deepPurpleAccent,
-            );
-          });
+          setState(
+            () {
+              friendStatus = Icon(
+                Icons.person,
+                color: LightColor,
+              );
+            },
+          );
           Scaffold.of(context).showSnackBar(addFriendMessage);
         },
       );
@@ -71,7 +58,7 @@ class _NavBarState extends State<NavBar> {
             IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  color: Colors.deepPurpleAccent,
+                  color: LightColor,
                 ),
                 onPressed: () {
                   Navigator.pop(context);
@@ -142,9 +129,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             Center(
                                 child: widget.userImage == null
                                     ? CircleAvatar(
-                                        backgroundColor: Colors.deepPurple,
+                                        backgroundColor: LightColor,
                                         radius: avatarRadius,
-                                        child: Icon(Icons.person))
+                                        child: Icon(
+                                          Icons.person,
+                                          color: Colors.white,
+                                        ))
                                     : CircleAvatar(
                                         radius: avatarRadius,
                                         backgroundImage:
@@ -156,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Text(
                                   userProfileData.username,
                                   style: TextStyle(
-                                      color: Colors.deepPurpleAccent,
+                                      color: SecondaryColor,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),
                                 ),
@@ -177,7 +167,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   children: [
                                     Text('${userProfileData.friends.length} ',
                                         style: TextStyle(
-                                            color: Colors.deepPurpleAccent,
+                                            color: SecondaryColor,
                                             fontWeight: FontWeight.bold)),
                                     Text(
                                       'Friends',

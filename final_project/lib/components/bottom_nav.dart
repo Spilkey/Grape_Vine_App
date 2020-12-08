@@ -1,3 +1,4 @@
+import 'package:final_project/models/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../views/main_feed.dart';
@@ -67,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.purple[600],
+          selectedItemColor: SecondaryColor,
         ));
   }
 }

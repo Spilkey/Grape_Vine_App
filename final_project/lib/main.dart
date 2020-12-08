@@ -4,6 +4,7 @@ import 'package:final_project/models/user_settings_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:final_project/models/local_storage.dart';
 import 'package:flutter/material.dart';
+import 'models/colors.dart';
 import 'views/map_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'app_localizations.dart';
@@ -27,8 +28,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.purple,
+          primaryColor: PrimaryColor,
+          primaryColorLight: SecondaryColor,
+          tabBarTheme: TabBarTheme(labelColor: SecondaryColor),
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          primarySwatch: Colors.deepPurple,
         ),
         supportedLocales: [
           Locale('en', 'US'),
