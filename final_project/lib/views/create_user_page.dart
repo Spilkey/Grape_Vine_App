@@ -26,6 +26,23 @@ class CreateUserPageState extends State<CreateUserPage> {
 
   @override
   Widget build(BuildContext context) {
+    Widget imgDisplay = _profilePic == null
+        ? Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.purple, width: 10),
+              // borderRadius: BorderRadius.circular(40),
+            ),
+            padding: EdgeInsets.all(10),
+            child: Icon(Icons.add))
+        : Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.purple, width: 10),
+              borderRadius: BorderRadius.circular(200),
+            ),
+            // padding: EdgeInsets.all(10),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(200),
+                child: ImageUtil.imageFromBase64String(_profilePic)));
     steps = [
       Step(
         title: const Text('Create a username'),
@@ -59,18 +76,16 @@ class CreateUserPageState extends State<CreateUserPage> {
                   onTap: () async {
                     var pickedImage = await ImageUtil.picker
                         .getImage(source: ImageSource.gallery);
-                    if (pickedImage == null) {
+                    if (pickedImage != null) {
                       var imgBytes = await pickedImage.readAsBytes();
+                      print('img bytes is $imgBytes');
                       setState(() {
                         _profilePic = ImageUtil.toBase64String(imgBytes);
                       });
                     }
                   },
-                  child: CircleAvatar(
-                      child: _profilePic == null
-                          ? Icon(Icons.add)
-                          : ImageUtil.imageFromBase64String(_profilePic))),
-              Text('Add a picture'),
+                  child: imgDisplay),
+              Text('Add a picture - you can click on your image to change it'),
             ],
           ),
         ),
@@ -125,14 +140,16 @@ class CreateUserPageState extends State<CreateUserPage> {
               ));
   }
 
-  _addUserToDatabase() {
+  _addUserToDatabase() async {
+    var logo = await ImageUtil.logoAsBase64String();
+
     setState(() {
       _newUser.userName = _username;
       // set the profile image to the chosen file or a default if none was provided
-      _newUser.profilePic =
-          _profilePic != null ? _profilePic : ImageUtil.logoAsBase64String();
+      _newUser.profilePic = _profilePic != null ? _profilePic : logo;
       _stepsCompleted = true;
     });
+    print('new user created: ${_newUser.toMap()}');
     //userModel.insertUser(_newUser);
   }
 

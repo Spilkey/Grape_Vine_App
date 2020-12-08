@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' as rootBundle;
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:image_picker/image_picker.dart';
 
 class ImageUtil {
@@ -16,6 +15,8 @@ class ImageUtil {
     return Image.memory(
       base64Decode(base64String),
       fit: BoxFit.fill,
+      width: 300,
+      height: 300,
     );
   }
 
@@ -27,8 +28,12 @@ class ImageUtil {
     return base64Encode(data);
   }
 
-  static String logoAsBase64String() {
-    var logoFile = File('assets/images/grape_vine.png').readAsBytesSync();
-    return toBase64String(logoFile);
+  static Future<String> logoAsBase64String() async {
+    String logoData;
+    await rootBundle.load('assets/images/grape_vine.png').then((result) {
+      logoData = toBase64String(result.buffer.asUint8List());
+    });
+
+    return logoData;
   }
 }
