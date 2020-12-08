@@ -103,8 +103,11 @@ class _CreatePostState extends State<CreatePost> {
               // TODO make variables dynamic:
               // imageData (supposed to be profile picture, retrieved from local storage)
               // isPrivate, ownerID, ownerName, topicID
-              String currentUserId = UserSettings().settings['user_id'];
-              String currentUsername = UserSettings().settings['username'];
+
+              //TODO uncomment when user settings are functional
+              // String currentUserId = UserSettings().settings['user_id'];
+              // String currentUsername = UserSettings().settings['username'];
+
               PostEntity postEntity = new PostEntity(
                   content: _postContent,
                   imageData: _image64,
