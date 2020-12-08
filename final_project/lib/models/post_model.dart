@@ -20,10 +20,11 @@ class PostModel {
     return results;
   }
 
-  getAllPostsFromUser(user_id) async {
+  Future<QuerySnapshot> getAllPostsFromUser(user_id) async {
+    print(user_id);
     FirebaseFirestore db = DB().database;
-    Stream<QuerySnapshot> results =
-        db.collection('posts').where('user_id', isEqualTo: user_id).snapshots();
+    Future<QuerySnapshot> results =
+        db.collection('posts').where('owner_id', isEqualTo: user_id).get();
     return results;
   }
 

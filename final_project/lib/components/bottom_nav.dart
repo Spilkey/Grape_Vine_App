@@ -29,7 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
     MainFeed(),
     DiscoverFeedPage(),
     // TEMP:
-    ProfilePage(userName: 'temp_new_post_owner_name' , userImage: null),
+    ProfilePage(userID: 'x3NbwdluXTcUQIqpSCho', userImage: null),
     Notifications(),
   ];
   @override
@@ -48,11 +48,13 @@ class _MyHomePageState extends State<MyHomePage> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: AppLocalizations.of(context).translate('btm_nav_home_label'),
+              label:
+                  AppLocalizations.of(context).translate('btm_nav_home_label'),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.search),
-              label: AppLocalizations.of(context).translate('btm_nav_search_label'),
+              label: AppLocalizations.of(context)
+                  .translate('btm_nav_search_label'),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
@@ -60,7 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications),
-              label: AppLocalizations.of(context).translate('btm_nav_notif_label'),
+              label:
+                  AppLocalizations.of(context).translate('btm_nav_notif_label'),
             ),
           ],
           currentIndex: _selectedIndex,

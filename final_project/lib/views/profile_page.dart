@@ -1,27 +1,29 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/models/post_model.dart';
+import 'package:final_project/models/user.dart';
+import 'package:final_project/models/user_model.dart';
 import 'package:flutter/material.dart';
 import '../components/profile_feed_card.dart';
 
 LinearGradient backgroundGradient() {
   return LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    stops: [
-      0.4,
-      0.4,
-      0.2,
-      0.7,
-      0.1
-    ],
-    colors: [
-      Color(0xFF6541A5),
-      Color(0xFF4D307F),
-      Color(0xFF472B75),
-      Color(0xFF3D2464),
-      Color(0xFF2C1745),
-    ]
-  );
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      stops: [
+        0.4,
+        0.4,
+        0.2,
+        0.7,
+        0.1
+      ],
+      colors: [
+        Color(0xFF6541A5),
+        Color(0xFF4D307F),
+        Color(0xFF472B75),
+        Color(0xFF3D2464),
+        Color(0xFF2C1745),
+      ]);
 }
 
 class NavBar extends StatefulWidget {
@@ -73,14 +75,12 @@ class _NavBarState extends State<NavBar> {
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({
-    @required this.userName,
-    this.userID,
+    @required this.userID,
     // @required this.userID,
     this.userImage,
     Key key,
   }) : super(key: key);
 
-  final String userName;
   final String userID;
   final Uint8List userImage;
 
@@ -92,18 +92,16 @@ class _ProfilePageState extends State<ProfilePage> {
   final double avatarRadius = 50, marginTop = 50;
   final double profileContainerSize = 0.4;
 
+  final _uModel = new UserModel();
+  final _postsModel = new PostModel();
+
   Future profileData() async {
-    CollectionReference userProfile =
-        FirebaseFirestore.instance.collection('users');
+    User getUserData = await _uModel.getUser(widget.userID);
 
-    CollectionReference userPosts =
-        FirebaseFirestore.instance.collection('posts');
+    QuerySnapshot getPosts =
+        await _postsModel.getAllPostsFromUser(widget.userID);
 
-    var getUserData =
-        await userProfile.where('username', isEqualTo: widget.userName).get();
-
-    var getPosts =
-        await userPosts.where('owner_name', isEqualTo: widget.userName).get();
+    print(getPosts.docs);
 
     return {'userDataSnapshot': getUserData, 'postDataSnapshot': getPosts};
   }
@@ -117,8 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 future: profileData(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    var userProfileData =
-                        snapshot.data['userDataSnapshot'].docs[0].data();
+                    var userProfileData = snapshot.data['userDataSnapshot'];
                     return Column(
                       children: [
                         Container(
@@ -128,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Column(
                                   children: [
                                     // ACTION BUTTONS
-                                    NavBar(userName: widget.userName),
+                                    NavBar(userName: userProfileData.username),
                                     // USER AVATAR
                                     Center(
                                         child: widget.userImage == null
@@ -146,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         margin: EdgeInsets.only(top: 10),
                                         child: Center(
                                           child: Text(
-                                            widget.userName,
+                                            userProfileData.username,
                                             style: TextStyle(
                                                 color: Colors.deepPurpleAccent,
                                                 fontWeight: FontWeight.bold,
@@ -158,7 +155,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       margin: EdgeInsets.symmetric(
                                           horizontal: 20, vertical: 10),
                                       child: Expanded(
-                                          child: Text(userProfileData['bio'])),
+                                          child: Text(userProfileData.bio)),
                                     ),
                                     // USER FRIEND COUNT
                                     Container(
@@ -169,7 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                  '${userProfileData['friends'].length} ',
+                                                  '${userProfileData.friends.length} ',
                                                   style: TextStyle(
                                                       color: Colors
                                                           .deepPurpleAccent,
@@ -197,8 +194,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                     var postData = snapshot
                                         .data['postDataSnapshot'].docs[index]
                                         .data();
+                                    print(postData);
                                     return FeedCard(
-                                      ownerName: widget.userName,
+                                      ownerName: userProfileData.username,
                                       imageData: postData['post_image_data'],
                                       ownerProfileImageData:
                                           postData['image_data'],

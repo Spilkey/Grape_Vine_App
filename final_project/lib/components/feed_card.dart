@@ -18,6 +18,7 @@ class FeedCard extends StatefulWidget {
   // owner variables
   final String ownerName;
   final String ownerProfileImageData;
+  final String userId;
 
   // post variables
   final String imageData;
@@ -31,7 +32,8 @@ class FeedCard extends StatefulWidget {
       this.ownerName,
       this.postTitle,
       this.postContent,
-      this.streetName});
+      this.streetName,
+      this.userId});
 
   @override
   _FeedCardState createState() => _FeedCardState();
@@ -98,7 +100,7 @@ class _FeedCardState extends State<FeedCard> {
                           ? null
                           : Base64Codec().decode(widget.ownerProfileImageData);
                       return ProfilePage(
-                        userName: widget.ownerName,
+                        userID: widget.userId,
                         userImage: userImage,
                       );
                     }));

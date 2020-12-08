@@ -41,13 +41,14 @@ class _FeedState extends State<Feed> {
                       // Example ----------------------
                       var data = snapshot.data.docs[index];
                       var streetName;
-                      if (!data.data().keys.contains('street_name')){
-                      // if (snapshot.data.docs[index].containsKey('street_name')== null){
+                      if (!data.data().keys.contains('street_name')) {
+                        // if (snapshot.data.docs[index].containsKey('street_name')== null){
                         streetName = null;
                       } else {
                         streetName = data.get('street_name');
                       }
                       return FeedCard(
+                          userId: data.get('owner_id'),
                           ownerProfileImageData: data.get('image_data'),
                           ownerName: data.get('owner_name'),
                           imageData: data.get('post_image_data'),
