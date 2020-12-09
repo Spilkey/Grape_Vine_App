@@ -11,6 +11,10 @@ LinearGradient backgroundGradient() {
   return GradientBackground;
 }
 
+/**
+ * Top part of profile page incharge of displaying add user as friend and go back buttons
+ * Will also show username and amount of friends
+ */
 class NavBar extends StatefulWidget {
   NavBar({@required this.userName, this.isFriend, Key key}) : super(key: key);
 
@@ -69,10 +73,13 @@ class _NavBarState extends State<NavBar> {
   }
 }
 
+/** 
+ * Parent container for entire profile page
+ * Will combine navbar top widget with list of user's posts
+ */
 class ProfilePage extends StatefulWidget {
   ProfilePage({
     @required this.userID,
-    // @required this.userID,
     this.userImage,
     this.isFriend = false,
     Key key,
