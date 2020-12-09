@@ -1,8 +1,7 @@
+import 'package:final_project/components/navigator_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project/components/navigator_bar.dart';
-import 'package:final_project/models/user_data.dart';
 import 'package:final_project/models/local_storage_model.dart';
 import 'package:final_project/views/map_page.dart';
 import 'package:final_project/views/splash_screen.dart';
@@ -50,6 +49,7 @@ class MyApp extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           '/mapPage': (BuildContext context) => MapPage(),
           '/createUser': (BuildContext context) => CreateUserPage(),
+          '/homePage': (BuildContext context) => NavigatorBar(),
         });
   }
 }

@@ -38,7 +38,7 @@ class LocalStorageModel {
   // update a specific setting in the database
   Future<void> updateUserData(String key) async {
     var db = await LocalDB.database;
-    await db.update('UserData', UserData().userData[key],
+    await db.update('UserData', UserData.userData[key],
         where: 'userdata = ?', whereArgs: [key]);
   }
 
@@ -58,7 +58,7 @@ class LocalStorageModel {
   // add all user settings to the database
   Future<void> addUserData(String key) async {
     var db = await LocalDB.database;
-    await db.insert('UserData', UserData().userData[key],
+    await db.insert('UserData', UserData.userData[key],
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 }

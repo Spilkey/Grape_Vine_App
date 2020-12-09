@@ -7,7 +7,7 @@ class User {
   User();
 
   // Unique user data
-  String userId;
+  String id;
   String username = '';
 
   String bio;
@@ -17,8 +17,6 @@ class User {
   List friends;
   List subscriptions;
   List notifications;
-
-  String id;
 
   set userName(String name) {
     username = name;

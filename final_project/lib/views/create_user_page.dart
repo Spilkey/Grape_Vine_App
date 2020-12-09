@@ -1,8 +1,11 @@
+import 'package:final_project/models/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:final_project/utils/image_utils.dart';
 import 'package:final_project/models/user.dart';
 import 'package:final_project/models/user_model.dart';
+import 'package:final_project/models/local_storage.dart';
+import 'package:final_project/models/local_storage_model.dart';
 
 class CreateUserPage extends StatefulWidget {
   CreateUserPage({Key key, this.title}) : super(key: key);
@@ -150,7 +153,14 @@ class CreateUserPageState extends State<CreateUserPage> {
       _stepsCompleted = true;
     });
     print('new user created: ${_newUser.toMap()}');
-    //userModel.insertUser(_newUser);
+    // insert user into the cloud db
+    var docRef = await userModel.insertUser(_newUser);
+    if (docRef != null) {
+      _newUser.id = docRef.id;
+      // add user to the local db
+      UserData.initUserData(_newUser);
+      print('user has been added to the firestore');
+    }
   }
 
   _nextStep() {

@@ -14,7 +14,7 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final _formkey = GlobalKey<FormState>();
-  String _newUsername = UserData().userData['username'];
+  String _newUsername = UserData.userData['username'];
   var db = LocalStorageModel();
 
   @override
@@ -54,14 +54,14 @@ class _SettingsState extends State<Settings> {
                             CircleAvatar(
                               backgroundColor: Colors.green,
                               child: Text(
-                                  UserData().userData['username'].isNotEmpty
-                                      ? UserData().userData['username'][0]
+                                  UserData.userData['username'].isNotEmpty
+                                      ? UserData.userData['username'][0]
                                       : '?'),
                             ),
                             Spacer(),
                             Flexible(
                               flex: 5,
-                              child: Text(UserData().userData['username']),
+                              child: Text(UserData.userData['username']),
                             ),
                           ],
                         ),
@@ -77,35 +77,35 @@ class _SettingsState extends State<Settings> {
                     if (val.isNotEmpty) {
                       _newUsername = val;
                     }
-                    UserData().userData['username'] = _newUsername;
+                    UserData.userData['username'] = _newUsername;
                   });
                 },
               ),
               SwitchListTile(
                   title: Text(AppLocalizations.of(context)
                       .translate('mixed_feed_option')),
-                  value: UserData().userData['mix_feeds'],
+                  value: UserData.userData['mix_feeds'],
                   onChanged: (bool val) {
                     setState(() {
-                      UserData().userData['mix_feeds'] = val;
+                      UserData.userData['mix_feeds'] = val;
                     });
                   }),
               SwitchListTile(
                   title: Text(AppLocalizations.of(context)
                       .translate('update_fav_topics_option')),
-                  value: UserData().userData['automatic_topics'],
+                  value: UserData.userData['automatic_topics'],
                   onChanged: (bool val) {
                     setState(() {
-                      UserData().userData['automatic_topics'] = val;
+                      UserData.userData['automatic_topics'] = val;
                     });
                   }),
               SwitchListTile(
                   title: Text(AppLocalizations.of(context)
                       .translate('allow_location_option')),
-                  value: UserData().userData['allow_location'],
+                  value: UserData.userData['allow_location'],
                   onChanged: (bool val) {
                     setState(() {
-                      UserData().userData['allow_location'] = val;
+                      UserData.userData['allow_location'] = val;
                     });
                   }),
             ],
@@ -121,10 +121,9 @@ class _SettingsState extends State<Settings> {
             await db.updateTable();
             Navigator.pop(context);
           } else {
-            Scaffold.of(context).showSnackBar(
-                SnackBar(
-                    content: Text(AppLocalizations.of(context)
-                        .translate('save_failed'))));
+            Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(
+                    AppLocalizations.of(context).translate('save_failed'))));
           }
         },
       ),
