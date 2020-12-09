@@ -27,12 +27,13 @@ class _FeedState extends State<Feed> {
     // We use an item builder - we can use a promise here to obtain data from our data base
     // We should store our data retrieved from our db in the state here
 
-    String userId = UserData.userData['user_id'];
+    String currentUserId = UserData.userData['user_id'];
+    print("Current userId is ${currentUserId}");
 
     return Scaffold(
       // streambuilder populates the listview from the firebase database
-      body: StreamBuilder<QuerySnapshot>(
-        stream: _model.getAllPosts(),
+      body: FutureBuilder<QuerySnapshot>(
+        future: _model.getAllPostsFromUserFriendsList(currentUserId),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
             return ListView.separated(
@@ -63,7 +64,8 @@ class _FeedState extends State<Feed> {
                   return const Divider();
                 });
           } else {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: Text("It looks like you have no friends posts yet"));
           }
         },
       ),

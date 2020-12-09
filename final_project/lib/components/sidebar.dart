@@ -1,6 +1,7 @@
 import 'package:final_project/components/sidebar_userdata.dart';
 import 'package:final_project/models/colors.dart';
 import 'package:final_project/models/user.dart';
+import 'package:final_project/models/user_data.dart';
 import 'package:final_project/models/user_model.dart';
 import 'package:flutter/material.dart';
 import '../app_localizations.dart';
@@ -48,8 +49,7 @@ class _SideBarFriendsState extends State<SideBarFriends> {
   Future<List<User>> getFriends() async {
     // Get current user's friends
 
-    // String currentUuid = UserSettings().settings['user_id'];
-    String currentUuid = "x3NbwdluXTcUQIqpSCho";
+    String currentUuid = UserData.userData['user_id'];
     User currentUser = await _uModel.getUser(currentUuid);
     List friends = currentUser.friends;
     List<Future<User>> futureFriendsObjects = [];
