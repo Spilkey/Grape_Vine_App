@@ -4,6 +4,7 @@ import 'package:final_project/models/colors.dart';
 import 'package:final_project/models/post_model.dart';
 import 'package:final_project/models/user.dart';
 import 'package:final_project/models/user_model.dart';
+import 'package:final_project/utils/image_utils.dart';
 import 'package:flutter/material.dart';
 import '../components/profile_feed_card.dart';
 
@@ -16,10 +17,12 @@ LinearGradient backgroundGradient() {
  * Will also show username and amount of friends
  */
 class NavBar extends StatefulWidget {
-  NavBar({@required this.userName, this.isFriend, Key key}) : super(key: key);
+  NavBar({@required this.userName, this.isFriend, this.isMainPage, Key key})
+      : super(key: key);
 
   final String userName;
   final bool isFriend;
+  final bool isMainPage;
 
   @override
   _NavBarState createState() => _NavBarState();
@@ -51,24 +54,30 @@ class _NavBarState extends State<NavBar> {
         },
       );
     } else {
-      addFriendButton = Container();
+      addFriendButton = Container(
+        height: 40,
+      );
+    }
+    Widget goBackButton;
+    if (!widget.isMainPage) {
+      goBackButton = IconButton(
+        icon: Icon(
+          Icons.arrow_back,
+          color: LightColor,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      );
+    } else {
+      goBackButton = Container();
     }
 
     return Container(
         margin: EdgeInsets.only(top: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: LightColor,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
-            addFriendButton
-          ],
+          children: [goBackButton, addFriendButton],
         ));
   }
 }
@@ -82,12 +91,14 @@ class ProfilePage extends StatefulWidget {
     @required this.userID,
     this.userImage,
     this.isFriend = false,
+    this.isMainPage = false,
     Key key,
   }) : super(key: key);
 
   final String userID;
   final Uint8List userImage;
   final bool isFriend;
+  final bool isMainPage;
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -119,6 +130,12 @@ class _ProfilePageState extends State<ProfilePage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var userProfileData = snapshot.data['userDataSnapshot'];
+
+              Uint8List dbProfileImage =
+                  ImageUtil.getDataFromBase64String(userProfileData.profilePic);
+              Uint8List renderedImage =
+                  widget.userImage != null ? widget.userImage : dbProfileImage;
+
               return Column(
                 children: [
                   Container(
@@ -129,12 +146,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           children: [
                             // ACTION BUTTONS
                             NavBar(
-                              userName: userProfileData.username,
-                              isFriend: widget.isFriend,
-                            ),
+                                userName: userProfileData.username,
+                                isFriend: widget.isFriend,
+                                isMainPage: widget.isMainPage),
                             // USER AVATAR
                             Center(
-                                child: widget.userImage == null
+                                child: renderedImage == null
                                     ? CircleAvatar(
                                         backgroundColor: LightColor,
                                         radius: avatarRadius,
@@ -145,7 +162,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     : CircleAvatar(
                                         radius: avatarRadius,
                                         backgroundImage:
-                                            MemoryImage(widget.userImage),
+                                            MemoryImage(renderedImage),
                                       )),
                             Container(
                               margin: EdgeInsets.only(top: 10),
@@ -163,7 +180,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             Container(
                               margin: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
-                              child: Expanded(child: Text(userProfileData.bio)),
+                              child: Expanded(
+                                  child: Text(userProfileData.bio != null
+                                      ? userProfileData.bio
+                                      : '')),
                             ),
                             // USER FRIEND COUNT
                             Container(
@@ -172,7 +192,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${userProfileData.friends.length} ',
+                                    Text(
+                                        userProfileData.friends != null
+                                            ? '${userProfileData.friends.length}'
+                                            : '0',
                                         style: TextStyle(
                                             color: SecondaryColor,
                                             fontWeight: FontWeight.bold)),
