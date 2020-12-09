@@ -53,15 +53,16 @@ class _SettingsState extends State<Settings> {
                           children: <Widget>[
                             CircleAvatar(
                               backgroundColor: Colors.green,
-                              child: Text(
-                                  UserData.userData['username'].isNotEmpty
-                                      ? UserData.userData['username'][0]
-                                      : '?'),
+                              child: Text(UserData.userData['username'] != null
+                                  ? UserData.userData['username'][0]
+                                  : '?'),
                             ),
                             Spacer(),
                             Flexible(
                               flex: 5,
-                              child: Text(UserData.userData['username']),
+                              child: Text(UserData.userData['username'] != null
+                                  ? UserData.userData['username']
+                                  : ""),
                             ),
                           ],
                         ),
@@ -73,9 +74,12 @@ class _SettingsState extends State<Settings> {
                       .translate('change_display_name_prompt'),
                 ),
                 onChanged: (String val) {
+                  print(val);
                   setState(() {
-                    if (val.isNotEmpty) {
-                      _newUsername = val;
+                    if (val != null) {
+                      if (val.isNotEmpty) {
+                        _newUsername = val;
+                      }
                     }
                     UserData.userData['username'] = _newUsername;
                   });
