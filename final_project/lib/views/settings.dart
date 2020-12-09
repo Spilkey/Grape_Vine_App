@@ -54,7 +54,9 @@ class _SettingsState extends State<Settings> {
                             CircleAvatar(
                               backgroundColor: Colors.green,
                               child: Text(UserData.userData['username'] != null
-                                  ? UserData.userData['username'][0]
+                                  ? UserData.userData['username'].isNotEmpty
+                                      ? UserData.userData['username'][0]
+                                      : '?'
                                   : '?'),
                             ),
                             Spacer(),
@@ -81,8 +83,15 @@ class _SettingsState extends State<Settings> {
                         _newUsername = val;
                       }
                     }
-                    UserData.userData['username'] = _newUsername;
                   });
+                },
+                onSaved: (String val) {
+                  if (val != null) {
+                    if (val.isNotEmpty) {
+                      _newUsername = val;
+                    }
+                  }
+                  UserData.userData['username'] = _newUsername;
                 },
               ),
               SwitchListTile(
@@ -122,6 +131,7 @@ class _SettingsState extends State<Settings> {
             Text(AppLocalizations.of(context).translate('save_settings_label')),
         onPressed: () async {
           if (_formkey.currentState.validate()) {
+            _formkey.currentState.save();
             await db.updateTable();
             Navigator.pop(context);
           } else {
