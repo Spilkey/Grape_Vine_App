@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
 
 class LocalDB {
-  LocalDB() {}
+  LocalDB();
   static Database _database;
 
   static Future<Database> get database async {
@@ -16,12 +16,11 @@ class LocalDB {
 
   static initDB() async {
     String pathDb = path.join(await getDatabasesPath(), "data.db");
-    print("creating table");
     return await openDatabase(pathDb, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
+      print("initializing UserData table");
       await db.execute(
-          "CREATE TABLE UserData (setting TEXT PRIMARY KEY, val TEXT)");
-          
+          "CREATE TABLE IF NOT EXISTS UserData (userdata TEXT PRIMARY KEY, value TEXT)");
     });
   }
 }

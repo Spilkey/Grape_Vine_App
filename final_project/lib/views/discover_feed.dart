@@ -1,6 +1,7 @@
 import 'package:final_project/components/feed_discover.dart';
 import 'package:flutter/material.dart';
 import '../app_localizations.dart';
+import './analytics_page.dart';
 
 /**
  * Discover feed page to display posts when the usedr selects the discover tab
@@ -22,23 +23,34 @@ class _DiscoverFeedPageState extends State<DiscoverFeedPage> {
         length: 2,
         child: Scaffold(
             appBar: AppBar(
-              title: Center(child: Text(AppLocalizations.of(context).translate('discover_feed_title'))),
+              title: Center(
+                  child: Text(AppLocalizations.of(context)
+                      .translate('discover_feed_title'))),
               centerTitle: true,
+              actions: [
+                IconButton(
+                    icon: Icon(
+                      Icons.analytics_rounded,
+                      size: 25,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AnalyticsPage()));
+                    })
+              ],
             ),
-            body: Column(children: [
-              Expanded(
-                child: FeedDiscover())
-          ]
-        ),
-      floatingActionButton: FloatingActionButton.extended(
-          // label: Text("Subscribe"), 
-          label: Text(AppLocalizations.of(context).translate('subscribe_label')),
-          onPressed: () {
-            // TODO after users model has been implemented, add the topic to user's list of subscribed topics
-            print("subscribe to topic");
-          },
-        ) 
-      )
-    );
+            body: Column(children: [Expanded(child: FeedDiscover())]),
+            floatingActionButton: FloatingActionButton.extended(
+              // label: Text("Subscribe"),
+              label: Text(
+                  AppLocalizations.of(context).translate('subscribe_label')),
+              onPressed: () {
+                // TODO after users model has been implemented, add the topic to user's list of subscribed topics
+                print("subscribe to topic");
+              },
+            )));
   }
 }

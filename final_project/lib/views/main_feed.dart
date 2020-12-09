@@ -1,6 +1,8 @@
 import 'package:final_project/components/feed.dart';
 import 'package:final_project/components/sidebar.dart';
+import 'package:final_project/models/colors.dart';
 import 'package:final_project/models/notifications.dart';
+import 'package:final_project/models/local_storage_model.dart';
 import 'package:flutter/material.dart';
 import './create_post.dart';
 import 'package:flutter/material.dart';
@@ -28,22 +30,28 @@ class _MainFeedState extends State<MainFeed> {
   @override
   Widget build(BuildContext context) {
     _notifications.init();
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Center(child: Text(AppLocalizations.of(context).translate('main_feed_title'))),
+          title: Center(
+              child: Text(
+                  AppLocalizations.of(context).translate('main_feed_title'))),
           centerTitle: true,
           actions: <Widget>[
-            IconButton( 
+            IconButton(
                 icon: Icon(Icons.apps),
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Settings(title: AppLocalizations.of(context).translate('settings_label'))));
-                  Scaffold.of(context).showSnackBar(
-                      SnackBar(content: Text(AppLocalizations.of(context).translate('settings_confirm'))));
+                          builder: (context) => Settings(
+                              title: AppLocalizations.of(context)
+                                  .translate('settings_label'))));
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text(AppLocalizations.of(context)
+                          .translate('settings_confirm'))));
                 }),
           ],
           leading: Builder(
@@ -58,12 +66,17 @@ class _MainFeedState extends State<MainFeed> {
           children: [
             TabBar(
               tabs: [
-                Tab(icon: Icon(Icons.public), text: AppLocalizations.of(context).translate('public_label')),
-                Tab(icon: Icon(Icons.public), text: AppLocalizations.of(context).translate('private_label')),
-
+                Tab(
+                    icon: Icon(Icons.public),
+                    text:
+                        AppLocalizations.of(context).translate('public_label')),
+                Tab(
+                    icon: Icon(Icons.public),
+                    text: AppLocalizations.of(context)
+                        .translate('private_label')),
               ],
-              labelColor: Colors.purple,
-              indicatorColor: Colors.purple,
+              labelColor: PrimaryColor,
+              indicatorColor: PrimaryColor,
               unselectedLabelColor: Colors.grey,
             ),
             Expanded(

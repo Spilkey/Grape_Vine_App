@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/models/db.dart';
+import 'package:final_project/models/user.dart';
+import 'package:final_project/models/user_model.dart';
 
 import 'post_entity.dart';
 
@@ -20,10 +22,11 @@ class PostModel {
     return results;
   }
 
-  getAllPostsFromUser(user_id) async {
+  Future<QuerySnapshot> getAllPostsFromUser(user_id) async {
+    print(user_id);
     FirebaseFirestore db = DB().database;
-    Stream<QuerySnapshot> results =
-        db.collection('posts').where('user_id', isEqualTo: user_id).snapshots();
+    Future<QuerySnapshot> results =
+        db.collection('posts').where('owner_id', isEqualTo: user_id).get();
     return results;
   }
 
@@ -35,6 +38,19 @@ class PostModel {
         .where('is_private', isEqualTo: 'false')
         .snapshots();
     return results;
+  }
+
+  Future<QuerySnapshot> getAllPostsFromUserFriendsList(user_id) async {
+    FirebaseFirestore db = DB().database;
+    User user = await UserModel().getUser(user_id);
+    print(user.username);
+    if (user.friends.length != 0) {}
+    QuerySnapshot friendsPosts = await db
+        .collection('posts')
+        .where('owner_id', whereIn: user.friends)
+        .get();
+    print(friendsPosts.docs[0].data());
+    return friendsPosts;
   }
 
   // insert post data to the database

@@ -1,9 +1,10 @@
+import 'package:final_project/models/local_storage_model.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/models/local_storage.dart';
-import 'package:final_project/models/user_settings.dart';
-import 'package:final_project/models/user_settings_model.dart';
 import '../app_localizations.dart';
 import './content_preferences.dart';
+import 'package:final_project/models/user_data.dart';
+import 'package:final_project/app_localizations.dart';
 
 class Settings extends StatefulWidget {
   Settings({this.title});
@@ -16,14 +17,17 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final _formkey = GlobalKey<FormState>();
+  String _newUsername = UserData.userData['username'];
+  var db = LocalStorageModel();
 
-  String _newUsername = '';
+  @override
+  void initState() {
+    super.initState();
+    db.getUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // get user settings from database
-    var db = UserSettingsModel();
-    //db.getUserSettings(); <-- local databse
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -37,8 +41,7 @@ class _SettingsState extends State<Settings> {
         key: _formkey,
         child: Container(
           padding: EdgeInsets.all(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+          child: ListView(
             children: <Widget>[
               // TODO: make a user display widget
               // showing user display name, profile picture, and  public key
@@ -53,27 +56,21 @@ class _SettingsState extends State<Settings> {
                           // temp widget for the user display
                           children: <Widget>[
                             CircleAvatar(
-                              backgroundColor: Colors.green,
-                              child: Text(
-                                  UserSettings.getValAsString('username')
-                                          .isNotEmpty
-                                      ? UserSettings().settings['username'][0]
-                                      : '?'),
-                            ),
+                                backgroundColor: Colors.green, child: Text('U')
+                                // This line is causing an error
+                                // Text(
+                                //     UserData.userData['username'].isNotEmpty
+                                //         ? UserData.userData['username'][0]
+                                //         : '?'),
+                                ),
                             Spacer(),
                             Flexible(
                               flex: 5,
-                              child:
-                                  Text(UserSettings.getValAsString('username')),
+                              child: Text('Username'),
+                              // this line is causing an error
+                              // Text(UserData.userData['username']),
                             ),
                           ],
-                        ),
-                        Text('@' + UserSettings.getValAsString('public_key'),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15)),
-                        Text(
-                          '@' + UserSettings.getValAsString('private_key'),
-                          style: TextStyle(fontWeight: FontWeight.w100),
                         ),
                       ])),
               TextFormField(
@@ -82,37 +79,40 @@ class _SettingsState extends State<Settings> {
                   labelText: AppLocalizations.of(context)
                       .translate('change_display_name_prompt'),
                 ),
-                onSaved: (String val) {
+                onChanged: (String val) {
                   setState(() {
-                    _newUsername = val;
+                    if (val.isNotEmpty) {
+                      _newUsername = val;
+                    }
+                    UserData.userData['username'] = _newUsername;
                   });
                 },
               ),
               SwitchListTile(
                   title: Text(AppLocalizations.of(context)
                       .translate('mixed_feed_option')),
-                  value: UserSettings().settings['mix_feeds'],
+                  value: UserData.userData['mix_feeds'],
                   onChanged: (bool val) {
                     setState(() {
-                      UserSettings().settings['mix_feeds'] = val;
+                      UserData.userData['mix_feeds'] = val;
                     });
                   }),
               SwitchListTile(
                   title: Text(AppLocalizations.of(context)
                       .translate('update_fav_topics_option')),
-                  value: UserSettings().settings['automatic_topics'],
+                  value: UserData.userData['automatic_topics'],
                   onChanged: (bool val) {
                     setState(() {
-                      UserSettings().settings['automatic_topics'] = val;
+                      UserData.userData['automatic_topics'] = val;
                     });
                   }),
               SwitchListTile(
                   title: Text(AppLocalizations.of(context)
                       .translate('allow_location_option')),
-                  value: UserSettings().settings['allow_location'],
+                  value: UserData.userData['allow_location'],
                   onChanged: (bool val) {
                     setState(() {
-                      UserSettings().settings['allow_location'] = val;
+                      UserData.userData['allow_location'] = val;
                     });
                   }),
               GestureDetector(
@@ -130,21 +130,16 @@ class _SettingsState extends State<Settings> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.save),
-        // label: Text("Save user settings"),
         label:
             Text(AppLocalizations.of(context).translate('save_settings_label')),
         onPressed: () async {
           if (_formkey.currentState.validate()) {
-            _formkey.currentState.save();
-            UserSettings.setOption('username', _newUsername);
-            // await db.updateAllSettings();  <-- local database
+            await db.updateTable();
             Navigator.pop(context);
           } else {
-            Scaffold.of(context).showSnackBar(
-                // SnackBar(content: const Text('Unable to save user settings')));
-                SnackBar(
-                    content: Text(AppLocalizations.of(context)
-                        .translate('save_failed'))));
+            Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(
+                    AppLocalizations.of(context).translate('save_failed'))));
           }
         },
       ),
