@@ -46,14 +46,6 @@ class _NavBarState extends State<NavBar> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.deepPurpleAccent,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
-            IconButton(
                 icon: friendStatus,
                 onPressed: () {
                   final addFriendMessage =

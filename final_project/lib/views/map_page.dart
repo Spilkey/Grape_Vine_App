@@ -59,7 +59,6 @@ class _MapPageState extends State<MapPage> {
 
     return Scaffold(
       appBar: AppBar(
-        // title: Text('Choose a location'),
         title: Text(AppLocalizations.of(context).translate('map_page_title')),
         actions: <Widget>[
           IconButton(
