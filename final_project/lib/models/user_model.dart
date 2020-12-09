@@ -16,6 +16,11 @@ class UserModel {
     return res;
   }
 
+  updateSubscriptions(User user, String subscription){
+    FirebaseFirestore db = DB().database;
+    var res = db.collection('users').doc(user.id).
+  }
+
   Future<User> getUser(String id) async {
     FirebaseFirestore db = DB().database;
     DocumentSnapshot res = await db.collection('users').doc(id).get();
