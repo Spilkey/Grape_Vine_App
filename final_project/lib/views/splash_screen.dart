@@ -14,13 +14,11 @@ class SplashScreen extends StatefulWidget {
 
 class SplashScreenState extends State<SplashScreen> {
   UserModel _userModel = UserModel();
-  bool _showProgress = true;
+  bool _showProgress = false;
   @override
   Widget build(BuildContext context) {
     var userWidget;
-    hasUserData();
     if (_showProgress) {
-      Navigator.pushNamed(context, '/homePage');
     } else {
       userWidget = generateLoginContent();
     }
@@ -62,6 +60,7 @@ class SplashScreenState extends State<SplashScreen> {
             ),
             onPressed: () async {
               await Navigator.pushNamed(context, '/createUser');
+              hasUserData();
             });
     return userWidget;
   }
@@ -70,9 +69,7 @@ class SplashScreenState extends State<SplashScreen> {
     if (UserData.userData['user_id'] != null) {
       // we have the data so update everything accordingly
       UserData.setUser = await _userModel.getUser(UserData.userData['user_id']);
-      setState(() {
-        _showProgress = true;
-      });
+      Navigator.pushNamed(context, '/homePage');
     }
   }
 }
