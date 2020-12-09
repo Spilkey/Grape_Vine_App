@@ -5,22 +5,23 @@ import '../components/profile_feed_card.dart';
 
 LinearGradient backgroundGradient() {
   return LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      stops: [
-        0.4,
-        0.4,
-        0.2,
-        0.7,
-        0.1
-      ],
-      colors: [
-        Color(0xFF6541A5),
-        Color(0xFF4D307F),
-        Color(0xFF472B75),
-        Color(0xFF3D2464),
-        Color(0xFF2C1745),
-      ]);
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    stops: [
+      0.4,
+      0.4,
+      0.2,
+      0.7,
+      0.1
+    ],
+    colors: [
+      Color(0xFF6541A5),
+      Color(0xFF4D307F),
+      Color(0xFF472B75),
+      Color(0xFF3D2464),
+      Color(0xFF2C1745),
+    ]
+  );
 }
 
 class NavBar extends StatefulWidget {
@@ -73,11 +74,14 @@ class _NavBarState extends State<NavBar> {
 class ProfilePage extends StatefulWidget {
   ProfilePage({
     @required this.userName,
+    this.userID,
+    // @required this.userID,
     this.userImage,
     Key key,
   }) : super(key: key);
 
   final String userName;
+  final String userID;
   final Uint8List userImage;
 
   @override
@@ -185,19 +189,23 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: Colors.white),
                         // POSTS
                         Container(
-                          child: Expanded(child:
-                              ListView.builder(itemBuilder: (context, index) {
-                            var postData = snapshot
-                                .data['postDataSnapshot'].docs[index]
-                                .data();
-                            return FeedCard(
-                              ownerName: widget.userName,
-                              imageData: postData['post_image_data'],
-                              ownerProfileImageData: postData['image_data'],
-                              postTitle: postData['post_title'],
-                              postContent: postData['content'],
-                            );
-                          })),
+                          child: Expanded(
+                              child: ListView.builder(
+                                  itemCount: snapshot.data['postDataSnapshot']
+                                      .documents.length,
+                                  itemBuilder: (context, index) {
+                                    var postData = snapshot
+                                        .data['postDataSnapshot'].docs[index]
+                                        .data();
+                                    return FeedCard(
+                                      ownerName: widget.userName,
+                                      imageData: postData['post_image_data'],
+                                      ownerProfileImageData:
+                                          postData['image_data'],
+                                      postTitle: postData['post_title'],
+                                      postContent: postData['content'],
+                                    );
+                                  })),
                         )
                       ],
                     );

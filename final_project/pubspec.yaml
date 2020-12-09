@@ -22,11 +22,13 @@ environment:
 
 dependencies:
   flutter:
-
     sdk: flutter
-  
+
   flutter_localizations:
     sdk: flutter
+
+    # charts
+  charts_flutter:
 
   # for sql lite
   sqflite:
@@ -37,14 +39,13 @@ dependencies:
 
   #for images
   image_picker:
-  
 
   # for notifications
   flutter_local_notifications:
   
       
   # for geolocation
-  geolocator: '6.1.8'
+  geolocator: "6.1.8"
   flutter_map:
   location:
   geocoding:
@@ -58,7 +59,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
