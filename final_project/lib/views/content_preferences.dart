@@ -1,5 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-// import '../models/topic_model.dart'; - get all the topics and display on DataTable
+import '../models/topic_model.dart';
 
 class ContentPreferences extends StatefulWidget {
   @override
@@ -8,7 +9,10 @@ class ContentPreferences extends StatefulWidget {
 
 class _ContentPreferencesState extends State<ContentPreferences> {
   // TODO: return preferences object to do settings page so the settings can be passed to the database
-  // TODO: pull from the database all the topics
+  // TODO: edit database to have a user preferences object - similar to object on line 16
+  // see - 'users' collection and subscriptions object
+  final _model = new TopicModel();
+
   var preferences = [
     {'topic': 'Celebrities', 'selected': false},
     {'topic': 'Movies', 'selected': false},
@@ -39,31 +43,37 @@ class _ContentPreferencesState extends State<ContentPreferences> {
               child: Text(
                   'These are your content preferences. You can manage which topics you see on the Discovery page.'),
             ),
-            DataTable(
-              columns: [DataColumn(label: Text('Preferences'))],
-              rows: List<DataRow>.generate(
-                  preferences.length,
-                  (index) => DataRow(
-                        cells: [
-                          DataCell(Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                preferences[index]['topic'],
-                              ),
-                              Checkbox(
-                                  value: preferences[index]['selected'],
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      preferences[index]['selected'] =
-                                          !preferences[index]['selected'];
-                                    });
-                                  })
-                            ],
-                          )),
-                        ],
-                      )),
-            ),
+            StreamBuilder<QuerySnapshot>(
+                stream: _model.getAllTopics(),
+                builder: (context, snapshot) {
+                  return DataTable(
+                    columns: [DataColumn(label: Text('Preferences'))],
+                    rows: List<DataRow>.generate(
+                        snapshot.data.docs.length,
+                        (index) => DataRow(
+                              cells: [
+                                DataCell(Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      snapshot.data.docs[index]
+                                          .data()['topic_name'],
+                                    ),
+                                    Checkbox(
+                                        value: preferences[index]['selected'],
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            preferences[index]['selected'] =
+                                                !preferences[index]['selected'];
+                                          });
+                                        })
+                                  ],
+                                )),
+                              ],
+                            )),
+                  );
+                }),
           ],
         ),
       ),
