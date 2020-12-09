@@ -4,14 +4,11 @@ import 'post.dart';
 import 'package:flutter/material.dart';
 
 class User {
-  User() {}
+  User();
 
-  // User keys that are generated on registration
-  final String publicKey = '';
-  final String privateKey = '';
   // Unique user data
+  String id;
   String username = '';
-  String password = '';
 
   String bio;
   String profilePic;
@@ -21,8 +18,6 @@ class User {
   List subscriptions;
   List notifications;
 
-  String id;
-
   set userName(String name) {
     username = name;
   }
@@ -31,18 +26,9 @@ class User {
     return username;
   }
 
-  set passWord(String pass) {
-    password = pass;
-  }
-
-  String get passWord {
-    return password;
-  }
-
   Map<String, dynamic> toMap() {
     return {
       'username': username,
-      'password': password,
       'friends': friends,
       'subscriptions': subscriptions,
       'profile_pic': profilePic,
@@ -54,8 +40,6 @@ class User {
     User returnUser = new User();
     returnUser.id = ref.id;
     returnUser.username = ref.get('username');
-    returnUser.password =
-        ref.data().containsKey('password') ? ref.get('password') : null;
     returnUser.friends = ref.get('friends');
     returnUser.subscriptions = ref.get('subscriptions');
     returnUser.profilePic = ref.get('profile_pic');

@@ -17,6 +17,8 @@ class SideBarFriends extends StatefulWidget {
 class _SideBarFriendsState extends State<SideBarFriends> {
   UserModel _uModel = new UserModel();
 
+  String _uid = '';
+
   User currentUser;
 
   List<User> friendsList = [];
