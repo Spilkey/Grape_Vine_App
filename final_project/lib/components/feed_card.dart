@@ -18,6 +18,7 @@ class FeedCard extends StatefulWidget {
   // owner variables
   final String ownerName;
   final String ownerProfileImageData;
+  final String userId;
 
   // post variables
   final String imageData;
@@ -31,7 +32,8 @@ class FeedCard extends StatefulWidget {
       this.ownerName,
       this.postTitle,
       this.postContent,
-      this.streetName});
+      this.streetName,
+      this.userId});
 
   @override
   _FeedCardState createState() => _FeedCardState();
@@ -88,22 +90,28 @@ class _FeedCardState extends State<FeedCard> {
         child: Column(
           children: [
             ListTile(
-                leading: profileImage,
-                title: GestureDetector(
-                  child: Text(widget.ownerName),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      Uint8List userImage = useDefaultImage
-                          ? null
-                          : Base64Codec().decode(widget.ownerProfileImageData);
-                      return ProfilePage(
-                        userName: widget.ownerName,
-                        userImage: userImage,
-                      );
-                    }));
-                  },
-                )),
+              leading: profileImage,
+              title: GestureDetector(
+                child: Text(widget.ownerName),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        Uint8List userImage = useDefaultImage
+                            ? null
+                            : Base64Codec()
+                                .decode(widget.ownerProfileImageData);
+                        return ProfilePage(
+                          userID: widget.userId,
+                          userImage: userImage,
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
             Container(
               child: Text(widget.postTitle),
             ),

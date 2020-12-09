@@ -36,10 +36,10 @@ class LocalStorageModel {
   }
 
   // update a specific setting in the database
-  Future<void> updateUserData(String key) async {
+  static Future<void> updateUserData(String key) async {
     var db = await LocalDB.database;
-    await db.update('UserData', UserData.userData[key],
-        where: 'userdata = ?', whereArgs: [key]);
+    await db.rawUpdate('UPDATE UserData SET value = ? WHERE userdata = ?',
+        [UserData.userData[key], key]);
   }
 
   // update all user settings

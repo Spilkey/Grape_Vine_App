@@ -1,3 +1,4 @@
+import 'package:final_project/models/local_storage_model.dart';
 import 'package:final_project/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/components/navigator_bar.dart';
@@ -15,8 +16,13 @@ class SplashScreen extends StatefulWidget {
 class SplashScreenState extends State<SplashScreen> {
   UserModel _userModel = UserModel();
   bool _showProgress = false;
+
+  var _local_db = LocalStorageModel();
+
   @override
   Widget build(BuildContext context) {
+    hasUserData();
+    _local_db.getUserData();
     var userWidget;
     if (_showProgress) {
     } else {
@@ -59,6 +65,7 @@ class SplashScreenState extends State<SplashScreen> {
                   color: Colors.white),
             ),
             onPressed: () async {
+              hasUserData();
               await Navigator.pushNamed(context, '/createUser');
               hasUserData();
             });

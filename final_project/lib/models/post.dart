@@ -1,7 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:final_project/models/db.dart';
-import 'package:flutter/material.dart';
-
 class Post {
   final bool isPrivate;
 
