@@ -1,4 +1,5 @@
 import 'package:final_project/models/colors.dart';
+import 'package:final_project/models/user_data.dart';
 import 'package:flutter/material.dart';
 
 import '../views/main_feed.dart';
@@ -30,7 +31,11 @@ class _NavigatorBarState extends State<NavigatorBar> {
     MainFeed(),
     DiscoverFeedPage(),
     // TEMP:
-    ProfilePage(userID: 'x3NbwdluXTcUQIqpSCho', userImage: null),
+    ProfilePage(
+        userID: UserData.userData['user_id'],
+        userImage: null,
+        isFriend: true,
+        isMainPage: true),
     Notifications(),
   ];
   @override

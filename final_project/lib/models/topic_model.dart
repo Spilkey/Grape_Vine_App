@@ -34,6 +34,13 @@ class TopicModel {
     return results;
   }
 
+  //  method is used to get all topics from the database as future
+  Future<QuerySnapshot> getAllTopicsFuture() {
+    FirebaseFirestore db = DB().database;
+    Future<QuerySnapshot> results = db.collection('topics').get();
+    return results;
+  }
+
   Future getTrendingTopics() async {
     var allTopicsData;
     List<TopicData> topicData = [];
