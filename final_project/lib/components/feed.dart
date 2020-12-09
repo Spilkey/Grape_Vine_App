@@ -1,3 +1,4 @@
+import 'package:final_project/models/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -25,6 +26,8 @@ class _FeedState extends State<Feed> {
     // generates an itemCount length List of Widgets
     // We use an item builder - we can use a promise here to obtain data from our data base
     // We should store our data retrieved from our db in the state here
+
+    String userId = UserData.userData['user_id'];
 
     return Scaffold(
       // streambuilder populates the listview from the firebase database

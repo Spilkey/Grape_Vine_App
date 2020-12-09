@@ -26,11 +26,10 @@ class _MainFeedState extends State<MainFeed> {
   );
 
   final _notifications = Notifications();
-  var _local_db = LocalStorageModel();
+
   @override
   Widget build(BuildContext context) {
     _notifications.init();
-    _local_db.getUserData();
 
     return DefaultTabController(
       length: 2,
