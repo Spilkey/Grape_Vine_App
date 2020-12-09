@@ -1,7 +1,7 @@
 import 'package:final_project/components/sidebar_userdata.dart';
 import 'package:final_project/models/user.dart';
 import 'package:final_project/models/user_model.dart';
-import 'package:final_project/models/user_settings.dart';
+import 'package:final_project/models/user_data.dart';
 import 'package:flutter/material.dart';
 import '../app_localizations.dart';
 
@@ -16,6 +16,8 @@ class SideBarFriends extends StatefulWidget {
 
 class _SideBarFriendsState extends State<SideBarFriends> {
   UserModel _uModel = new UserModel();
+
+  String _uid = '';
 
   User currentUser;
 
