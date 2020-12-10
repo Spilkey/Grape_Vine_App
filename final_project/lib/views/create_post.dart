@@ -30,6 +30,7 @@ class _CreatePostState extends State<CreatePost> {
   String _image64 = "";
   String _postContent = "";
   String _titleContent = "";
+  bool _isPrivate = false;
   // for UInt8 type
   Uint8List _imgBytes = Uint8List(10);
 
@@ -113,11 +114,10 @@ class _CreatePostState extends State<CreatePost> {
               // isPrivate, ownerID, ownerName, topicID
               String currentUserId = UserData.userData['user_id'];
               User currentUser = await UserModel().getUser(currentUserId);
-
               PostEntity postEntity = new PostEntity(
                   content: _postContent,
                   imageData: currentUser.profilePic,
-                  isPrivate: false,
+                  isPrivate: _isPrivate,
                   ownerId: currentUserId,
                   ownerName: currentUser.userName,
                   postImageData: _image64,
@@ -139,13 +139,10 @@ class _CreatePostState extends State<CreatePost> {
 
     if (!topicsLoaded) {
       TopicModel().getAllTopicsFuture().then((QuerySnapshot topicsData) {
-        print(topicsData.docs);
         topicsData.docs.forEach((e) {
-          print(e.get("topic_name"));
           topics[e.get("topic_name")] = e.id;
           topicNames.add(e.get("topic_name"));
         });
-        print(topicNames);
         setState(() {
           topicsLoaded = true;
         });
@@ -296,6 +293,17 @@ class _CreatePostState extends State<CreatePost> {
                           }).toList(),
                         ),
                       ],
+                    ),
+                    Container(
+                      child: SwitchListTile(
+                        title: Text("Is private"),
+                        value: _isPrivate,
+                        onChanged: (bool val) {
+                          setState(() {
+                            _isPrivate = val;
+                          });
+                        },
+                      ),
                     ),
                     Image.memory(
                       _imgBytes,

@@ -10,9 +10,9 @@ class UserModel {
     return res;
   }
 
-  updateUser(User user) {
+  Future updateUser(User user) {
     FirebaseFirestore db = DB().database;
-    var res = db.collection('users').doc(user.id).set(user.toMap());
+    Future res = db.collection('users').doc(user.id).set(user.toMap());
     return res;
   }
 

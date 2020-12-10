@@ -13,16 +13,7 @@ class _NotificationsState extends State<Notifications> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(AppLocalizations.of(context).translate('main_feed_title')),
-        ),
-        centerTitle: true,
-        actions: [IconButton(icon: Icon(Icons.apps), onPressed: () {})],
-        leading: Builder(
-            builder: (context) => IconButton(
-                icon: Icon(Icons.person),
-                onPressed: () => Scaffold.of(context).openDrawer())),
-      ),
+          title: Text("Notifcations"), centerTitle: true, leading: Container()),
       body: ListNotification(),
     );
   }
