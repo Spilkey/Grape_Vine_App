@@ -1,6 +1,5 @@
 import 'package:final_project/models/local_storage_model.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project/models/local_storage.dart';
 import '../app_localizations.dart';
 import './content_preferences.dart';
 import 'package:final_project/models/user_data.dart';
@@ -19,6 +18,7 @@ class _SettingsState extends State<Settings> {
   final _formkey = GlobalKey<FormState>();
   String _newUsername = UserData.userData['username'];
   var db = LocalStorageModel();
+  var contentPreferences;
 
   @override
   void initState() {
@@ -126,10 +126,14 @@ class _SettingsState extends State<Settings> {
                     });
                   }),
               GestureDetector(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ContentPreferences())),
+                  onTap: () {
+                    setState(() async {
+                      contentPreferences = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ContentPreferences()));
+                    });
+                  },
                   child: Align(
                     child: Text('Content preferences'),
                     alignment: Alignment.centerLeft,
