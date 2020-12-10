@@ -54,7 +54,10 @@ class _FeedCardState extends State<FeedCard> {
     // Get the data from the db
     CircleAvatar profileImage;
     Widget postImage;
+
     bool useDefaultImage;
+    bool postImageGiven = false;
+
     Widget location;
 
     if (userData != null) {
@@ -87,22 +90,24 @@ class _FeedCardState extends State<FeedCard> {
           height: 200,
         ),
       );
+      postImageGiven = true;
     } else {
-      postImage = Container(
-        height: 200,
-      );
+      postImage = Container();
+      postImageGiven = false;
     }
     if (widget.streetName != null) {
       location = Row(children: <Widget>[
         Icon(
           Icons.location_on,
         ),
-        Container(
-          child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Text(
-                widget.streetName,
-              )),
+        Flexible(
+          child: Container(
+            child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  widget.streetName,
+                )),
+          ),
         ),
       ]);
     } else {
@@ -136,7 +141,7 @@ class _FeedCardState extends State<FeedCard> {
       );
     } else {
       return Container(
-        height: 500,
+        height: postImageGiven ? 500 : 200,
         padding: EdgeInsets.all(10),
         child: Card(
           child: Column(
