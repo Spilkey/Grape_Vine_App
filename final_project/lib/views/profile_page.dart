@@ -4,6 +4,7 @@ import 'package:final_project/models/colors.dart';
 import 'package:final_project/models/post_model.dart';
 import 'package:final_project/models/user.dart';
 import 'package:final_project/models/user_data.dart';
+import 'package:final_project/models/user_db_notification.dart';
 import 'package:final_project/models/user_model.dart';
 import 'package:final_project/utils/image_utils.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +56,10 @@ class _NavBarState extends State<NavBar> {
           final addFriendMessage =
               SnackBar(content: Text('Added ${widget.userName}'));
           widget.currentUser.friends.add(widget.user.id);
+          widget.currentUser.notifications.add(UserNotifcation(
+              content: "You have added user ${widget.user.username}",
+              contextUserId: widget.user.id,
+              contextUsername: widget.user.userName));
           _uModel.updateUser(widget.currentUser).then((response) {
             setState(
               () {
@@ -64,7 +69,12 @@ class _NavBarState extends State<NavBar> {
                 );
               },
             );
-            widget.user.notifications
+            widget.user.notifications.add(UserNotifcation(
+              content:
+                  "User ${widget.currentUser.userName} has added you as their friend",
+              contextUserId: widget.currentUser.id,
+              contextUsername: widget.currentUser.userName,
+            ));
             _uModel.updateUser(widget.user);
             Scaffold.of(context).showSnackBar(addFriendMessage);
           });
