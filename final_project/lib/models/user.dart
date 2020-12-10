@@ -32,7 +32,7 @@ class User {
       'username': username,
       'friends': friends,
       'subscriptions': subscriptions,
-      'notifcations': UserNotifcation.toMapList(notifications),
+      'notifications': UserNotifcation.toMapList(notifications),
       'profile_pic': profilePic,
       'bio': bio
     };

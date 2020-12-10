@@ -5,8 +5,7 @@ class UserNotifcation {
 
   UserNotifcation({this.content, this.contextUserId, this.contextUsername});
 
-  static List<UserNotifcation> fromMapList(
-      List<Map<String, dynamic>> notifications) {
+  static List<UserNotifcation> fromMapList(List<dynamic> notifications) {
     List<UserNotifcation> userNotif = [];
     if (notifications.length > 0) {
       notifications.forEach((element) {
