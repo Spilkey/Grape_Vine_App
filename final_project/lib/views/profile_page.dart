@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/models/colors.dart';
 import 'package:final_project/models/post_model.dart';
 import 'package:final_project/models/user.dart';
+import 'package:final_project/models/user_data.dart';
 import 'package:final_project/models/user_model.dart';
 import 'package:final_project/utils/image_utils.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +18,20 @@ LinearGradient backgroundGradient() {
  * Will also show username and amount of friends
  */
 class NavBar extends StatefulWidget {
-  NavBar({@required this.userName, this.isFriend, this.isMainPage, Key key})
+  NavBar(
+      {@required this.userName,
+      this.isFriend,
+      this.isMainPage,
+      this.currentUser,
+      this.user,
+      Key key})
       : super(key: key);
 
   final String userName;
   final bool isFriend;
   final bool isMainPage;
+  final User currentUser;
+  final User user;
 
   @override
   _NavBarState createState() => _NavBarState();
@@ -33,6 +42,9 @@ class _NavBarState extends State<NavBar> {
     Icons.person_add_alt,
     color: LightColor,
   );
+
+  UserModel _uModel = new UserModel();
+
   @override
   Widget build(BuildContext context) {
     Widget addFriendButton;
@@ -42,15 +54,20 @@ class _NavBarState extends State<NavBar> {
         onPressed: () {
           final addFriendMessage =
               SnackBar(content: Text('Added ${widget.userName}'));
-          setState(
-            () {
-              friendStatus = Icon(
-                Icons.person,
-                color: LightColor,
-              );
-            },
-          );
-          Scaffold.of(context).showSnackBar(addFriendMessage);
+          widget.currentUser.friends.add(widget.user.id);
+          _uModel.updateUser(widget.currentUser).then((response) {
+            setState(
+              () {
+                friendStatus = Icon(
+                  Icons.person,
+                  color: LightColor,
+                );
+              },
+            );
+            widget.user.notifications
+            _uModel.updateUser(widget.user);
+            Scaffold.of(context).showSnackBar(addFriendMessage);
+          });
         },
       );
     } else {
@@ -113,11 +130,16 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future profileData() async {
     User getUserData = await _uModel.getUser(widget.userID);
+    User currentUser = await _uModel.getUser(UserData.userData['user_id']);
 
     QuerySnapshot getPosts =
         await _postsModel.getAllPostsFromUser(widget.userID);
 
-    return {'userDataSnapshot': getUserData, 'postDataSnapshot': getPosts};
+    return {
+      'userDataSnapshot': getUserData,
+      'postDataSnapshot': getPosts,
+      'currentUserDetails': currentUser
+    };
   }
 
   @override
@@ -129,12 +151,17 @@ class _ProfilePageState extends State<ProfilePage> {
           future: profileData(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              var userProfileData = snapshot.data['userDataSnapshot'];
+              User userProfileData = snapshot.data['userDataSnapshot'];
+              User currentUserProfileData = snapshot.data['currentUserDetails'];
 
               Uint8List dbProfileImage =
                   ImageUtil.getDataFromBase64String(userProfileData.profilePic);
               Uint8List renderedImage =
                   dbProfileImage != null ? dbProfileImage : widget.userImage;
+
+              bool isFriendCheckDB =
+                  currentUserProfileData.friends.contains(userProfileData.id) ||
+                      currentUserProfileData.id == userProfileData.id;
 
               return Column(
                 children: [
@@ -147,7 +174,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             // ACTION BUTTONS
                             NavBar(
                                 userName: userProfileData.username,
-                                isFriend: widget.isFriend,
+                                currentUser: currentUserProfileData,
+                                user: userProfileData,
+                                isFriend: widget.isFriend || isFriendCheckDB,
                                 isMainPage: widget.isMainPage),
                             // USER AVATAR
                             Center(
