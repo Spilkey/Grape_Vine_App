@@ -47,15 +47,6 @@ class _DiscoverFeedPageState extends State<DiscoverFeedPage> {
             ],
           ),
           body: Column(children: [Expanded(child: FeedDiscover())]),
-          floatingActionButton: FloatingActionButton.extended(
-            label: Text(
-                AppLocalizations.of(context).translate('subscribe_label')
-              ),
-            onPressed: () {
-              // TODO after users model has been implemented, add the topic to user's list of subscribed topics
-              print("DEBUG: ${UserData.currentUser.id}");
-            },
-          )
         )
       );
   }
