@@ -92,7 +92,12 @@ class _FeedCardState extends State<FeedCard> {
       );
       postImageGiven = true;
     } else {
-      postImage = Container();
+      postImage = Container(
+          color: Colors.grey[400],
+          height: 200,
+          child: Center(
+            child: Text("No Image"),
+          ));
       postImageGiven = false;
     }
     if (widget.streetName != null) {
@@ -141,7 +146,7 @@ class _FeedCardState extends State<FeedCard> {
       );
     } else {
       return Container(
-        height: postImageGiven ? 500 : 200,
+        height: 500,
         padding: EdgeInsets.all(10),
         child: Card(
           child: Column(
