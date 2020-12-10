@@ -56,19 +56,19 @@ class _SettingsState extends State<Settings> {
                           // temp widget for the user display
                           children: <Widget>[
                             CircleAvatar(
-                                backgroundColor: Colors.green, child: Text('U')
-                                // This line is causing an error
-                                // Text(
-                                //     UserData.userData['username'].isNotEmpty
-                                //         ? UserData.userData['username'][0]
-                                //         : '?'),
-                                ),
+                              backgroundColor: Colors.green,
+                              child: Text(UserData.userData['username'] != null
+                                  ? UserData.userData['username'].isNotEmpty
+                                      ? UserData.userData['username'][0]
+                                      : '?'
+                                  : '?'),
+                            ),
                             Spacer(),
                             Flexible(
                               flex: 5,
-                              child: Text('Username'),
-                              // this line is causing an error
-                              // Text(UserData.userData['username']),
+                              child: Text(UserData.userData['username'] != null
+                                  ? UserData.userData['username']
+                                  : ""),
                             ),
                           ],
                         ),
@@ -80,12 +80,22 @@ class _SettingsState extends State<Settings> {
                       .translate('change_display_name_prompt'),
                 ),
                 onChanged: (String val) {
+                  print(val);
                   setState(() {
+                    if (val != null) {
+                      if (val.isNotEmpty) {
+                        _newUsername = val;
+                      }
+                    }
+                  });
+                },
+                onSaved: (String val) {
+                  if (val != null) {
                     if (val.isNotEmpty) {
                       _newUsername = val;
                     }
-                    UserData.userData['username'] = _newUsername;
-                  });
+                  }
+                  UserData.userData['username'] = _newUsername;
                 },
               ),
               SwitchListTile(
@@ -134,6 +144,7 @@ class _SettingsState extends State<Settings> {
             Text(AppLocalizations.of(context).translate('save_settings_label')),
         onPressed: () async {
           if (_formkey.currentState.validate()) {
+            _formkey.currentState.save();
             await db.updateTable();
             Navigator.pop(context);
           } else {
