@@ -27,7 +27,7 @@ class _FeedState extends State<FeedDiscover> {
   var data;
   List<dynamic> _subscriptions = [];
   var preferences = UserData.userData['content_preferences'];
-
+  var preferenceLength = 0;
   User _currentUser;
   bool subscriptionsLoaded = false;
 
@@ -65,18 +65,18 @@ class _FeedState extends State<FeedDiscover> {
               _userModel.updateUser(_currentUser).then( (response) {
                 setState( (){});
               });      
-              print("DEBUG: ${UserData.userData['user_id']}");
-              print("DEBUG: $_subscriptions");
-              print("DEBUG: $topicId");   
             }
           );
           if (_subscriptions != null){
             if (_subscriptions.contains(topicId)){
               subButton = FloatingActionButton.extended( 
-                label: Text('Unsubscribe'),
+                label: Text(AppLocalizations.of(context).translate('unsubscribe_label')),
                 onPressed:() {
-                  print(_subscriptions.indexOf(topicId));
-                  // print (_subscriptions.indexWhere((_subscriptions) => _subscriptions.contains('topicId')).toString());
+                  _currentUser.subscriptions.remove(topicId);
+
+                  _userModel.updateUser(_currentUser).then( (response) {
+                    setState( () {});
+                  });
                 }
               );
             }
@@ -104,14 +104,12 @@ class _FeedState extends State<FeedDiscover> {
     return StreamBuilder<QuerySnapshot>(
       stream: _model.getAllTopics(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        var tempTopics = snapshot.data.docs;
+        var preferredTopics = snapshot.data.docs;
         var removedTopics = 0;
-        tempTopics.where( (topic) => preferences[topic] == true).toList();
-        print("DEBUG: ${tempTopics.length}");
+        preferredTopics.where( (topic) => preferences[topic] == true).toList();
         if (snapshot.hasData) {
           List<Tab> tabs = [];
           List<Widget> tabPanes = [];
-          print("DEBUG: ${AppLocalizations.of(context).locale}");
           for (QueryDocumentSnapshot doc in snapshot.data.docs) {
             var topicName = doc.get('topic_name');
             if (preferences[topicName] == true){
@@ -128,7 +126,6 @@ class _FeedState extends State<FeedDiscover> {
           }
           return DefaultTabController(
             length: snapshot.data.docs.length - removedTopics,
-            // length: tempTopics.length,
             child: Scaffold(
               appBar: AppBar(
                 bottom: PreferredSize(

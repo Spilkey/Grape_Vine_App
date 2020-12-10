@@ -91,7 +91,6 @@ class _MainFeedState extends State<MainFeed> {
         // the form will either go into views or components
         floatingActionButton: FloatingActionButton.extended(
           icon: Icon(Icons.menu),
-          // label: Text("Create"),
           label: Text(AppLocalizations.of(context).translate('create_label')),
           onPressed: () async {
             // Navigate here to create post form handle any returned info here

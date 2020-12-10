@@ -8,6 +8,7 @@ import 'package:final_project/models/user_db_notification.dart';
 import 'package:final_project/models/user_model.dart';
 import 'package:final_project/utils/image_utils.dart';
 import 'package:flutter/material.dart';
+import '../app_localizations.dart';
 import '../components/profile_feed_card.dart';
 
 LinearGradient backgroundGradient() {
@@ -54,14 +55,17 @@ class _NavBarState extends State<NavBar> {
         icon: friendStatus,
         onPressed: () {
           final addFriendMessage =
-              SnackBar(content: Text('Added ${widget.userName}'));
+              // SnackBar(content: Text('Added ${widget.userName}'));
+              SnackBar(content: Text(AppLocalizations.of(context)
+                .translate('added_label') + "${widget.userName}"));
           // safety check for a null friends lists
           if (widget.currentUser.friends == null) {
             widget.currentUser.friends = [];
           }
           widget.currentUser.friends.add(widget.user.id);
           widget.currentUser.notifications.add(UserNotifcation(
-              content: "You have added user ${widget.user.username}",
+              content: AppLocalizations.of(context)
+                .translate('user_added_label') + "${widget.user.username}",
               contextUserId: widget.user.id,
               contextUsername: widget.user.userName));
           _uModel.updateUser(widget.currentUser).then((response) {
@@ -75,7 +79,9 @@ class _NavBarState extends State<NavBar> {
             );
             widget.user.notifications.add(UserNotifcation(
               content:
-                  "User ${widget.currentUser.userName} has added you as their friend",
+                  AppLocalizations.of(context)
+                .translate('user_label_0') + "${widget.currentUser.userName}" + AppLocalizations.of(context)
+                .translate('user_label_1'),
               contextUserId: widget.currentUser.id,
               contextUsername: widget.currentUser.userName,
             ));
@@ -250,7 +256,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             color: SecondaryColor,
                                             fontWeight: FontWeight.bold)),
                                     Text(
-                                      'Friends',
+                                      AppLocalizations.of(context).translate('friends_label'),
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     )

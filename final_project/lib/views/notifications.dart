@@ -13,7 +13,7 @@ class _NotificationsState extends State<Notifications> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Notifcations"), centerTitle: true, leading: Container()),
+        title: Text(AppLocalizations.of(context).translate('notifications_title')), centerTitle: true, leading: Container()),
       body: ListNotification(),
     );
   }

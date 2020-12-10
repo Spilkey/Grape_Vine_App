@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:final_project/models/post_model.dart';
+import '../app_localizations.dart';
 import 'feed_card.dart';
 
 /// This will be where we use our models and populate a feed
@@ -69,7 +70,7 @@ class _FeedState extends State<Feed> {
                 });
           } else {
             return Center(
-                child: Text("It looks like you have no friends posts yet"));
+              child: Text(AppLocalizations.of(context).translate('no_friends_label')));
           }
         },
       ),

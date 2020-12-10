@@ -72,7 +72,6 @@ class _CreatePostState extends State<CreatePost> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          // title: Text('Keep as draft?'),
           title:
               Text(AppLocalizations.of(context).translate('keep_draft_alert')),
           actions: [
@@ -267,7 +266,7 @@ class _CreatePostState extends State<CreatePost> {
                     ),
                     Row(
                       children: [
-                        Text("Topic: "),
+                        Text(AppLocalizations.of(context).translate('topic_label') + ": "),
                         DropdownButton<String>(
                           value: dropdownTopicsValueDisplay,
                           icon: Icon(Icons.arrow_downward),
@@ -296,7 +295,7 @@ class _CreatePostState extends State<CreatePost> {
                     ),
                     Container(
                       child: SwitchListTile(
-                        title: Text("Is private"),
+                        title:  Text(AppLocalizations.of(context).translate("is_private_label")),
                         value: _isPrivate,
                         onChanged: (bool val) {
                           setState(() {

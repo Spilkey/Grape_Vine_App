@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../app_localizations.dart';
 import '../models/user_data.dart';
 
 class ContentPreferences extends StatefulWidget {
@@ -13,7 +14,7 @@ class _ContentPreferencesState extends State<ContentPreferences> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('User preferences'),
+          title: Text(AppLocalizations.of(context).translate('content_pref_title')),
           centerTitle: true,
           leading: IconButton(
               icon: Icon(Icons.arrow_back),
@@ -24,10 +25,11 @@ class _ContentPreferencesState extends State<ContentPreferences> {
             Container(
               padding: EdgeInsets.only(left: 20, right: 20, top: 20),
               child: Text(
-                  'These are your content preferences. You can manage which topics you see on the Discovery page.'),
+                  AppLocalizations.of(context).translate('content_pref_description')
+                ),
             ),
             DataTable(
-              columns: [DataColumn(label: Text('Preferences'))],
+              columns: [DataColumn(label: Text(AppLocalizations.of(context).translate('preferences_label')))],
               rows: contentPreferences.entries
                   .map<DataRow>(
                     (e) => DataRow(cells: [

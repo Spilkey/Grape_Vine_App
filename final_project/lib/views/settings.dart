@@ -138,7 +138,8 @@ class _SettingsState extends State<Settings> {
                       });
                     },
                     child: (Text(
-                      'Content preferences',
+                      AppLocalizations.of(context)
+                      .translate('content_pref_label'),
                       style: TextStyle(fontSize: 16),
                     ))),
               ),
