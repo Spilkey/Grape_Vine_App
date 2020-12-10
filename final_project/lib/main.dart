@@ -11,6 +11,8 @@ import 'package:final_project/views/splash_screen.dart';
 import 'package:final_project/app_localizations.dart';
 import 'package:final_project/views/create_user_page.dart';
 
+import 'views/main_feed.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocalStorageModel.initUserData();
@@ -58,6 +60,7 @@ class MyApp extends StatelessWidget {
           '/mapPage': (BuildContext context) => MapPage(),
           '/createUser': (BuildContext context) => CreateUserPage(),
           '/homePage': (BuildContext context) => NavigatorBar(),
+          '/mainPage': (BuildContext context) => MainFeed(),
         });
   }
 }
