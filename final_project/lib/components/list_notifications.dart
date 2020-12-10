@@ -5,6 +5,8 @@ import 'package:final_project/models/user_model.dart';
 import 'package:final_project/views/profile_page.dart';
 import 'package:flutter/material.dart';
 
+import '../app_localizations.dart';
+
 class ListNotification extends StatefulWidget {
   @override
   _ListNotificationState createState() => _ListNotificationState();
@@ -43,7 +45,7 @@ class _ListNotificationState extends State<ListNotification> {
             });
       } else {
         return Center(
-          child: Text("You have no notifications"),
+          child: Text(AppLocalizations.of(context).translate('no_notifications_label')),
         );
       }
     }

@@ -4,6 +4,7 @@ import 'package:final_project/models/user.dart';
 import 'package:final_project/models/user_model.dart';
 import 'package:final_project/utils/image_utils.dart';
 import 'package:flutter/material.dart';
+import '../app_localizations.dart';
 import '../views/profile_page.dart';
 
 // Is a card that will appear in a feed
@@ -96,7 +97,7 @@ class _FeedCardState extends State<FeedCard> {
           color: Colors.grey[400],
           height: 200,
           child: Center(
-            child: Text("No Image"),
+            child: Text(AppLocalizations.of(context).translate('no_image_label')),
           ));
       postImageGiven = false;
     }

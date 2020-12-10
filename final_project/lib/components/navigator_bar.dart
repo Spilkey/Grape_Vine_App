@@ -64,7 +64,7 @@ class _NavigatorBarState extends State<NavigatorBar> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
-              label: "Account",
+              label: AppLocalizations.of(context).translate('btm_nav_account_label'),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications),

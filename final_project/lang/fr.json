@@ -1,4 +1,7 @@
 {
+    "splash_screen_title": "RAISIN",
+    "splash_begin_text": "Commençons",
+
     "main_feed_title": "Alimentation Principale",
     "settings_label": "Paramètres", 
     "settings_confirm": "Paramètres utilisateur enregistrés",
@@ -9,11 +12,16 @@
     "btm_nav_home_label": "Accueil",
     "btm_nav_search_label": "Découvrir",
     "btm_nav_notif_label": "Notifications",
+    "btm_nav_account_label": "Compte",
+
+    "no_friends_label": "Il semble que vous n'avez pas encore de messages d'amis",
 
     "discover_feed_title": "Découvrir le Flux",
     "subscribe_label": "Souscrire",
+    "no_image_label": "Pas d'image",
 
     "notifications_title": "Notifications",
+    "no_notifications_label": "Vous n'avez aucune notification",
 
     "change_display_name_prompt": "Changer le nom d'affichage",
     "mixed_feed_option": "Utiliser des aliments mélangés",
@@ -21,6 +29,7 @@
     "allow_location_option": "Autoriser la localisation",
     "save_settings_label": "Enregistrer les paramètres utilisateur",
     "save_failed": "Impossible d'enregistrer les paramètres utilisateur",
+    "content_pref_label": "Préférences de contenu",
 
     "keep_draft_alert": "Conserver comme brouillon?",
     "keep_draft_option": "Conserver comme brouillon",
@@ -34,8 +43,34 @@
     "title_validator": "Veuillez saisir un titre",
     "content_prompt": "Écris quelque chose",
     "content_validator": "Veuillez saisir des informations",
+    "topic_label": "Sujet",
+    "is_private_label": "Is private",
 
     "map_page_title": "Choisissez un emplacement",
 
-    "friends_bar_title": "Mes amies"
+    "friends_bar_title": "Mes amies",
+
+    "analytics_title": "Tendance",
+    "top_trending_label": "est la tendance actuelle!",
+    
+    "create_user_title": "Créer un nom d'utilisateur",
+    "enter_username_label": "Entrez un nom d'utilisateur",
+    "enter_username_description": "Créer un nom d'utilisateur - Vous n'êtes pas obligé d'en créer un, mais si vous le faites, il peut être modifié plus tard",
+    "upload_picture_label": "Télécharger une photo de profil",
+    "upload_picture_description": "Ajouter une image - vous pouvez cliquer sur votre image pour la modifier", 
+    "getting_started_title": "Commencer",
+    "profile_created_label": "Le profil a été créé",
+    "enjoy_label": "Prendre plaisir!",
+    "close_label": "proche",
+    "move_on_label": "Passez",
+
+    "added_label": "Ajouté",
+    "user_added_label": "Vous avez ajouté un utilisateur",
+    "user_label_0": "Utilisateur",
+    "user_label_1": "vous a ajouté comme ami",
+    "friends_label": "Copains",
+
+    "content_pref_title": "Préférences de l'utilisateur",
+    "content_pref_description": "Ce sont vos préférences de contenu. Vous pouvez gérer les sujets que vous voyez sur la page Découverte.",
+    "preferences_label": "Préférences"
 }

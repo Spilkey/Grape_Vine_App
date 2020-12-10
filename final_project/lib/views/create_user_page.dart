@@ -7,6 +7,8 @@ import 'package:final_project/models/user_model.dart';
 import 'package:final_project/models/local_storage.dart';
 import 'package:final_project/models/local_storage_model.dart';
 
+import '../app_localizations.dart';
+
 class CreateUserPage extends StatefulWidget {
   CreateUserPage({Key key, this.title}) : super(key: key);
 
@@ -33,7 +35,6 @@ class CreateUserPageState extends State<CreateUserPage> {
         ? Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.purple, width: 10),
-              // borderRadius: BorderRadius.circular(40),
             ),
             padding: EdgeInsets.all(10),
             child: Icon(Icons.add))
@@ -42,20 +43,19 @@ class CreateUserPageState extends State<CreateUserPage> {
               border: Border.all(color: Colors.purple, width: 10),
               borderRadius: BorderRadius.circular(200),
             ),
-            // padding: EdgeInsets.all(10),
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(200),
                 child: ImageUtil.imageFromBase64String(_profilePic)));
     steps = [
       Step(
-        title: const Text('Create a username'),
+        title: Text(AppLocalizations.of(context).translate('create_user_title')),
         isActive: _currentStep == 0 ? true : false,
         state: StepState.indexed,
         content: Container(
           child: Column(
             children: [
               TextField(
-                decoration: InputDecoration(labelText: 'Enter a username'),
+                decoration: InputDecoration(labelText: AppLocalizations.of(context).translate('enter_username_label')),
                 onChanged: (String val) {
                   setState(() {
                     _username = val;
@@ -63,13 +63,14 @@ class CreateUserPageState extends State<CreateUserPage> {
                 },
               ),
               Text(
-                  'Make a username - You don\t have to make one, but if you do it can be changed later'),
+                  AppLocalizations.of(context).translate('enter_username_description'),
+              ),
             ],
           ),
         ),
       ),
       Step(
-        title: const Text('Upload a profile picture'),
+        title: Text(AppLocalizations.of(context).translate('upload_picture_label')),
         isActive: _currentStep == 1 ? true : false,
         state: StepState.indexed,
         content: Container(
@@ -88,7 +89,7 @@ class CreateUserPageState extends State<CreateUserPage> {
                     }
                   },
                   child: imgDisplay),
-              Text('Add a picture - you can click on your image to change it'),
+              Text(AppLocalizations.of(context).translate('upload_picture_description')),
             ],
           ),
         ),
@@ -98,18 +99,18 @@ class CreateUserPageState extends State<CreateUserPage> {
     print('# of steps: ${steps.length}');
     return Scaffold(
         appBar: AppBar(
-          title: Text('Getting Started'),
+          title: Text(AppLocalizations.of(context).translate('getting_started_title')),
         ),
         body: _stepsCompleted
             ? Container(
                 child: Center(
                   child: AlertDialog(
-                    title: Text('Profile has been created'),
-                    content: Text('Enjoy!'),
+                    title: Text(AppLocalizations.of(context).translate('profile_created_label')),
+                    content: Text(AppLocalizations.of(context).translate('enjoy_label')),
                     actions: [
                       new FlatButton(
                           onPressed: () => Navigator.pop(context),
-                          child: Text('close'))
+                          child: Text(AppLocalizations.of(context).translate('close_label'))),
                     ],
                   ),
                 ),
@@ -128,14 +129,14 @@ class CreateUserPageState extends State<CreateUserPage> {
                       color: Colors.purple,
                       padding: EdgeInsets.all(10),
                       child: Text(
-                        'Move on',
+                        AppLocalizations.of(context).translate('move_on_label'),
                         style: TextStyle(
                             fontWeight: FontWeight.w500, color: Colors.white),
                       ),
                       onPressed: _nextStep,
                     ),
                     TextButton(
-                      child: const Text('go back'),
+                      child: Text(AppLocalizations.of(context).translate('go_back_label')),
                       onPressed: _goBack,
                     ),
                   ]);

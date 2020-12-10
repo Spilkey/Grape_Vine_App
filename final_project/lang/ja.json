@@ -1,4 +1,7 @@
 {
+    "splash_screen_title": "葡萄",
+    "splash_begin_text": "ベギン",
+
     "main_feed_title": "メインフィード",
     "settings_label": "設定",
     "settings_confirm": "保存されたユーザー設定！",
@@ -9,11 +12,16 @@
     "btm_nav_home_label": "ホーム",
     "btm_nav_search_label": "発見する",
     "btm_nav_notif_label": "通知",
+    "btm_nav_account_label": "アカウント",
+
+    "no_friends_label": "まだ友達の投稿がないようです",
 
     "discover_feed_title": "フィードを見つける",
     "subscribe_label": "申し込む",
+    "no_image_label": "画像無し",
     
     "notifications_title": "通知",
+    "no_notifications_label": "通知はありません",
 
     "change_display_name_prompt": "表示名を変更する",
     "mixed_feed_option": "使用済み混合飼料",
@@ -21,6 +29,7 @@
     "allow_location_option": "場所を許可する",
     "save_settings_label": "ユーザー設定を保存する",
     "save_failed": "ユーザー設定を保存できません",
+    "content_pref_label": "コンテンツの好み",
 
     "keep_draft_alert": "ドラフトとして保持しますか？",
     "keep_draft_option": "ドラフトとして保持",
@@ -34,8 +43,34 @@
     "title_validator": "タイトルを入力してください",
     "content_prompt": "何かを書く",
     "content_validator": "いくつか入力してください",
+    "topic_label": "トピック",
+    "is_private_label": "プライベートです",
 
     "map_page_title": "場所を選択してください",
 
-    "friends_bar_title": "私の友人"
+    "friends_bar_title": "私の友人",
+
+    "analytics_title": "トレンド",
+    "top_trending_label": "現在のトップトレンドです！",
+
+    "create_user_title": "ユーザー名を作成する",
+    "enter_username_label": "ユーザー名を入力",
+    "enter_username_description": "ユーザー名を作成する-ユーザー名を作成する必要はありませんが、作成した場合は後で変更できます",
+    "upload_picture_label": "プロフィール写真をアップロードする",
+    "upload_picture_description": "写真を追加する-画像をクリックして変更できます", 
+    "getting_started_title": "入門",
+    "profile_created_label": "プロファイルが作成されました",
+    "enjoy_label": "楽しい！",
+    "close_label": "閉じる",
+    "move_on_label": "進め",
+
+    "added_label": "追加",
+    "user_added_label": "ユーザーを追加しました",
+    "user_label_0": "ユーザー",
+    "user_label_1": "あなたを友達として追加しました",
+    "friends_label": "友達",
+
+    "content_pref_title": "ユーザー設定",
+    "content_pref_description": "これらはあなたのコンテンツの好みです。 [検出]ページに表示されるトピックを管理できます。",
+    "preferences_label": "環境設定"
 }
