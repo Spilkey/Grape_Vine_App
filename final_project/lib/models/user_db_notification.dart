@@ -17,9 +17,14 @@ class UserNotifcation {
 
   static List<Map<String, dynamic>> toMapList(
       List<UserNotifcation> notifications) {
-    return notifications.map((element) {
-      return element.toMap();
-    }).toList();
+      if(notifications != null){
+        return notifications.map((element) {
+          return element.toMap();
+        }).toList();
+      }else {
+        return [];
+      }
+
   }
 
   factory UserNotifcation.fromMap(Map<String, dynamic> map) {
