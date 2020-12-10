@@ -50,14 +50,19 @@ class _FeedState extends State<Feed> {
                   // Here we would pass in some parameters to our indiviual cards
                   // Example ----------------------
                   var data = snapshot.data[index];
-                  return FeedCard(
+                  if (data != null) {
+                    return FeedCard(
                       userId: data.ownerId,
                       ownerProfileImageData: data.imageData,
                       ownerName: data.ownerName,
                       imageData: data.postImageData,
                       postTitle: data.postTitle,
                       postContent: data.content,
-                      streetName: data.streetName);
+                      streetName: data.streetName,
+                    );
+                  } else {
+                    FeedCard();
+                  }
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return const Divider();
