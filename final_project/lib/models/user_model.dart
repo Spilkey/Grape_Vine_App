@@ -16,8 +16,6 @@ class UserModel {
     return res;
   }
 
-
-
   Future<User> getUser(String id) async {
     FirebaseFirestore db = DB().database;
     DocumentSnapshot res = await db.collection('users').doc(id).get();
