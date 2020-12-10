@@ -158,7 +158,14 @@ class CreateUserPageState extends State<CreateUserPage> {
     if (docRef != null) {
       _newUser.id = docRef.id;
       // add user to the local db
+      print(_newUser.id);
       UserData.initUserData(_newUser);
+      await LocalStorageModel.updateUserData('user_id').catchError(
+        (error) {
+          print(error);
+        },
+      );
+
       print('user has been added to the firestore');
     }
   }

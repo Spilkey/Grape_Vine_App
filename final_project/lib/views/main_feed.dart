@@ -1,5 +1,6 @@
 import 'package:final_project/components/feed.dart';
 import 'package:final_project/components/sidebar.dart';
+import 'package:final_project/models/colors.dart';
 import 'package:final_project/models/notifications.dart';
 import 'package:final_project/models/local_storage_model.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +26,10 @@ class _MainFeedState extends State<MainFeed> {
   );
 
   final _notifications = Notifications();
-  var _local_db = LocalStorageModel();
+
   @override
   Widget build(BuildContext context) {
     _notifications.init();
-    _local_db.getUserData();
 
     return DefaultTabController(
       length: 2,
@@ -75,8 +75,8 @@ class _MainFeedState extends State<MainFeed> {
                     text: AppLocalizations.of(context)
                         .translate('private_label')),
               ],
-              labelColor: Colors.purple,
-              indicatorColor: Colors.purple,
+              labelColor: PrimaryColor,
+              indicatorColor: PrimaryColor,
               unselectedLabelColor: Colors.grey,
             ),
             Expanded(

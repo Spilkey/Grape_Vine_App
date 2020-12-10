@@ -1,5 +1,7 @@
 import 'package:final_project/models/local_storage_model.dart';
 import 'package:flutter/material.dart';
+import '../app_localizations.dart';
+import './content_preferences.dart';
 import 'package:final_project/models/user_data.dart';
 import 'package:final_project/app_localizations.dart';
 
@@ -16,6 +18,7 @@ class _SettingsState extends State<Settings> {
   final _formkey = GlobalKey<FormState>();
   String _newUsername = UserData.userData['username'];
   var db = LocalStorageModel();
+  var contentPreferences;
 
   @override
   void initState() {
@@ -28,8 +31,9 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back),
           onPressed: () => {Navigator.pop(context)},
         ),
       ),
@@ -53,33 +57,49 @@ class _SettingsState extends State<Settings> {
                           children: <Widget>[
                             CircleAvatar(
                               backgroundColor: Colors.green,
-                              child: Text(
-                                  UserData.userData['username'].isNotEmpty
+                              child: Text(UserData.userData['username'] != null
+                                  ? UserData.userData['username'].isNotEmpty
                                       ? UserData.userData['username'][0]
-                                      : '?'),
+                                      : '?'
+                                  : '?'),
                             ),
                             Spacer(),
                             Flexible(
                               flex: 5,
-                              child: Text(UserData.userData['username']),
+                              child: Text(UserData.userData['username'] != null
+                                  ? UserData.userData['username']
+                                  : ""),
                             ),
                           ],
                         ),
                       ])),
-              TextFormField(
-                decoration: InputDecoration(
-                  icon: Icon(Icons.person),
-                  labelText: AppLocalizations.of(context)
-                      .translate('change_display_name_prompt'),
-                ),
-                onChanged: (String val) {
-                  setState(() {
-                    if (val.isNotEmpty) {
-                      _newUsername = val;
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.person),
+                    labelText: AppLocalizations.of(context)
+                        .translate('change_display_name_prompt'),
+                  ),
+                  onChanged: (String val) {
+                    print(val);
+                    setState(() {
+                      if (val != null) {
+                        if (val.isNotEmpty) {
+                          _newUsername = val;
+                        }
+                      }
+                    });
+                  },
+                  onSaved: (String val) {
+                    if (val != null) {
+                      if (val.isNotEmpty) {
+                        _newUsername = val;
+                      }
                     }
                     UserData.userData['username'] = _newUsername;
-                  });
-                },
+                  },
+                ),
               ),
               SwitchListTile(
                   title: Text(AppLocalizations.of(context)
@@ -108,6 +128,21 @@ class _SettingsState extends State<Settings> {
                       UserData.userData['allow_location'] = val;
                     });
                   }),
+              ListTile(
+                leading: GestureDetector(
+                    onTap: () {
+                      setState(() async {
+                        contentPreferences = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ContentPreferences()));
+                      });
+                    },
+                    child: (Text(
+                      'Content preferences',
+                      style: TextStyle(fontSize: 16),
+                    ))),
+              ),
             ],
           ),
         ),
@@ -118,6 +153,7 @@ class _SettingsState extends State<Settings> {
             Text(AppLocalizations.of(context).translate('save_settings_label')),
         onPressed: () async {
           if (_formkey.currentState.validate()) {
+            _formkey.currentState.save();
             await db.updateTable();
             Navigator.pop(context);
           } else {

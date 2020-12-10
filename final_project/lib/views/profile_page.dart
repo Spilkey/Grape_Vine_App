@@ -1,33 +1,28 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/models/colors.dart';
+import 'package:final_project/models/post_model.dart';
+import 'package:final_project/models/user.dart';
+import 'package:final_project/models/user_model.dart';
+import 'package:final_project/utils/image_utils.dart';
 import 'package:flutter/material.dart';
 import '../components/profile_feed_card.dart';
 
 LinearGradient backgroundGradient() {
-  return LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    stops: [
-      0.4,
-      0.4,
-      0.2,
-      0.7,
-      0.1
-    ],
-    colors: [
-      Color(0xFF6541A5),
-      Color(0xFF4D307F),
-      Color(0xFF472B75),
-      Color(0xFF3D2464),
-      Color(0xFF2C1745),
-    ]
-  );
+  return GradientBackground;
 }
 
+/**
+ * Top part of profile page incharge of displaying add user as friend and go back buttons
+ * Will also show username and amount of friends
+ */
 class NavBar extends StatefulWidget {
-  NavBar({@required this.userName, Key key}) : super(key: key);
+  NavBar({@required this.userName, this.isFriend, this.isMainPage, Key key})
+      : super(key: key);
 
   final String userName;
+  final bool isFriend;
+  final bool isMainPage;
 
   @override
   _NavBarState createState() => _NavBarState();
@@ -36,45 +31,74 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   Icon friendStatus = Icon(
     Icons.person_add_alt,
-    color: Colors.deepPurpleAccent,
+    color: LightColor,
   );
   @override
   Widget build(BuildContext context) {
+    Widget addFriendButton;
+    if (!widget.isFriend) {
+      addFriendButton = IconButton(
+        icon: friendStatus,
+        onPressed: () {
+          final addFriendMessage =
+              SnackBar(content: Text('Added ${widget.userName}'));
+          setState(
+            () {
+              friendStatus = Icon(
+                Icons.person,
+                color: LightColor,
+              );
+            },
+          );
+          Scaffold.of(context).showSnackBar(addFriendMessage);
+        },
+      );
+    } else {
+      addFriendButton = Container(
+        height: 40,
+      );
+    }
+    Widget goBackButton;
+    if (!widget.isMainPage) {
+      goBackButton = IconButton(
+        icon: Icon(
+          Icons.arrow_back,
+          color: LightColor,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      );
+    } else {
+      goBackButton = Container();
+    }
+
     return Container(
         margin: EdgeInsets.only(top: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-                icon: friendStatus,
-                onPressed: () {
-                  final addFriendMessage =
-                      SnackBar(content: Text('Added ${widget.userName}'));
-                  setState(() {
-                    friendStatus = Icon(
-                      Icons.person,
-                      color: Colors.deepPurpleAccent,
-                    );
-                  });
-                  Scaffold.of(context).showSnackBar(addFriendMessage);
-                })
-          ],
+          children: [goBackButton, addFriendButton],
         ));
   }
 }
 
+/** 
+ * Parent container for entire profile page
+ * Will combine navbar top widget with list of user's posts
+ */
 class ProfilePage extends StatefulWidget {
   ProfilePage({
-    @required this.userName,
-    this.userID,
-    // @required this.userID,
+    @required this.userID,
     this.userImage,
+    this.isFriend = false,
+    this.isMainPage = false,
     Key key,
   }) : super(key: key);
 
-  final String userName;
   final String userID;
   final Uint8List userImage;
+  final bool isFriend;
+  final bool isMainPage;
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -84,18 +108,14 @@ class _ProfilePageState extends State<ProfilePage> {
   final double avatarRadius = 50, marginTop = 50;
   final double profileContainerSize = 0.4;
 
+  final _uModel = new UserModel();
+  final _postsModel = new PostModel();
+
   Future profileData() async {
-    CollectionReference userProfile =
-        FirebaseFirestore.instance.collection('users');
+    User getUserData = await _uModel.getUser(widget.userID);
 
-    CollectionReference userPosts =
-        FirebaseFirestore.instance.collection('posts');
-
-    var getUserData =
-        await userProfile.where('username', isEqualTo: widget.userName).get();
-
-    var getPosts =
-        await userPosts.where('owner_name', isEqualTo: widget.userName).get();
+    QuerySnapshot getPosts =
+        await _postsModel.getAllPostsFromUser(widget.userID);
 
     return {'userDataSnapshot': getUserData, 'postDataSnapshot': getPosts};
   }
@@ -103,138 +123,162 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            decoration: BoxDecoration(gradient: backgroundGradient()),
-            child: FutureBuilder(
-                future: profileData(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    var userProfileData =
-                        snapshot.data['userDataSnapshot'].docs[0].data();
-                    return Column(
-                      children: [
-                        Container(
-                            child: SizedBox(
-                                height: MediaQuery.of(context).size.height *
-                                    profileContainerSize,
-                                child: Column(
-                                  children: [
-                                    // ACTION BUTTONS
-                                    NavBar(userName: widget.userName),
-                                    // USER AVATAR
-                                    Center(
-                                        child: widget.userImage == null
-                                            ? CircleAvatar(
-                                                backgroundColor:
-                                                    Colors.deepPurple,
-                                                radius: avatarRadius,
-                                                child: Icon(Icons.person))
-                                            : CircleAvatar(
-                                                radius: avatarRadius,
-                                                backgroundImage: MemoryImage(
-                                                    widget.userImage),
-                                              )),
-                                    Container(
-                                        margin: EdgeInsets.only(top: 10),
-                                        child: Center(
-                                          child: Text(
-                                            widget.userName,
-                                            style: TextStyle(
-                                                color: Colors.deepPurpleAccent,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18),
-                                          ),
-                                        )),
-                                    // USER BIO
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 10),
-                                      child: Expanded(
-                                          child: Text(userProfileData['bio'])),
-                                    ),
-                                    // USER FRIEND COUNT
-                                    Container(
-                                        margin: EdgeInsets.only(top: 10),
-                                        child: Center(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                  '${userProfileData['friends'].length} ',
-                                                  style: TextStyle(
-                                                      color: Colors
-                                                          .deepPurpleAccent,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              Text(
-                                                'Friends',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            ],
-                                          ),
-                                        )),
-                                  ],
-                                )),
-                            color: Colors.white),
-                        // POSTS
-                        Container(
-                          child: Expanded(
-                              child: ListView.builder(
-                                  itemCount: snapshot.data['postDataSnapshot']
-                                      .documents.length,
-                                  itemBuilder: (context, index) {
-                                    var postData = snapshot
-                                        .data['postDataSnapshot'].docs[index]
-                                        .data();
-                                    return FeedCard(
-                                      ownerName: widget.userName,
-                                      imageData: postData['post_image_data'],
-                                      ownerProfileImageData:
-                                          postData['image_data'],
-                                      postTitle: postData['post_title'],
-                                      postContent: postData['content'],
-                                    );
-                                  })),
-                        )
-                      ],
-                    );
-                  } else {
-                    return Container(
-                        child: Column(children: [
-                      Container(
-                          child: SizedBox(
-                              height: MediaQuery.of(context).size.height *
-                                  profileContainerSize,
-                              child: Column(children: [
-                                // USER AVATAR
-                                Container(
-                                  margin: EdgeInsets.only(top: 50),
-                                  child: Center(
-                                      child: widget.userImage == null
-                                          ? CircleAvatar(
-                                              backgroundColor:
-                                                  Colors.deepPurple,
-                                              radius: avatarRadius,
-                                              child: Icon(Icons.person))
-                                          : CircleAvatar(
-                                              radius: avatarRadius,
-                                              backgroundImage:
-                                                  MemoryImage(widget.userImage),
-                                            )),
+      body: Container(
+        decoration: BoxDecoration(gradient: backgroundGradient()),
+        child: FutureBuilder(
+          future: profileData(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var userProfileData = snapshot.data['userDataSnapshot'];
+
+              Uint8List dbProfileImage =
+                  ImageUtil.getDataFromBase64String(userProfileData.profilePic);
+              Uint8List renderedImage =
+                  widget.userImage != null ? widget.userImage : dbProfileImage;
+
+              return Column(
+                children: [
+                  Container(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height *
+                            profileContainerSize,
+                        child: Column(
+                          children: [
+                            // ACTION BUTTONS
+                            NavBar(
+                                userName: userProfileData.username,
+                                isFriend: widget.isFriend,
+                                isMainPage: widget.isMainPage),
+                            // USER AVATAR
+                            Center(
+                                child: renderedImage == null
+                                    ? CircleAvatar(
+                                        backgroundColor: LightColor,
+                                        radius: avatarRadius,
+                                        child: Icon(
+                                          Icons.person,
+                                          color: Colors.white,
+                                        ))
+                                    : CircleAvatar(
+                                        radius: avatarRadius,
+                                        backgroundImage:
+                                            MemoryImage(renderedImage),
+                                      )),
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              child: Center(
+                                child: Text(
+                                  userProfileData.username,
+                                  style: TextStyle(
+                                      color: SecondaryColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
                                 ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white),
-                                  ),
-                                )
-                              ])))
-                    ]));
-                  }
-                })));
+                              ),
+                            ),
+                            // USER BIO
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              child: Expanded(
+                                  child: Text(userProfileData.bio != null
+                                      ? userProfileData.bio
+                                      : '')),
+                            ),
+                            // USER FRIEND COUNT
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                        userProfileData.friends != null
+                                            ? '${userProfileData.friends.length}'
+                                            : '0',
+                                        style: TextStyle(
+                                            color: SecondaryColor,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(
+                                      'Friends',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      color: Colors.white),
+                  // POSTS
+                  Container(
+                    child: Expanded(
+                      child: ListView.builder(
+                        itemCount:
+                            snapshot.data['postDataSnapshot'].documents.length,
+                        itemBuilder: (context, index) {
+                          var postData = snapshot
+                              .data['postDataSnapshot'].docs[index]
+                              .data();
+                          print(postData);
+                          return FeedCard(
+                            ownerName: userProfileData.username,
+                            imageData: postData['post_image_data'],
+                            ownerProfileImageData: postData['image_data'],
+                            postTitle: postData['post_title'],
+                            postContent: postData['content'],
+                          );
+                        },
+                      ),
+                    ),
+                  )
+                ],
+              );
+            } else {
+              return Container(
+                child: Column(
+                  children: [
+                    Container(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height *
+                            profileContainerSize,
+                        child: Column(
+                          children: [
+                            // USER AVATAR
+                            Container(
+                              margin: EdgeInsets.only(top: 50),
+                              child: Center(
+                                  child: widget.userImage == null
+                                      ? CircleAvatar(
+                                          backgroundColor: Colors.deepPurple,
+                                          radius: avatarRadius,
+                                          child: Icon(Icons.person))
+                                      : CircleAvatar(
+                                          radius: avatarRadius,
+                                          backgroundImage:
+                                              MemoryImage(widget.userImage),
+                                        )),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              child: CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }
+          },
+        ),
+      ),
+    );
   }
 }

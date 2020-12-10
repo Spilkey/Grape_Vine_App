@@ -1,5 +1,8 @@
 import 'package:final_project/components/navigator_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'models/colors.dart';
+import 'views/map_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/models/local_storage_model.dart';
@@ -28,8 +31,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.purple,
+          primaryColor: PrimaryColor,
+          primaryColorLight: SecondaryColor,
+          tabBarTheme: TabBarTheme(labelColor: SecondaryColor),
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          primarySwatch: Colors.deepPurple,
         ),
         supportedLocales: [
           Locale('en', 'US'),

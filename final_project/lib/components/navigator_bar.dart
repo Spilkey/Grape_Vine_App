@@ -1,3 +1,5 @@
+import 'package:final_project/models/colors.dart';
+import 'package:final_project/models/user_data.dart';
 import 'package:flutter/material.dart';
 
 import '../views/main_feed.dart';
@@ -29,7 +31,11 @@ class _NavigatorBarState extends State<NavigatorBar> {
     MainFeed(),
     DiscoverFeedPage(),
     // TEMP:
-    ProfilePage(userName: 'temp_new_post_owner_name' , userImage: null),
+    ProfilePage(
+        userID: UserData.userData['user_id'],
+        userImage: null,
+        isFriend: true,
+        isMainPage: true),
     Notifications(),
   ];
   @override
@@ -48,11 +54,13 @@ class _NavigatorBarState extends State<NavigatorBar> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: AppLocalizations.of(context).translate('btm_nav_home_label'),
+              label:
+                  AppLocalizations.of(context).translate('btm_nav_home_label'),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.search),
-              label: AppLocalizations.of(context).translate('btm_nav_search_label'),
+              label: AppLocalizations.of(context)
+                  .translate('btm_nav_search_label'),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
@@ -60,11 +68,12 @@ class _NavigatorBarState extends State<NavigatorBar> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications),
-              label: AppLocalizations.of(context).translate('btm_nav_notif_label'),
+              label:
+                  AppLocalizations.of(context).translate('btm_nav_notif_label'),
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.purple[600],
+          selectedItemColor: SecondaryColor,
         ));
   }
 }
