@@ -28,7 +28,7 @@ class LocalStorageModel {
   Future<void> getUserData() async {
     var db = await LocalDB.database;
     var val = await db.query('UserData');
-    print('query for UserData returned:\n$val');
+    // print('query for UserData returned:\n$val');
     for (Map<String, dynamic> item in val) {
       Map<String, dynamic> data = {item['userdata']: item['value']};
       UserData.fromMap(data);

@@ -20,37 +20,37 @@ class _DiscoverFeedPageState extends State<DiscoverFeedPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
-        child: Scaffold(
-            appBar: AppBar(
-              title: Center(
-                  child: Text(AppLocalizations.of(context)
-                      .translate('discover_feed_title'))),
-              centerTitle: true,
-              actions: [
-                IconButton(
-                    icon: Icon(
-                      Icons.analytics_rounded,
-                      size: 25,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AnalyticsPage()));
-                    })
-              ],
-            ),
-            body: Column(children: [Expanded(child: FeedDiscover())]),
-            floatingActionButton: FloatingActionButton.extended(
-              // label: Text("Subscribe"),
-              label: Text(
-                  AppLocalizations.of(context).translate('subscribe_label')),
-              onPressed: () {
-                // TODO after users model has been implemented, add the topic to user's list of subscribed topics
-                print("subscribe to topic");
-              },
-            )));
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Center(
+              child: Text(AppLocalizations.of(context)
+                  .translate('discover_feed_title'))),
+          centerTitle: true,
+          actions: [
+            IconButton(
+                icon: Icon(
+                  Icons.analytics_rounded,
+                  size: 25,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AnalyticsPage()));
+                })
+          ],
+        ),
+        body: Column(children: [Expanded(child: FeedDiscover())]),
+        floatingActionButton: FloatingActionButton.extended(
+          // label: Text("Subscribe"),
+          label:
+              Text(AppLocalizations.of(context).translate('subscribe_label')),
+          onPressed: () {
+            // TODO after users model has been implemented, add the topic to user's list of subscribed topics
+            print("subscribe to topic");
+          },
+        ),
+      ),
+    );
   }
 }

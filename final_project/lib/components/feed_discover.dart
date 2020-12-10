@@ -7,6 +7,7 @@ import 'package:final_project/models/topic_model.dart';
 import 'feed_discover_cards.dart';
 
 import '../app_localizations.dart';
+
 class FeedDiscover extends StatefulWidget {
   @override
   _FeedState createState() => _FeedState();
@@ -62,10 +63,12 @@ class _FeedState extends State<FeedDiscover> {
           List<Widget> tabPanes = [];
           print("DEBUG: ${AppLocalizations.of(context).locale}");
           for (QueryDocumentSnapshot doc in snapshot.data.docs) {
-            tabs.add(Tab(child: 
-              Text(doc.get((AppLocalizations.of(context).locale).toString() + '_topic_name'),
-                style: TextStyle(color: Colors.white),
-              )));
+            tabs.add(Tab(
+                child: Text(
+              doc.get((AppLocalizations.of(context).locale).toString() +
+                  '_topic_name'),
+              style: TextStyle(color: Colors.white),
+            )));
             tabPanes.add(buildPosts(doc.id));
           }
           return DefaultTabController(
