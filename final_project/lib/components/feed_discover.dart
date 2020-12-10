@@ -70,7 +70,7 @@ class _FeedState extends State<FeedDiscover> {
           if (_subscriptions != null){
             if (_subscriptions.contains(topicId)){
               subButton = FloatingActionButton.extended( 
-                label: Text('Unsubscribe'),
+                label: Text(AppLocalizations.of(context).translate('unsubscribe_label')),
                 onPressed:() {
                   _currentUser.subscriptions.remove(topicId);
 
