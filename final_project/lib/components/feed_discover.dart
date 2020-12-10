@@ -1,6 +1,9 @@
 import 'package:final_project/models/post_entity.dart';
+import 'package:final_project/models/user.dart';
+import 'package:final_project/models/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/models/user_model.dart';
 
 import 'package:final_project/models/topic_model.dart';
 
@@ -20,10 +23,20 @@ class FeedDiscover extends StatefulWidget {
  */
 class _FeedState extends State<FeedDiscover> {
   var data;
+  TabController _tabController;
+  List<dynamic> _subscriptions = [];
+
   final _model = new TopicModel();
+  final _userModel = new UserModel();
 
   @override
   void initState() {
+    _userModel.getUser(UserData.userData['user_id']).then( (User currentUser){
+      setState( () {
+        _subscriptions = currentUser.subscriptions;
+      });
+    });
+
     super.initState();
   }
 
@@ -75,15 +88,32 @@ class _FeedState extends State<FeedDiscover> {
                 bottom: PreferredSize(
                   preferredSize: Size.fromHeight(5.0),
                   child: TabBar(
-                      isScrollable: true,
-                      unselectedLabelColor: Colors.green,
-                      indicatorColor: Colors.green,
-                      tabs: tabs),
+                    isScrollable: true,
+                    unselectedLabelColor: Colors.green,
+                    indicatorColor: Colors.green,
+                    tabs: tabs),
                 ),
               ),
               body: TabBarView(
                 children: tabPanes,
               ),
+              // if user is subscribed to this topic, then
+                floatingActionButton: FloatingActionButton.extended(
+                  label: Text(
+                    AppLocalizations.of(context).translate('subscribe_label')),
+                    onPressed: () {
+                  // print(UserData.userData['subscriptions']);
+                      print("DEBUG: ${UserData.userData['user_id']}");  // put in global
+
+
+
+          //         // print(tabIndex);
+          //         // print("DEBUG: $getTopicsLength('topics')");
+                  
+          //         print("DEBUG: Current index: ${DefaultTabController.of(context).index}");
+                  // updateSubscriptions(UserData.userData, String subscription){
+                },
+              )
             ),
           );
         } else {
@@ -93,6 +123,10 @@ class _FeedState extends State<FeedDiscover> {
     );
   }
 
+  Future<int> getTopicsLength(String documentID) async{
+    var test = _model.getAllTopics().length;
+    print(test);
+  }
   /**
    * This widget passes data to the feed_discover_cards class. 
    * @param data This contains data within the posts such as title, owner, content, etc
