@@ -23,7 +23,6 @@ class PostModel {
   }
 
   Future<QuerySnapshot> getAllPostsFromUser(user_id) async {
-    print(user_id);
     FirebaseFirestore db = DB().database;
     Future<QuerySnapshot> results =
         db.collection('posts').where('owner_id', isEqualTo: user_id).get();
@@ -43,13 +42,11 @@ class PostModel {
   Future<QuerySnapshot> getAllPostsFromUserFriendsList(user_id) async {
     FirebaseFirestore db = DB().database;
     User user = await UserModel().getUser(user_id);
-    print(user.username);
     if (user.friends.length != 0) {}
     QuerySnapshot friendsPosts = await db
         .collection('posts')
         .where('owner_id', whereIn: user.friends)
         .get();
-    print(friendsPosts.docs[0].data());
     return friendsPosts;
   }
 
