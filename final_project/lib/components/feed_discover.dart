@@ -22,42 +22,75 @@ class FeedDiscover extends StatefulWidget {
  * the horizontal list view is interactable. selecting one topic will filter the discover feed to topics specific to the selected one
  * ie: selecting sports will filter posts to have only posts under the sports category
  */
+
 class _FeedState extends State<FeedDiscover> {
   var data;
-  TabController _tabController;
   List<dynamic> _subscriptions = [];
+  var preferences = UserData.userData['content_preferences'];
+
+  User _currentUser;
+  bool subscriptionsLoaded = false;
 
   final _model = new TopicModel();
   final _userModel = new UserModel();
 
   @override
-  void initState() {
-    _userModel.getUser(UserData.userData['user_id']).then( (User currentUser){
-      setState( () {
-        _subscriptions = currentUser.subscriptions;
-      });
-    });
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return _horizontalListView();
+    if (!subscriptionsLoaded){
+      _userModel.getUser(UserData.userData['user_id']).then( (User currentUser){
+        setState( () {
+          _currentUser = currentUser;
+          _subscriptions = currentUser.subscriptions;
+          subscriptionsLoaded = true;
+        });
+      });
+      return CircularProgressIndicator();
+    } else {
+      return _horizontalListView();
+    }
   }
 
-  Widget buildPosts(topicId) {
+  Widget buildPosts(topicId, _subscriptions, _currentUser) {
     Widget content = StreamBuilder<QuerySnapshot>(
       stream: new TopicModel().getPostsFromTopic(topicId),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: snapshot.data.docs.length,
-            itemBuilder: (BuildContext context, index) {
-              var data = snapshot.data.docs[index];
-              return _discoverContainer(PostEntity.fromDB(data));
-            },
+          var subButton = FloatingActionButton.extended(
+            label: Text(AppLocalizations.of(context).translate('subscribe_label')),
+            onPressed: () {
+              if (_currentUser.subscriptions == null){
+                _currentUser.subscriptions = [];
+              }
+              _currentUser.subscriptions.add(topicId);
+              _userModel.updateUser(_currentUser).then( (response) {
+                setState( (){});
+              });      
+              print("DEBUG: ${UserData.userData['user_id']}");
+              print("DEBUG: $_subscriptions");
+              print("DEBUG: $topicId");   
+            }
+          );
+          if (_subscriptions != null){
+            if (_subscriptions.contains(topicId)){
+              subButton = FloatingActionButton.extended( 
+                label: Text('Unsubscribe'),
+                onPressed:() {
+                  print(_subscriptions.indexOf(topicId));
+                  // print (_subscriptions.indexWhere((_subscriptions) => _subscriptions.contains('topicId')).toString());
+                }
+              );
+            }
+          }
+          return Scaffold(
+              body: ListView.builder(
+              shrinkWrap: true,
+              itemCount: snapshot.data.docs.length,
+              itemBuilder: (BuildContext context, index) {
+                var data = snapshot.data.docs[index];
+                return _discoverContainer(PostEntity.fromDB(data));
+              },
+            ),
+            floatingActionButton: subButton,
           );
         } else {
           return Center(child: CircularProgressIndicator());
@@ -71,21 +104,31 @@ class _FeedState extends State<FeedDiscover> {
     return StreamBuilder<QuerySnapshot>(
       stream: _model.getAllTopics(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        var tempTopics = snapshot.data.docs;
+        var removedTopics = 0;
+        tempTopics.where( (topic) => preferences[topic] == true).toList();
+        print("DEBUG: ${tempTopics.length}");
         if (snapshot.hasData) {
           List<Tab> tabs = [];
           List<Widget> tabPanes = [];
           print("DEBUG: ${AppLocalizations.of(context).locale}");
           for (QueryDocumentSnapshot doc in snapshot.data.docs) {
-            tabs.add(Tab(
+            var topicName = doc.get('topic_name');
+            if (preferences[topicName] == true){
+               tabs.add(Tab(
                 child: Text(
-              doc.get((AppLocalizations.of(context).locale).toString() +
+                doc.get((AppLocalizations.of(context).locale).toString() +
                   '_topic_name'),
               style: TextStyle(color: Colors.white),
             )));
-            tabPanes.add(buildPosts(doc.id));
+            tabPanes.add(buildPosts(doc.id, _subscriptions, _currentUser));
+            } else {
+              removedTopics += 1;
+            }
           }
           return DefaultTabController(
-            length: snapshot.data.docs.length,
+            length: snapshot.data.docs.length - removedTopics,
+            // length: tempTopics.length,
             child: Scaffold(
               appBar: AppBar(
                 bottom: PreferredSize(
@@ -100,23 +143,6 @@ class _FeedState extends State<FeedDiscover> {
               body: TabBarView(
                 children: tabPanes,
               ),
-              // if user is subscribed to this topic, then
-                floatingActionButton: FloatingActionButton.extended(
-                  label: Text(
-                    AppLocalizations.of(context).translate('subscribe_label')),
-                    onPressed: () {
-                  // print(UserData.userData['subscriptions']);
-                      print("DEBUG: ${UserData.userData['user_id']}");  // put in global
-
-
-
-          //         // print(tabIndex);
-          //         // print("DEBUG: $getTopicsLength('topics')");
-                  
-          //         print("DEBUG: Current index: ${DefaultTabController.of(context).index}");
-                  // updateSubscriptions(UserData.userData, String subscription){
-                },
-              )
             ),
           );
         } else {
