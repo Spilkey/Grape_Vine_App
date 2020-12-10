@@ -169,9 +169,16 @@ class _ProfilePageState extends State<ProfilePage> {
               Uint8List renderedImage =
                   dbProfileImage != null ? dbProfileImage : widget.userImage;
 
-              bool isFriendCheckDB =
-                  currentUserProfileData.friends.contains(userProfileData.id) ||
-                      currentUserProfileData.id == userProfileData.id;
+              bool isFriendCheckDB = false;
+
+              if (currentUserProfileData.friends != null) {
+                isFriendCheckDB = currentUserProfileData.friends
+                        .contains(userProfileData.id) ||
+                    currentUserProfileData.id == userProfileData.id;
+              } else {
+                isFriendCheckDB =
+                    currentUserProfileData.id == userProfileData.id;
+              }
 
               return Column(
                 children: [
