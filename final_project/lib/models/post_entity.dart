@@ -15,18 +15,18 @@ class PostEntity {
   String postId;
   String streetName;
 
-  PostEntity(
-      {this.content,
-      this.imageData,
-      this.isPrivate,
-      this.ownerId,
-      this.ownerName,
-      this.postImageData,
-      this.postTitle,
-      this.topicId,
-      this.postId,
-      this.streetName,
-      });
+  PostEntity({
+    this.content,
+    this.imageData,
+    this.isPrivate,
+    this.ownerId,
+    this.ownerName,
+    this.postImageData,
+    this.postTitle,
+    this.topicId,
+    this.postId,
+    this.streetName,
+  });
 
   // map values. Also checks that the values are not null. If they are, set them to blank or false (depending if it's a string or boolean)
   Map<String, dynamic> toMap() {
@@ -39,7 +39,7 @@ class PostEntity {
       'post_image_data': postImageData != null ? postImageData : "",
       'post_title': postTitle != null ? postTitle : "",
       'topic_id': topicId != null ? topicId : "",
-      'street_name': streetName != null? streetName : "",
+      'street_name': streetName != null ? streetName : "",
     };
   }
 
@@ -54,7 +54,8 @@ class PostEntity {
     returnPost.postImageData = ref.get('post_image_data');
     returnPost.postTitle = ref.get('post_title');
     returnPost.topicId = ref.get('topic_id');
-    returnPost.streetName =  ref.data().keys.contains('street_name') ? ref.get('street_name') : "";
+    returnPost.streetName =
+        ref.data().keys.contains('street_name') ? ref.get('street_name') : "";
     return returnPost;
   }
 
