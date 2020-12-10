@@ -30,6 +30,7 @@ class _CreatePostState extends State<CreatePost> {
   String _image64 = "";
   String _postContent = "";
   String _titleContent = "";
+  bool _isPrivate = false;
   // for UInt8 type
   Uint8List _imgBytes = Uint8List(10);
 
@@ -116,7 +117,7 @@ class _CreatePostState extends State<CreatePost> {
               PostEntity postEntity = new PostEntity(
                   content: _postContent,
                   imageData: currentUser.profilePic,
-                  isPrivate: false,
+                  isPrivate: _isPrivate,
                   ownerId: currentUserId,
                   ownerName: currentUser.userName,
                   postImageData: _image64,
@@ -292,6 +293,17 @@ class _CreatePostState extends State<CreatePost> {
                           }).toList(),
                         ),
                       ],
+                    ),
+                    Container(
+                      child: SwitchListTile(
+                        title: Text("Is private"),
+                        value: _isPrivate,
+                        onChanged: (bool val) {
+                          setState(() {
+                            _isPrivate = val;
+                          });
+                        },
+                      ),
                     ),
                     Image.memory(
                       _imgBytes,
