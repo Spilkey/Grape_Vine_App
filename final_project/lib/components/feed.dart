@@ -28,8 +28,6 @@ class _FeedState extends State<Feed> {
     // We should store our data retrieved from our db in the state here
 
     String currentUserId = UserData.userData['user_id'];
-    print("Current userId is ${currentUserId}");
-
     return Scaffold(
       // streambuilder populates the listview from the firebase database
       body: FutureBuilder<QuerySnapshot>(

@@ -222,7 +222,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           var postData = snapshot
                               .data['postDataSnapshot'].docs[index]
                               .data();
-                          print(postData);
                           return FeedCard(
                             ownerName: userProfileData.username,
                             imageData: postData['post_image_data'],

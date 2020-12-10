@@ -76,7 +76,6 @@ class _SettingsState extends State<Settings> {
                       .translate('change_display_name_prompt'),
                 ),
                 onChanged: (String val) {
-                  print(val);
                   setState(() {
                     if (val != null) {
                       if (val.isNotEmpty) {

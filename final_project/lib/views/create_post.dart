@@ -138,13 +138,10 @@ class _CreatePostState extends State<CreatePost> {
 
     if (!topicsLoaded) {
       TopicModel().getAllTopicsFuture().then((QuerySnapshot topicsData) {
-        print(topicsData.docs);
         topicsData.docs.forEach((e) {
-          print(e.get("topic_name"));
           topics[e.get("topic_name")] = e.id;
           topicNames.add(e.get("topic_name"));
         });
-        print(topicNames);
         setState(() {
           topicsLoaded = true;
         });

@@ -60,7 +60,6 @@ class _SideBarFriendsState extends State<SideBarFriends> {
         await Future.wait(futureFriendsObjects).catchError((error) {
       print(error);
     });
-    print(friendsObjects);
     return friendsObjects;
   }
 
