@@ -7,7 +7,6 @@ import 'feed_card.dart';
  *  The DiscoverFeedCards program utilizes the feed_card to display information from the database onto the discover page
  */
 class DiscoverFeedCards extends StatefulWidget {
-
   PostEntity data;
 
   DiscoverFeedCards({Key key, @required this.data}) : super(key: key);
@@ -29,24 +28,16 @@ class _DiscoverFeedCardsState extends State<DiscoverFeedCards> {
 
   @override
   Widget build(BuildContext context) {
-    
     // sample feed card
     Widget mainCard = FeedCard(
+      userId: data.ownerId,
       ownerProfileImageData: data.imageData,
       ownerName: data.ownerName,
       imageData: data.postImageData,
       postTitle: data.postTitle,
       postContent: data.content,
     );
-    
-    return Row(
-      children: <Widget>[
-        Column(children: <Widget>[
-          Row(children: <Widget>[
-            Container(padding: EdgeInsets.fromLTRB(40.0, 16.0, 0, 16.0), width: 350, child: mainCard)
-          ]),
-        ])
-      ],
-    );
+
+    return Container(padding: EdgeInsets.all(20), child: mainCard);
   }
 }

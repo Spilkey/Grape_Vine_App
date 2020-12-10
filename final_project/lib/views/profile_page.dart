@@ -134,7 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Uint8List dbProfileImage =
                   ImageUtil.getDataFromBase64String(userProfileData.profilePic);
               Uint8List renderedImage =
-                  widget.userImage != null ? widget.userImage : dbProfileImage;
+                  dbProfileImage != null ? dbProfileImage : widget.userImage;
 
               return Column(
                 children: [
@@ -222,11 +222,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           var postData = snapshot
                               .data['postDataSnapshot'].docs[index]
                               .data();
-                          print(postData);
                           return FeedCard(
                             ownerName: userProfileData.username,
                             imageData: postData['post_image_data'],
-                            ownerProfileImageData: postData['image_data'],
+                            ownerProfileImageData: userProfileData.profilePic,
                             postTitle: postData['post_title'],
                             postContent: postData['content'],
                           );
