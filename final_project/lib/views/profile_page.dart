@@ -55,6 +55,10 @@ class _NavBarState extends State<NavBar> {
         onPressed: () {
           final addFriendMessage =
               SnackBar(content: Text('Added ${widget.userName}'));
+          // safety check for a null friends lists
+          if (widget.currentUser.friends == null) {
+            widget.currentUser.friends = [];
+          }
           widget.currentUser.friends.add(widget.user.id);
           widget.currentUser.notifications.add(UserNotifcation(
               content: "You have added user ${widget.user.username}",
