@@ -17,6 +17,19 @@ class UserData {
       'allow_location': false,
       // name to display for user
       'user_id': '',
+      //content for the user to display
+      'content_preferences': {
+        'Celebrities': true,
+        'Movies': true,
+        'Music': true,
+        'Technology': true,
+        'Travel': true,
+        'Gaming': true,
+        'Art': true,
+        'Food': true,
+        'Politics': true,
+        'Sports': true
+      }
     };
     print('UserData initialized');
   }
