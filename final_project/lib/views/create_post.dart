@@ -113,7 +113,6 @@ class _CreatePostState extends State<CreatePost> {
               // isPrivate, ownerID, ownerName, topicID
               String currentUserId = UserData.userData['user_id'];
               User currentUser = await UserModel().getUser(currentUserId);
-
               PostEntity postEntity = new PostEntity(
                   content: _postContent,
                   imageData: currentUser.profilePic,
