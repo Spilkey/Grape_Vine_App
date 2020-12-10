@@ -73,30 +73,33 @@ class _SettingsState extends State<Settings> {
                           ],
                         ),
                       ])),
-              TextFormField(
-                decoration: InputDecoration(
-                  icon: Icon(Icons.person),
-                  labelText: AppLocalizations.of(context)
-                      .translate('change_display_name_prompt'),
-                ),
-                onChanged: (String val) {
-                  print(val);
-                  setState(() {
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.person),
+                    labelText: AppLocalizations.of(context)
+                        .translate('change_display_name_prompt'),
+                  ),
+                  onChanged: (String val) {
+                    print(val);
+                    setState(() {
+                      if (val != null) {
+                        if (val.isNotEmpty) {
+                          _newUsername = val;
+                        }
+                      }
+                    });
+                  },
+                  onSaved: (String val) {
                     if (val != null) {
                       if (val.isNotEmpty) {
                         _newUsername = val;
                       }
                     }
-                  });
-                },
-                onSaved: (String val) {
-                  if (val != null) {
-                    if (val.isNotEmpty) {
-                      _newUsername = val;
-                    }
-                  }
-                  UserData.userData['username'] = _newUsername;
-                },
+                    UserData.userData['username'] = _newUsername;
+                  },
+                ),
               ),
               SwitchListTile(
                   title: Text(AppLocalizations.of(context)
@@ -125,19 +128,21 @@ class _SettingsState extends State<Settings> {
                       UserData.userData['allow_location'] = val;
                     });
                   }),
-              GestureDetector(
-                  onTap: () {
-                    setState(() async {
-                      contentPreferences = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ContentPreferences()));
-                    });
-                  },
-                  child: Align(
-                    child: Text('Content preferences'),
-                    alignment: Alignment.centerLeft,
-                  ))
+              ListTile(
+                leading: GestureDetector(
+                    onTap: () {
+                      setState(() async {
+                        contentPreferences = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ContentPreferences()));
+                      });
+                    },
+                    child: (Text(
+                      'Content preferences',
+                      style: TextStyle(fontSize: 16),
+                    ))),
+              ),
             ],
           ),
         ),
