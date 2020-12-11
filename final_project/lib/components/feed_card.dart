@@ -4,6 +4,7 @@ import 'package:final_project/models/user.dart';
 import 'package:final_project/models/user_model.dart';
 import 'package:final_project/utils/image_utils.dart';
 import 'package:flutter/material.dart';
+import '../app_localizations.dart';
 import '../views/profile_page.dart';
 
 // Is a card that will appear in a feed
@@ -54,7 +55,10 @@ class _FeedCardState extends State<FeedCard> {
     // Get the data from the db
     CircleAvatar profileImage;
     Widget postImage;
+
     bool useDefaultImage;
+    bool postImageGiven = false;
+
     Widget location;
 
     if (userData != null) {
@@ -87,22 +91,29 @@ class _FeedCardState extends State<FeedCard> {
           height: 200,
         ),
       );
+      postImageGiven = true;
     } else {
       postImage = Container(
-        height: 200,
-      );
+          color: Colors.grey[400],
+          height: 200,
+          child: Center(
+            child: Text(AppLocalizations.of(context).translate('no_image_label')),
+          ));
+      postImageGiven = false;
     }
     if (widget.streetName != null) {
       location = Row(children: <Widget>[
         Icon(
           Icons.location_on,
         ),
-        Container(
-          child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Text(
-                widget.streetName,
-              )),
+        Flexible(
+          child: Container(
+            child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  widget.streetName,
+                )),
+          ),
         ),
       ]);
     } else {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import '../app_localizations.dart';
 import '../models/topic_model.dart';
 
 class AnalyticsPage extends StatefulWidget {
@@ -15,7 +16,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Trending'),
+        title: Text(AppLocalizations.of(context).translate('analytics_title')),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
@@ -52,7 +53,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                 )
                               ],
                             ),
-                            Text('is the current top trending!')
+                            Text(AppLocalizations.of(context).translate('top_trending_label'))
                           ],
                         ),
                       )),

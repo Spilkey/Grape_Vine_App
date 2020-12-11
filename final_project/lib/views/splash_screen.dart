@@ -3,6 +3,8 @@ import 'package:final_project/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/models/user_data.dart';
 
+import '../app_localizations.dart';
+
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key, this.title}) : super(key: key);
 
@@ -35,7 +37,7 @@ class SplashScreenState extends State<SplashScreen> {
             color: Colors.white,
           ),
           Text(
-            'GRAPE',
+            AppLocalizations.of(context).translate('splash_screen_title'),
             style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
           ),
           SizedBox(height: 160),
@@ -55,7 +57,7 @@ class SplashScreenState extends State<SplashScreen> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
             padding: EdgeInsets.all(30),
             child: Text(
-              'Let\'s Begin',
+              AppLocalizations.of(context).translate('splash_begin_text'),
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 25,

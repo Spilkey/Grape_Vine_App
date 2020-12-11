@@ -61,28 +61,25 @@ class _MainFeedState extends State<MainFeed> {
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
           ),
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                  icon: Icon(Icons.public),
+                  text: AppLocalizations.of(context).translate('public_label')),
+              Tab(
+                  icon: Icon(Icons.lock),
+                  text:
+                      AppLocalizations.of(context).translate('private_label')),
+            ],
+            labelColor: Colors.white,
+            indicatorColor: Colors.white,
+            unselectedLabelColor: Colors.grey,
+          ),
         ),
-        body: Column(
+        body: TabBarView(
           children: [
-            TabBar(
-              tabs: [
-                Tab(
-                    icon: Icon(Icons.public),
-                    text:
-                        AppLocalizations.of(context).translate('public_label')),
-                Tab(
-                    icon: Icon(Icons.public),
-                    text: AppLocalizations.of(context)
-                        .translate('private_label')),
-              ],
-              labelColor: PrimaryColor,
-              indicatorColor: PrimaryColor,
-              unselectedLabelColor: Colors.grey,
-            ),
-            Expanded(
-              // height: 200,
-              child: Feed(),
-            ),
+            Feed(false),
+            Feed(true),
           ],
         ),
         // TODO populate our drawer here with content specific to profile
@@ -94,7 +91,6 @@ class _MainFeedState extends State<MainFeed> {
         // the form will either go into views or components
         floatingActionButton: FloatingActionButton.extended(
           icon: Icon(Icons.menu),
-          // label: Text("Create"),
           label: Text(AppLocalizations.of(context).translate('create_label')),
           onPressed: () async {
             // Navigate here to create post form handle any returned info here

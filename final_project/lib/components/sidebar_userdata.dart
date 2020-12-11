@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'package:final_project/views/profile_page.dart';
 import 'package:flutter/material.dart';
 
+import '../app_localizations.dart';
+
 /** 
  * Row element for each user in the friends sidebar
  */

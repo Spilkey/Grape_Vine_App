@@ -1,8 +1,10 @@
+import 'package:final_project/models/post_entity.dart';
 import 'package:final_project/models/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:final_project/models/post_model.dart';
+import '../app_localizations.dart';
 import 'feed_card.dart';
 
 /// This will be where we use our models and populate a feed
@@ -12,6 +14,10 @@ import 'feed_card.dart';
 /// FeedCards will be what we show whether it be private or public
 ///
 class Feed extends StatefulWidget {
+  final bool isPrivate;
+
+  Feed(this.isPrivate);
+
   @override
   _FeedState createState() => _FeedState();
 }
@@ -28,42 +34,43 @@ class _FeedState extends State<Feed> {
     // We should store our data retrieved from our db in the state here
 
     String currentUserId = UserData.userData['user_id'];
+
     return Scaffold(
       // streambuilder populates the listview from the firebase database
-      body: FutureBuilder<QuerySnapshot>(
-        future: _model.getAllPostsFromUserFriendsList(currentUserId),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      body: FutureBuilder<List<PostEntity>>(
+        future: widget.isPrivate
+            ? _model.getUserPostsPrivate(currentUserId)
+            : _model.getUserPostsPublic(currentUserId),
+        builder: (context, AsyncSnapshot<List<PostEntity>> snapshot) {
           if (snapshot.hasData) {
             return ListView.separated(
-                itemCount: snapshot.data.docs.length,
+                itemCount: snapshot.data.length,
                 padding: const EdgeInsets.all(20.0),
                 // when we get actual data use an item builder
                 itemBuilder: (BuildContext context, int index) {
                   // Here we would pass in some parameters to our indiviual cards
                   // Example ----------------------
-                  var data = snapshot.data.docs[index];
-                  var streetName;
-                  if (!data.data().keys.contains('street_name')) {
-                    // if (snapshot.data.docs[index].containsKey('street_name')== null){
-                    streetName = null;
+                  var data = snapshot.data[index];
+                  if (data != null) {
+                    return FeedCard(
+                      userId: data.ownerId,
+                      ownerProfileImageData: data.imageData,
+                      ownerName: data.ownerName,
+                      imageData: data.postImageData,
+                      postTitle: data.postTitle,
+                      postContent: data.content,
+                      streetName: data.streetName,
+                    );
                   } else {
-                    streetName = data.get('street_name');
+                    FeedCard();
                   }
-                  return FeedCard(
-                      userId: data.get('owner_id'),
-                      ownerProfileImageData: data.get('image_data'),
-                      ownerName: data.get('owner_name'),
-                      imageData: data.get('post_image_data'),
-                      postTitle: data.get('post_title'),
-                      postContent: data.get('content'),
-                      streetName: streetName);
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return const Divider();
                 });
           } else {
             return Center(
-                child: Text("It looks like you have no friends posts yet"));
+              child: Text(AppLocalizations.of(context).translate('no_friends_label')));
           }
         },
       ),

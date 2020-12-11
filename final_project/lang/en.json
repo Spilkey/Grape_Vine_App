@@ -1,4 +1,7 @@
 {
+    "splash_screen_title": "GRAPE",
+    "splash_begin_text": "Begin",
+
     "main_feed_title": "Main Feed",
     "settings_label": "Settings",
     "settings_confirm": "Saved user settings!",
@@ -9,11 +12,17 @@
     "btm_nav_home_label": "Home",
     "btm_nav_search_label": "Discover",
     "btm_nav_notif_label": "Notifications",
+    "btm_nav_account_label": "Account",
+
+    "no_friends_label": "It looks like you have no friends posts yet",
 
     "discover_feed_title": "Discover Feed",
     "subscribe_label": "Subscribe",
+    "unsubscribe_label": "Unsubscribe",
+    "no_image_label": "No Image",
     
     "notifications_title": "Notifications",
+    "no_notifications_label": "You have no notifications",
 
     "change_display_name_prompt": "Change display name",
     "mixed_feed_option": "Use mixed feeds",
@@ -21,6 +30,7 @@
     "allow_location_option": "Allow location",
     "save_settings_label": "Save user settings",
     "save_failed": "Unable to save user settings",
+    "content_pref_label": "Content preferences",
 
     "keep_draft_alert": "Keep as draft?",
     "keep_draft_option": "Keep as draft",
@@ -34,8 +44,34 @@
     "title_validator": "Please enter a title",
     "content_prompt": "Write something",
     "content_validator": "Please enter some stuff",
+    "topic_label": "Topic",
+    "is_private_label": "Is private",
 
     "map_page_title": "Choose a location",
 
-    "friends_bar_title": "My Friends"
+    "friends_bar_title": "My Friends",
+
+    "analytics_title": "Trending",
+    "top_trending_label": "is the current top trending!",
+
+    "create_user_title": "Create a username",
+    "enter_username_label": "Enter a username",
+    "enter_username_description": "Make a username - You do not have to make one, but if you do it can be changed later",
+    "upload_picture_label": "Upload a profile picture",
+    "upload_picture_description": "Add a picture - you can click on your image to change it", 
+    "getting_started_title": "Getting Started",
+    "profile_created_label": "Profile has been created",
+    "enjoy_label": "Enjoy!",
+    "close_label": "close",
+    "move_on_label": "Move on",
+
+    "added_label": "Added",
+    "user_added_label": "You have added user",
+    "user_label_0": "User",
+    "user_label_1": "has added you as their friend",
+    "friends_label": "Friends",
+
+    "content_pref_title": "User preferences",
+    "content_pref_description": "These are your content preferences. You can manage which topics you see on the Discovery page.",
+    "preferences_label": "Preference"
 }
