@@ -11,6 +11,29 @@ Group members (3-5) (no Student IDs, only names):
 - ensure you are using an Android emulator (Preferably Google Pixel 3)
 - in your console, cd into the file named "final_project"
 - in your console, enter "flutter run" 
+- Once the app is running create an account
+- Once you have created an account you are free to explore the app 
+- You can create a new post you go explore other user's posts in the discover feed
+- You can click the top right icon on the main feed to change your preferrences and your Username if wanted
+- Naviagte to the Discover Feed and subscribe to a topic or click on a User's name to view their profile and add them as friend
+- You can click the analytics button at the top of the Discover Feed to view the trending topics
+- There is also a page for you to see your current profile as well as any notification you may have from other user's
+
+
+## App Parts
+- Dialogs and pickers - Used on the Create post feature and Create User feature
+- Multiple screens and navigation - Most of the app revolves around the navigation between pages
+- Snack bars - Upon Creating a post and adding a user as a friend 
+- Notifications - Creating a post
+- Local storage (SQLite) - Current User details 
+- Cloud storage (Firestore or other) - Posts Topics and User are stored here
+- Data tables - User Preferences found in User settings on Main feed
+- Charts - Found in Ananlyics tab of the Discover Feed
+- Maps - In Create Post, option to attach a location to post
+- Geolocation - Used to Grab the user's current location
+- Geocoding - Used to get address of selected location in map
+- Internationalization - whole app 3 language
+
 
 ## Overview
 This group project is designed for you to demonstrate the skills that you have learned in this course.  The final project that you submit in the last week of classes will be a completed mobile application.  Non-functional requirements, especially those associated with production-readiness, will be considered extremely important when marking this project.  You are expected to work in a group of three to five students when completing this project.  Students are not permitted to work alone on the project, as this eliminates one of the learning objectives of this assessment.  
@@ -34,7 +57,7 @@ It is your job to incorporate as many course concepts into your project as possi
 - Notifications
 - Local storage (SQLite)
 - Cloud storage (Firestore or other)
-- HTTP requests
+- Http requests
 - Data tables
 - Charts
 - Maps
