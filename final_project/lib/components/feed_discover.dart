@@ -36,9 +36,9 @@ class _FeedState extends State<FeedDiscover> {
 
   @override
   Widget build(BuildContext context) {
-    if (!subscriptionsLoaded){
-      _userModel.getUser(UserData.userData['user_id']).then( (User currentUser){
-        setState( () {
+    if (!subscriptionsLoaded) {
+      _userModel.getUser(UserData.userData['user_id']).then((User currentUser) {
+        setState(() {
           _currentUser = currentUser;
           _subscriptions = currentUser.subscriptions;
           subscriptionsLoaded = true;
@@ -50,39 +50,51 @@ class _FeedState extends State<FeedDiscover> {
     }
   }
 
-  Widget buildPosts(topicId, _subscriptions, _currentUser) {
+  Widget buildPosts(topicId, _currentUser) {
     Widget content = StreamBuilder<QuerySnapshot>(
       stream: new TopicModel().getPostsFromTopic(topicId),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
-          var subButton = FloatingActionButton.extended(
-            label: Text(AppLocalizations.of(context).translate('subscribe_label')),
-            onPressed: () {
-              if (_currentUser.subscriptions == null){
-                _currentUser.subscriptions = [];
-              }
-              _currentUser.subscriptions.add(topicId);
-              _userModel.updateUser(_currentUser).then( (response) {
-                setState( (){});
-              });      
-            }
-          );
-          if (_subscriptions != null){
-            if (_subscriptions.contains(topicId)){
-              subButton = FloatingActionButton.extended( 
-                label: Text(AppLocalizations.of(context).translate('unsubscribe_label')),
-                onPressed:() {
+          var subButton;
+          if (_subscriptions == null) {
+            _subscriptions = [];
+          }
+          if (_subscriptions.contains(topicId)) {
+            subButton = FloatingActionButton.extended(
+                label: Text(AppLocalizations.of(context)
+                    .translate('unsubscribe_label')),
+                onPressed: () {
                   _currentUser.subscriptions.remove(topicId);
-
-                  _userModel.updateUser(_currentUser).then( (response) {
-                    setState( () {});
+                  _userModel.updateUser(_currentUser).then((response) {
+                    setState(() {
+                      _subscriptions.remove(topicId);
+                    });
+                  }).catchError((error) {
+                    print("${error} Error getting subscriptions");
                   });
+                });
+          } else {
+            subButton = FloatingActionButton.extended(
+              label: Text(
+                  AppLocalizations.of(context).translate('subscribe_label')),
+              onPressed: () {
+                if (_currentUser.subscriptions == null) {
+                  _currentUser.subscriptions = [];
                 }
-              );
-            }
+
+                _currentUser.subscriptions.add(topicId);
+                _userModel.updateUser(_currentUser).then((response) {
+                  setState(() {
+                    _subscriptions.add(topicId);
+                  });
+                }).catchError((error) {
+                  print("${error} Error getting subscriptions");
+                });
+              },
+            );
           }
           return Scaffold(
-              body: ListView.builder(
+            body: ListView.builder(
               shrinkWrap: true,
               itemCount: snapshot.data.docs.length,
               itemBuilder: (BuildContext context, index) {
@@ -104,22 +116,22 @@ class _FeedState extends State<FeedDiscover> {
     return StreamBuilder<QuerySnapshot>(
       stream: _model.getAllTopics(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        var preferredTopics = snapshot.data.docs;
-        var removedTopics = 0;
-        preferredTopics.where( (topic) => preferences[topic] == true).toList();
         if (snapshot.hasData) {
+          var preferredTopics = snapshot.data.docs;
+          var removedTopics = 0;
+          preferredTopics.where((topic) => preferences[topic] == true).toList();
           List<Tab> tabs = [];
           List<Widget> tabPanes = [];
           for (QueryDocumentSnapshot doc in snapshot.data.docs) {
             var topicName = doc.get('topic_name');
-            if (preferences[topicName] == true){
-               tabs.add(Tab(
-                child: Text(
+            if (preferences[topicName] == true) {
+              tabs.add(Tab(
+                  child: Text(
                 doc.get((AppLocalizations.of(context).locale).toString() +
-                  '_topic_name'),
-              style: TextStyle(color: Colors.white),
-            )));
-            tabPanes.add(buildPosts(doc.id, _subscriptions, _currentUser));
+                    '_topic_name'),
+                style: TextStyle(color: Colors.white),
+              )));
+              tabPanes.add(buildPosts(doc.id, _currentUser));
             } else {
               removedTopics += 1;
             }
@@ -131,10 +143,10 @@ class _FeedState extends State<FeedDiscover> {
                 bottom: PreferredSize(
                   preferredSize: Size.fromHeight(5.0),
                   child: TabBar(
-                    isScrollable: true,
-                    unselectedLabelColor: Colors.green,
-                    indicatorColor: Colors.green,
-                    tabs: tabs),
+                      isScrollable: true,
+                      unselectedLabelColor: Colors.green,
+                      indicatorColor: Colors.green,
+                      tabs: tabs),
                 ),
               ),
               body: TabBarView(
@@ -149,10 +161,11 @@ class _FeedState extends State<FeedDiscover> {
     );
   }
 
-  Future<int> getTopicsLength(String documentID) async{
+  Future<int> getTopicsLength(String documentID) async {
     var test = _model.getAllTopics().length;
     print(test);
   }
+
   /**
    * This widget passes data to the feed_discover_cards class. 
    * @param data This contains data within the posts such as title, owner, content, etc
