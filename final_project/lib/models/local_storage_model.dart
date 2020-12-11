@@ -25,10 +25,10 @@ class LocalStorageModel {
   }
 
   // get all user settings from the database. Returns true on success
-  Future<void> getUserData() async {
+  static Future<void> getUserData() async {
     var db = await LocalDB.database;
     var val = await db.query('UserData');
-    // print('query for UserData returned:\n$val');
+    print('query for UserData returned:\n$val');
     for (Map<String, dynamic> item in val) {
       Map<String, dynamic> data = {item['userdata']: item['value']};
       UserData.fromMap(data);
@@ -43,7 +43,7 @@ class LocalStorageModel {
   }
 
   // update all user settings
-  Future<void> updateTable() async {
+  static Future<void> updateTable() async {
     var db = await LocalDB.database;
     Batch batch = db.batch();
     var map = UserData.toStringMap();
@@ -53,12 +53,5 @@ class LocalStorageModel {
     });
     var res = await batch.commit();
     print('UserData update result:\n$res');
-  }
-
-  // add all user settings to the database
-  Future<void> addUserData(String key) async {
-    var db = await LocalDB.database;
-    await db.insert('UserData', UserData.userData[key],
-        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 }

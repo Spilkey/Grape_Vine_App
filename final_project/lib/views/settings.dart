@@ -17,13 +17,12 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   final _formkey = GlobalKey<FormState>();
   String _newUsername = UserData.userData['username'];
-  var db = LocalStorageModel();
   var contentPreferences;
 
   @override
   void initState() {
     super.initState();
-    db.getUserData();
+    LocalStorageModel.getUserData();
   }
 
   @override
@@ -153,7 +152,7 @@ class _SettingsState extends State<Settings> {
         onPressed: () async {
           if (_formkey.currentState.validate()) {
             _formkey.currentState.save();
-            await db.updateTable();
+            await LocalStorageModel.updateTable();
             Navigator.pop(context);
           } else {
             Scaffold.of(context).showSnackBar(SnackBar(

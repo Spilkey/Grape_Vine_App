@@ -9,6 +9,7 @@ import 'package:final_project/models/topic_model.dart';
 import 'package:final_project/models/user.dart';
 import 'package:final_project/models/user_data.dart';
 import 'package:final_project/models/user_model.dart';
+import 'package:final_project/utils/image_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../app_localizations.dart';
@@ -23,7 +24,6 @@ class CreatePost extends StatefulWidget {
 class _CreatePostState extends State<CreatePost> {
   // TODO: Save image to database - is that efficient?
   File _image;
-  final picker = ImagePicker();
   final textController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -44,7 +44,8 @@ class _CreatePostState extends State<CreatePost> {
   List<String> topicNames = [];
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedFile =
+        await ImageUtil.picker.getImage(source: ImageSource.gallery);
 
     var temp = File(pickedFile.path);
     var temp_1 = temp.readAsBytesSync();

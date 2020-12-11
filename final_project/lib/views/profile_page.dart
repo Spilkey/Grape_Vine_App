@@ -250,7 +250,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                             color: SecondaryColor,
                                             fontWeight: FontWeight.bold)),
                                     Text(
-                                      'Friends',
+                                      ' Friends',
+
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     )

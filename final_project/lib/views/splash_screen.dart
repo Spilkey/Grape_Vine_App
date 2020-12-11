@@ -1,7 +1,6 @@
 import 'package:final_project/models/local_storage_model.dart';
 import 'package:final_project/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project/components/navigator_bar.dart';
 import 'package:final_project/models/user_data.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,12 +16,10 @@ class SplashScreenState extends State<SplashScreen> {
   UserModel _userModel = UserModel();
   bool _showProgress = false;
 
-  var _local_db = LocalStorageModel();
-
   @override
   Widget build(BuildContext context) {
     hasUserData();
-    _local_db.getUserData();
+    LocalStorageModel.getUserData();
     var userWidget;
     if (_showProgress) {
     } else {
@@ -73,7 +70,8 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> hasUserData() async {
-    if (UserData.userData['user_id'] != null) {
+    String id = UserData.userData['user_id'];
+    if (id.isNotEmpty) {
       // we have the data so update everything accordingly
       UserData.setUser = await _userModel.getUser(UserData.userData['user_id']);
       Navigator.pushNamed(context, '/homePage');
